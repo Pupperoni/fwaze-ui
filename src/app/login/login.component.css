@@ -1,0 +1,11 @@
+.login-form {
+  margin: 1em;
+}
+
+.form-group {
+  min-width: 20em;
+  width: auto;
+}
+.register-redirect {
+  margin-bottom: 1em;
+}
