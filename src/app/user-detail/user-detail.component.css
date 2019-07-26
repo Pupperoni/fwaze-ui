@@ -4,14 +4,17 @@
   margin: 1em;
 }
 
+/* .user-image-container {
+  background-color: #d3d3d3;
+} */
+
 .user-image {
-  background-color: blueviolet;
-  height: 250px;
-  width: 800px;
+  height: 200px;
+  width: 200px;
 }
 
 .user-info {
-  margin-left: 2em;
+  margin-left: 0.5em;
 }
 
 .user-name-large {
