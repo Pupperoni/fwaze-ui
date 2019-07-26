@@ -7,9 +7,10 @@ import { NavbarComponent } from "./navbar/navbar.component";
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { LivemapComponent } from './livemap/livemap.component';
+import { UserDetailComponent } from './user-detail/user-detail.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, LoginComponent, RegisterComponent, LivemapComponent],
+  declarations: [AppComponent, NavbarComponent, LoginComponent, RegisterComponent, LivemapComponent, UserDetailComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent]

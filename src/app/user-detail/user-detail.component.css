@@ -1,0 +1,23 @@
+.user-detail-component {
+  padding-left: 7em;
+  padding-right: 6em;
+  margin: 1em;
+}
+
+.user-image {
+  background-color: blueviolet;
+  height: 250px;
+  width: 800px;
+}
+
+.user-info {
+  margin-left: 2em;
+}
+
+.user-name-large {
+  margin-bottom: 1em;
+}
+
+.user-info-field-name {
+  font-weight: bold;
+}
