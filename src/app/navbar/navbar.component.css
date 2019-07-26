@@ -1,0 +1,9 @@
+.navbar-main {
+  color: #000;
+  text-decoration: none;
+  font-size: 1.8em;
+}
+
+.navbar-main:hover {
+  color: #28e;
+}
