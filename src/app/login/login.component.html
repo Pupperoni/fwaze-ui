@@ -1,20 +1,21 @@
-<div class="login-component d-flex justify-content-center ">
-  <form>
-    <div class="form-row">
-      <div class="col-auto">
+<div class="login-component">
+  <div class="login-header shadow row justify-content-center">
+    <h2>Login</h2>
+  </div>
+  <div class="login-form row shadow bg-white justify-content-center">
+    <form>
+      <div class="form-group">
         <label>Username: </label>
         <input type="text" class="form-control" id="name" />
       </div>
-    </div>
-    <div class="form-row align-items-center">
-      <div class="col-auto">
+      <div class="form-group ">
         <label>Password: </label>
         <input type="password" class="form-control" id="email" />
       </div>
-    </div>
-    <div class="register-redirect">
-      <a routerLink="/register">Register here!</a>
-    </div>
-    <button type="submit" class="btn btn-primary">Log in</button>
-  </form>
+      <div class="register-redirect">
+        <a routerLink="/register">Register here!</a>
+      </div>
+      <button type="submit" class="btn btn-primary">Log in</button>
+    </form>
+  </div>
 </div>
