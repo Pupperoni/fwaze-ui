@@ -9,3 +9,11 @@ img {
 agm-map {
   height: 600px;
 }
+
+.map-form {
+  margin: 2em;
+}
+
+.form-group {
+  margin: 1em;
+}
