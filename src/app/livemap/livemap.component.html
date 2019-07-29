@@ -4,11 +4,23 @@
     <div class="map-form form-row d-flex justify-content-center">
       <div class="src form-group col">
         <label>Enter source:</label>
-        <input class="form-control" type="text" id="src" />
+        <input
+          ngx-google-places-autocomplete
+          class="form-control"
+          type="text"
+          id="src"
+          (onAddressChange)="sourceAddressChange($event)"
+        />
       </div>
       <div class="dest form-group col">
         <label>Enter destination:</label>
-        <input class="form-control" type="text" id="dest" />
+        <input
+          ngx-google-places-autocomplete
+          class="form-control"
+          type="text"
+          id="dest"
+          (onAddressChange)="destinationAddressChange($event)"
+        />
       </div>
     </div>
   </form>
@@ -19,9 +31,24 @@
     (mapClick)="onMapClick($event)"
   >
     <agm-marker
+      *ngIf="source"
+      [latitude]="source.lat"
+      [longitude]="source.lng"
+      [label]="source.label"
+      [markerDraggable]="source.draggable"
+    ></agm-marker>
+    <agm-marker
+      *ngIf="destination"
+      [latitude]="destination.lat"
+      [longitude]="destination.lng"
+      [label]="destination.label"
+      [markerDraggable]="destination.draggable"
+    ></agm-marker>
+    <agm-marker
       *ngFor="let marker of markers; let i = index"
       [latitude]="marker.lat"
       [longitude]="marker.lng"
+      [markerDraggable]="destination.draggable"
       (markerClick)="onMarkerClick(i)"
     ></agm-marker
   ></agm-map>
