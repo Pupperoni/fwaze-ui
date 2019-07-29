@@ -10,6 +10,7 @@ import { LivemapComponent } from "./livemap/livemap.component";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
 
 import { AgmCoreModule } from "@agm/core";
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AgmCoreModule } from "@agm/core";
     LoginComponent,
     RegisterComponent,
     LivemapComponent,
-    UserDetailComponent
+    UserDetailComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
