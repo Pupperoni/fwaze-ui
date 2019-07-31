@@ -1,12 +1,12 @@
 .user-detail-component {
-  padding-left: 7em;
-  padding-right: 6em;
-  margin-top: 1em;
+  margin: 12em 0em 0em 0em;
+  min-width: 25em;
 }
 
-/* .user-image-container {
-  background-color: #d3d3d3;
-} */
+.user-image-container {
+  /* background-color: #d3d3d3; */
+  padding: 0em 2em 2em 0em;
+}
 
 .user-image {
   height: 250px;
@@ -15,13 +15,13 @@
   border-color: #9bbab0;
 }
 
-.user-info {
+/* .user-info {
   margin-top: 1em;
-}
+} */
 
-.user-name-large {
+/* .user-name-large {
   margin-bottom: 1em;
-}
+} */
 
 .user-info-field-name {
   font-weight: bold;

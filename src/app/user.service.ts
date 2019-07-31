@@ -21,17 +21,23 @@ export class UserService {
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
+
   constructor(private http: HttpClient) {}
 
   // HTTP methods here
 
-  getUsers(): Observable<UserResponse> {
-    console.log(this.url);
+  getAllUsers(): Observable<UserResponse> {
+    console.log(`Submit GET request to ${this.url}`);
     return this.http.get<UserResponse>(this.url);
   }
 
   registerUser(userData): Observable<any> {
     console.log(`Submit POST request to ${this.url}`);
     return this.http.post(`${this.url}/new`, userData, this.httpOptions);
+  }
+
+  getUser(id: number): Observable<User> {
+    console.log(`Submit GET request to ${this.url}/${id}`);
+    return this.http.get<User>(`${this.url}/${id}`);
   }
 }

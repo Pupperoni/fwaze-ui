@@ -49,10 +49,4 @@ export class RegisterComponent implements OnInit {
       });
     }
   }
-
-  // getAll() {
-  //   this.userService.getUsers().subscribe(res => {
-  //     this.users = res.users;
-  //   });
-  // }
 }
