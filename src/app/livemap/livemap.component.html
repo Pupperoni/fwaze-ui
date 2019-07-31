@@ -48,7 +48,7 @@
       *ngFor="let marker of markers; let i = index"
       [latitude]="marker.lat"
       [longitude]="marker.lng"
-      [markerDraggable]="destination.draggable"
+      [markerDraggable]="marker.draggable"
       (markerClick)="onMarkerClick(i)"
     ></agm-marker
   ></agm-map>
