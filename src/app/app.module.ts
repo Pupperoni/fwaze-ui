@@ -11,6 +11,8 @@ import { UserDetailComponent } from "./user-detail/user-detail.component";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
+import { CookieService } from "ngx-cookie-service";
+
 import { AgmCoreModule } from "@agm/core";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
@@ -36,7 +38,7 @@ import { Config } from "../../config";
     // AgmCoreModule.forRoot({ apiKey: "AIzaSyApVP0g5iCgHHbwoUIdJa4YfZ9WPM6QyE0" })
     AgmCoreModule.forRoot({ apiKey: "AIzaSyCvwX5W1Lv3Ozj5RYl06w3PbaBH8_8XSjA" })
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -2,12 +2,21 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { environment } from "./../environments/environment";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 
 import { User } from "./user";
 
-interface UserResponse {
+interface MiscResponse {
+  msg: string;
+  user: User;
+}
+
+interface UserArrayResponse {
   users: User[];
+}
+
+interface UserResponse {
+  user: User;
 }
 
 @Injectable({
@@ -17,6 +26,7 @@ export class UserService {
   private url = `http://${environment.APIUrl.HOST}:${
     environment.APIUrl.PORT
   }/users`;
+  public currentUser: Observable<User>;
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -26,18 +36,23 @@ export class UserService {
 
   // HTTP methods here
 
-  getAllUsers(): Observable<UserResponse> {
+  getAllUsers(): Observable<UserArrayResponse> {
     console.log(`Submit GET request to ${this.url}`);
-    return this.http.get<UserResponse>(this.url);
+    return this.http.get<UserArrayResponse>(this.url);
   }
 
   registerUser(userData): Observable<any> {
-    console.log(`Submit POST request to ${this.url}`);
+    console.log(`Submit POST request to ${this.url}/new`);
     return this.http.post(`${this.url}/new`, userData, this.httpOptions);
   }
 
-  getUser(id: number): Observable<User> {
+  loginUser(userData): Observable<any> {
+    console.log(`Submit POST request to ${this.url}/login`);
+    return this.http.post(`${this.url}/login`, userData, this.httpOptions);
+  }
+
+  getUser(id: number): Observable<UserResponse> {
     console.log(`Submit GET request to ${this.url}/${id}`);
-    return this.http.get<User>(`${this.url}/${id}`);
+    return this.http.get<UserResponse>(`${this.url}/${id}`);
   }
 }

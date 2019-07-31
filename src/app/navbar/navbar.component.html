@@ -39,8 +39,24 @@
               </div>
             </li> -->
       </ul>
-      <a class="nav-link user-button" routerLink="login">Login</a>
-      <a class="nav-link user-button" routerLink="register">Sign up</a>
+      <!-- If user is logged in, show username -->
+      <a *ngIf="currentUser" class="nav-link user-button" routerLink="detail">
+        {{ currentUser.name }}
+      </a>
+      <a
+        *ngIf="currentUser; else notLoggedIn"
+        class="nav-link user-button"
+        href=""
+        (click)="onLogout()"
+      >
+        Logout
+      </a>
+
+      <!-- Else show login and register buttons -->
+      <ng-template #notLoggedIn>
+        <a class="nav-link user-button" routerLink="login">Login</a>
+        <a class="nav-link user-button" routerLink="register">Sign up</a>
+      </ng-template>
     </div>
   </nav>
 </div>
