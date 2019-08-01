@@ -1,6 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { User } from "../user";
-import { CookieService } from "ngx-cookie-service";
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  Input,
+  SimpleChanges
+} from "@angular/core";
 
 import { ReportService } from "../report.service";
 @Component({
@@ -8,41 +12,24 @@ import { ReportService } from "../report.service";
   templateUrl: "./report-markers.component.html",
   styleUrls: ["./report-markers.component.css"]
 })
-export class ReportMarkersComponent implements OnInit {
-  currentUser: User = undefined;
-
+export class ReportMarkersComponent implements OnInit, OnChanges {
   // markers for reports
+  @Input() toReset;
   report_markers: ReportMarker[] = [];
 
-  // selected option for reports
-  selectedOption: number = 0;
-  constructor(
-    private reportService: ReportService,
-    private cookieService: CookieService
-  ) {}
+  constructor(private reportService: ReportService) {}
 
   ngOnInit() {
-    if (this.cookieService.get("currentUser"))
-      this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-    else this.currentUser = undefined;
-
     this.assignReportMarkers();
   }
 
-  reportSubmit(lat: number, lng: number) {
-    var reportSubmission = {
-      type: this.selectedOption,
-      user_id: this.currentUser.id,
-      latitude: lat,
-      longitude: lng
-    };
-
-    this.reportService.addReport(reportSubmission).subscribe(res => {
-      console.log(res);
-      this.assignReportMarkers();
-      this.selectedOption = 0;
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    this.assignReportMarkers();
   }
+
+  // ngDoCheck() {
+  //   this.assignReportMarkers();
+  // }
 
   // Retrieve all reports and display on the map
   private assignReportMarkers() {

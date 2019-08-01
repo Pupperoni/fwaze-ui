@@ -1,59 +1,7 @@
 <div class="livemap-component">
   <!-- <img src="../../assets/GoogleMapTA.jpg" /> -->
 
-  <!-- Modal for creating ads: Move to another component (Ad Markers) -->
-  <div
-    class="modal fade"
-    id="adModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="adModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="adModalLabel">
-            Create an Advertisement
-          </h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="adForm">
-            <textarea
-              class="form-control"
-              rows="5"
-              name="caption"
-              formControlName="caption"
-            >
-            </textarea>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Close
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-dismiss="modal"
-            (click)="
-              adSubmit(currentMarker.lat, currentMarker.lng, adForm.value)
-            "
-          >
-            Confirm
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-report-modal></app-report-modal>
 
   <!-- Form for source and destination -->
   <form>
@@ -106,34 +54,9 @@
     >
     </agm-marker>
 
-    <app-report-markers></app-report-markers>
+    <app-report-markers [toReset]="reportSubmit"></app-report-markers>
 
-    <!-- Ad markers: Move to another component (Ad Markers) -->
-    <agm-marker
-      *ngFor="let marker of ad_markers; let i = index"
-      [latitude]="marker.lat"
-      [longitude]="marker.lng"
-      [label]="marker.label"
-      [markerDraggable]="false"
-      (markerClick)="onMarkerClick(i)"
-    >
-      <agm-info-window>
-        <div class="container-fluid ad-info">
-          <div class="row">
-            <h6>{{ marker.caption }}</h6>
-          </div>
-          <div class="report-user-info row align-self-left">
-            by
-            <a routerLink="/detail/{{ marker.user_id }}">
-              {{ marker.user_name }}
-            </a>
-          </div>
-          <div class="report-position-info row align-self-left">
-            Located at ({{ marker.lat }},{{ marker.lng }})
-          </div>
-        </div>
-      </agm-info-window>
-    </agm-marker>
+    <app-ad-markers></app-ad-markers>
 
     <!-- Current marker clicked -->
     <agm-marker

@@ -18,6 +18,8 @@ import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import { Config } from "../../config";
 import { ReportMarkersComponent } from './report-markers/report-markers.component';
+import { AdMarkersComponent } from './ad-markers/ad-markers.component';
+import { ReportModalComponent } from './report-modal/report-modal.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { ReportMarkersComponent } from './report-markers/report-markers.componen
     LivemapComponent,
     UserDetailComponent,
     EditProfileComponent,
-    ReportMarkersComponent
+    ReportMarkersComponent,
+    AdMarkersComponent,
+    ReportModalComponent
   ],
   imports: [
     GooglePlaceModule,
