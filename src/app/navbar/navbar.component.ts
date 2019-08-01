@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked } from "@angular/core";
+import { Component, OnInit, AfterViewChecked, OnDestroy } from "@angular/core";
 import { User } from "../user";
 
 import { CookieService } from "ngx-cookie-service";
@@ -14,13 +14,13 @@ export class NavbarComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     if (this.cookieService.get("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-    console.log(this.currentUser);
+    // console.log(this.currentUser);
   }
 
   ngAfterViewChecked() {
     if (this.cookieService.get("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-    console.log(this.currentUser);
+    // console.log(this.currentUser);
   }
 
   onLogout() {

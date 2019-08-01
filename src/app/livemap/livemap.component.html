@@ -1,5 +1,64 @@
 <div class="livemap-component">
   <!-- <img src="../../assets/GoogleMapTA.jpg" /> -->
+
+  <!-- Modal for submitting reports -->
+  <div
+    class="modal fade"
+    id="reportModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="reportModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reportModalLabel">
+            Submit a report
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <select
+            class="form-control"
+            id="report_type"
+            [(ngModel)]="selectedOption"
+          >
+            <option value="0">Traffic Jam</option>
+            <option value="1">Heavy Traffic Jam</option>
+            <option value="2">Police</option>
+            <option value="3">Road Closed</option>
+            <option value="4">Stopped Car</option>
+            <option value="5">Construction</option>
+            <option value="6">Minor Accident</option>
+            <option value="7">Major Accident</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-dismiss="modal"
+            (click)="reportSubmit(currentMarker.lat, currentMarker.lng)"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form for source and destination -->
   <form>
     <div class="map-form form-row d-flex justify-content-center">
       <div class="src form-group col">
@@ -24,32 +83,93 @@
       </div>
     </div>
   </form>
+
+  <!-- Main map component -->
   <agm-map
     [latitude]="lat"
     [longitude]="lng"
     [zoom]="zoom"
     (mapClick)="onMapClick($event)"
   >
+    <!-- Source and destination markers -->
     <agm-marker
       *ngIf="source"
       [latitude]="source.lat"
       [longitude]="source.lng"
       [label]="source.label"
-      [markerDraggable]="source.draggable"
-    ></agm-marker>
+      [markerDraggable]="false"
+    >
+    </agm-marker>
     <agm-marker
       *ngIf="destination"
       [latitude]="destination.lat"
       [longitude]="destination.lng"
       [label]="destination.label"
-      [markerDraggable]="destination.draggable"
-    ></agm-marker>
+      [markerDraggable]="false"
+    >
+    </agm-marker>
+
+    <!-- Report markers -->
     <agm-marker
-      *ngFor="let marker of markers; let i = index"
+      *ngFor="let marker of report_markers; let i = index"
       [latitude]="marker.lat"
       [longitude]="marker.lng"
-      [markerDraggable]="marker.draggable"
+      [label]="marker.label"
+      [markerDraggable]="false"
       (markerClick)="onMarkerClick(i)"
-    ></agm-marker
-  ></agm-map>
+    >
+      <agm-info-window>
+        <div class="container-fluid report-info">
+          <div class="report-type-info row">
+            <h6 *ngIf="marker.type == 0">Traffic Jam</h6>
+            <h6 *ngIf="marker.type == 1">Heavy Traffic Jam</h6>
+            <h6 *ngIf="marker.type == 2">Police</h6>
+            <h6 *ngIf="marker.type == 3">Road Closed</h6>
+            <h6 *ngIf="marker.type == 4">Stopped Car</h6>
+            <h6 *ngIf="marker.type == 5">Construction</h6>
+            <h6 *ngIf="marker.type == 6">Minor Accident</h6>
+            <h6 *ngIf="marker.type == 7">Major Accident</h6>
+          </div>
+          <div class="report-user-info row align-self-left">
+            Reported by
+            {{ marker.user_name }}
+          </div>
+          <div class="report-position-info row align-self-left">
+            Located at ({{ marker.lat }},{{ marker.lng }})
+          </div>
+        </div>
+      </agm-info-window>
+    </agm-marker>
+
+    <!-- Current marker clicked -->
+    <agm-marker
+      *ngIf="currentMarker"
+      [latitude]="currentMarker.lat"
+      [longitude]="currentMarker.lng"
+      [label]="currentMarker.label"
+      [markerDraggable]="false"
+    >
+      <agm-info-window>
+        <div>
+          <strong>Latitude:</strong>
+          <span>{{ currentMarker.lat }}</span>
+        </div>
+        <div>
+          <strong>Longitude:</strong>
+          <span>{{ currentMarker.lng }}</span>
+        </div>
+        <div>
+          <button
+            *ngIf="currentUser"
+            type="button"
+            class="btn btn-danger"
+            data-toggle="modal"
+            data-target="#reportModal"
+          >
+            Report
+          </button>
+        </div>
+      </agm-info-window>
+    </agm-marker>
+  </agm-map>
 </div>
