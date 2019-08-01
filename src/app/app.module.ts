@@ -17,6 +17,7 @@ import { AgmCoreModule } from "@agm/core";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import { Config } from "../../config";
+import { ReportMarkersComponent } from './report-markers/report-markers.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { Config } from "../../config";
     RegisterComponent,
     LivemapComponent,
     UserDetailComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    ReportMarkersComponent
   ],
   imports: [
     GooglePlaceModule,
