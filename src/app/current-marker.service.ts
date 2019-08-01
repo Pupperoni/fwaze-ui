@@ -7,12 +7,16 @@ import { Observable, Subject } from "rxjs";
 export class CurrentMarkerService {
   currentMarker: marker;
   reportSubmit$: Observable<any>;
-  private currentMarkerSubject = new Subject<marker>();
+  adSubmit$: Observable<any>;
+
+  // private currentMarkerSubject = new Subject<marker>();
   private reportSubmitSubject = new Subject<marker>();
+  private adSubmitSubject = new Subject<marker>();
 
   constructor() {
     // this.currentMarker$ = this.currentMarkerSubject.asObservable();
     this.reportSubmit$ = this.reportSubmitSubject.asObservable();
+    this.adSubmit$ = this.adSubmitSubject.asObservable();
   }
 
   // currentMarker(data) {
@@ -31,6 +35,11 @@ export class CurrentMarkerService {
   reportSubmit(data) {
     console.log(data);
     this.reportSubmitSubject.next(data);
+  }
+
+  adSubmit(data) {
+    console.log(data);
+    this.adSubmitSubject.next(data);
   }
 }
 

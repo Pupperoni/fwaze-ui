@@ -7,14 +7,16 @@ import {
 } from "@angular/core";
 
 import { ReportService } from "../report.service";
+
 @Component({
   selector: "app-report-markers",
   templateUrl: "./report-markers.component.html",
   styleUrls: ["./report-markers.component.css"]
 })
 export class ReportMarkersComponent implements OnInit, OnChanges {
-  // markers for reports
   @Input() toReset;
+
+  // markers for reports
   report_markers: ReportMarker[] = [];
 
   constructor(private reportService: ReportService) {}
@@ -26,10 +28,6 @@ export class ReportMarkersComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.assignReportMarkers();
   }
-
-  // ngDoCheck() {
-  //   this.assignReportMarkers();
-  // }
 
   // Retrieve all reports and display on the map
   private assignReportMarkers() {

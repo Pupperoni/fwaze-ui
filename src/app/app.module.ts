@@ -20,6 +20,7 @@ import { Config } from "../../config";
 import { ReportMarkersComponent } from './report-markers/report-markers.component';
 import { AdMarkersComponent } from './ad-markers/ad-markers.component';
 import { ReportModalComponent } from './report-modal/report-modal.component';
+import { AdModalComponent } from './ad-modal/ad-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ReportModalComponent } from './report-modal/report-modal.component';
     EditProfileComponent,
     ReportMarkersComponent,
     AdMarkersComponent,
-    ReportModalComponent
+    ReportModalComponent,
+    AdModalComponent
   ],
   imports: [
     GooglePlaceModule,

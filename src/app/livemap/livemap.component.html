@@ -3,6 +3,8 @@
 
   <app-report-modal></app-report-modal>
 
+  <app-ad-modal></app-ad-modal>
+
   <!-- Form for source and destination -->
   <form>
     <div class="map-form form-row d-flex justify-content-center">
@@ -56,7 +58,7 @@
 
     <app-report-markers [toReset]="reportSubmit"></app-report-markers>
 
-    <app-ad-markers></app-ad-markers>
+    <app-ad-markers [toReset]="adSubmit"></app-ad-markers>
 
     <!-- Current marker clicked -->
     <agm-marker

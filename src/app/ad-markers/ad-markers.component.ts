@@ -1,7 +1,11 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { User } from "../user";
-import { CookieService } from "ngx-cookie-service";
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from "@angular/core";
+
 import { AdvertisementService } from "../advertisement.service";
 
 @Component({
@@ -9,39 +13,20 @@ import { AdvertisementService } from "../advertisement.service";
   templateUrl: "./ad-markers.component.html",
   styleUrls: ["./ad-markers.component.css"]
 })
-export class AdMarkersComponent implements OnInit {
-  currentUser: User = undefined;
+export class AdMarkersComponent implements OnInit, OnChanges {
+  @Input() toReset;
 
   // markers for ads
   ad_markers: adMarker[] = [];
-  adForm: FormGroup;
-  constructor(
-    private advertisementService: AdvertisementService,
-    private cookieService: CookieService
-  ) {}
+
+  constructor(private advertisementService: AdvertisementService) {}
 
   ngOnInit() {
-    if (this.cookieService.get("currentUser"))
-      this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-    else this.currentUser = undefined;
     this.assignAdMarkers();
-    this.adForm = new FormGroup({
-      caption: new FormControl("", [Validators.required])
-    });
   }
 
-  adSubmit(lat: number, lng: number, formData) {
-    var adSubmission = {
-      user_id: this.currentUser.id,
-      caption: formData.caption,
-      latitude: lat,
-      longitude: lng
-    };
-    // console.log(adSubmission);
-    this.advertisementService.addAd(adSubmission).subscribe(res => {
-      console.log(res);
-      this.assignAdMarkers();
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    this.assignAdMarkers();
   }
 
   // Retrieve all ads and display on the map

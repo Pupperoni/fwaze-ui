@@ -24,6 +24,7 @@ export class LivemapComponent implements OnInit {
   // marker when clicking map (for reporting/making ad)
   public currentMarker: marker = undefined;
   public reportSubmit;
+  public adSubmit;
 
   constructor(
     private cookieService: CookieService,
@@ -34,6 +35,9 @@ export class LivemapComponent implements OnInit {
     // });
     this.currentMarkerService.reportSubmit$.subscribe(data => {
       this.reportSubmit = data;
+    });
+    this.currentMarkerService.adSubmit$.subscribe(data => {
+      this.adSubmit = data;
     });
   }
 
