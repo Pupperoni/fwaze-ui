@@ -40,7 +40,11 @@
             </li> -->
       </ul>
       <!-- If user is logged in, show username -->
-      <a *ngIf="currentUser" class="nav-link user-button" routerLink="detail">
+      <a
+        *ngIf="currentUser"
+        class="nav-link user-button"
+        routerLink="/detail/{{ currentUser.id }}"
+      >
         {{ currentUser.name }}
       </a>
       <a

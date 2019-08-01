@@ -55,4 +55,9 @@ export class UserService {
     console.log(`Submit GET request to ${this.url}/${id}`);
     return this.http.get<UserResponse>(`${this.url}/${id}`);
   }
+
+  updateUser(userData): Observable<any> {
+    console.log(`Submit PUT request to ${this.url}/${userData.id}`);
+    return this.http.put(`${this.url}/edit`, userData, this.httpOptions);
+  }
 }

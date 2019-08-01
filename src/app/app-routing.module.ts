@@ -10,9 +10,9 @@ const routes: Routes = [
   { path: "", component: LivemapComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
-  { path: "detail", component: UserDetailComponent },
-  { path: "edit", component: EditProfileComponent }
-  // { path: "detail/:id", component: UserDetailComponent }
+  // { path: "detail", component: UserDetailComponent },
+  { path: "edit", component: EditProfileComponent },
+  { path: "detail/:id", component: UserDetailComponent }
 ];
 
 @NgModule({
