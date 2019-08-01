@@ -26,7 +26,6 @@ export class UserService {
   private url = `http://${environment.APIUrl.HOST}:${
     environment.APIUrl.PORT
   }/users`;
-  public currentUser: Observable<User>;
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })

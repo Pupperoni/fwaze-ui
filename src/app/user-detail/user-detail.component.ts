@@ -22,9 +22,9 @@ export class UserDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getUser();
     if (this.cookieService.get("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-    this.getUser();
   }
 
   getUser() {

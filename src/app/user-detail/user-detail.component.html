@@ -4,35 +4,37 @@
   >
     <img class="user-image" src="../../assets/default-user-profile-image.png" />
   </div>
-  <div
-    *ngIf="user"
-    class="user-info col col-md-9 col-sm-12 col-12 col-lg-3 col-xl-3"
-  >
-    <div class="user-name-large">
-      <h2>{{ user.name }}</h2>
-    </div>
-    <table class="table">
-      <tr>
-        <td class="user-info-field-name">Email</td>
-        <td class="user-info-field-value">{{ user.email }}</td>
-      </tr>
-      <tr>
-        <td class="user-info-field-name">Role</td>
-        <td *ngIf="user.role === 0" class="user-info-field-value">
-          Regular
-        </td>
-        <td *ngIf="user.role === 1" class="user-info-field-value">
-          Advertiser
-        </td>
-      </tr>
-    </table>
 
-    <div *ngIf="user.id == currentUser.id" class="edit-profile">
-      <a routerLink="/edit">
-        <button class="btn btn-secondary">
-          Edit Profile
-        </button>
-      </a>
+  <div class="user-info col col-md-9 col-sm-12 col-12 col-lg-3 col-xl-3">
+    <div *ngIf="user">
+      <div class="user-name-large">
+        <h2>{{ user.name }}</h2>
+      </div>
+      <table class="table">
+        <tr>
+          <td class="user-info-field-name">Email</td>
+          <td class="user-info-field-value">{{ user.email }}</td>
+        </tr>
+        <tr>
+          <td class="user-info-field-name">Role</td>
+          <td *ngIf="user.role === 0" class="user-info-field-value">
+            Regular
+          </td>
+          <td *ngIf="user.role === 1" class="user-info-field-value">
+            Advertiser
+          </td>
+        </tr>
+      </table>
+
+      <span *ngIf="currentUser">
+        <div *ngIf="user.id == currentUser.id" class="edit-profile">
+          <a routerLink="/edit">
+            <button class="btn btn-secondary">
+              Edit Profile
+            </button>
+          </a>
+        </div>
+      </span>
     </div>
   </div>
 </div>
