@@ -33,19 +33,29 @@ export class AdModalComponent implements OnInit {
   }
 
   adSubmit(formData) {
-    this.currentMarker = this.currentMarkerService.getMarker();
+    if (formData.caption == "") {
+      // Can't have empty fields
+      console.log("Empty field found");
+    } else {
+      // All good!
 
-    var adSubmission = {
-      user_id: this.currentUser.id,
-      caption: formData.caption,
-      latitude: this.currentMarker.lat,
-      longitude: this.currentMarker.lng
-    };
-    // console.log(adSubmission);
-    this.advertisementService.addAd(adSubmission).subscribe(res => {
-      console.log(res);
-      this.currentMarkerService.adSubmit(adSubmission);
-    });
+      this.currentMarker = this.currentMarkerService.getMarker();
+
+      var adSubmission = {
+        user_id: this.currentUser.id,
+        caption: formData.caption,
+        latitude: this.currentMarker.lat,
+        longitude: this.currentMarker.lng
+      };
+      // console.log(adSubmission);
+      this.advertisementService.addAd(adSubmission).subscribe(res => {
+        console.log(res);
+        this.currentMarkerService.adSubmit(adSubmission);
+      });
+    }
+  }
+  get caption() {
+    return this.adForm.get("caption");
   }
 }
 

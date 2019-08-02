@@ -33,6 +33,14 @@
             >
             </textarea>
           </form>
+          <div
+            *ngIf="caption.invalid && (caption.dirty || caption.touched)"
+            class="alert alert-danger"
+          >
+            <div *ngIf="caption.errors.required">
+              Caption is required.
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
