@@ -12,6 +12,10 @@ interface ReportArrayResponse {
   reports: Report[];
 }
 
+interface VoteResponse {
+  votes: number;
+}
+
 @Injectable({
   providedIn: "root"
 })
@@ -34,5 +38,16 @@ export class ReportService {
   addReport(report: any) {
     console.log(`Sending POST request to ${this.url}/new`);
     return this.http.post(`${this.url}/new`, report, this.httpOptions);
+  }
+
+  addVote(data) {
+    console.log(`Sending PUT request to ${this.url}/up`);
+    console.log(data);
+    return this.http.put(`${this.url}/up`, data, this.httpOptions);
+  }
+
+  getVoteCount(id): Observable<VoteResponse> {
+    console.log(`Sending GET request to ${this.url}/${id}/votes`);
+    return this.http.get<VoteResponse>(`${this.url}/${id}/votes`);
   }
 }

@@ -6,7 +6,11 @@ import {
   SimpleChanges
 } from "@angular/core";
 
+import { User } from "../user";
+import { CookieService } from "ngx-cookie-service";
+
 import { ReportService } from "../report.service";
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 @Component({
   selector: "app-report-markers",
@@ -15,30 +19,48 @@ import { ReportService } from "../report.service";
 })
 export class ReportMarkersComponent implements OnInit, OnChanges {
   @Input() toReset;
+  currentUser: User = undefined;
 
   // markers for reports
   report_markers: ReportMarker[] = [];
 
-  constructor(private reportService: ReportService) {}
+  constructor(
+    private reportService: ReportService,
+    private cookieService: CookieService
+  ) {}
 
   ngOnInit() {
-    this.assignReportMarkers();
+    this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+    // this.assignReportMarkers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.assignReportMarkers();
   }
 
+  addVote(reportId: number, userId: number) {
+    const data = {
+      report_id: reportId,
+      user_id: userId
+    };
+    this.reportService.addVote(data).subscribe(res => {
+      console.log(res);
+    });
+  }
+
   // Retrieve all reports and display on the map
   private assignReportMarkers() {
+    // TO DO: Get only for the current border
     this.reportService.getAllReports().subscribe(res => {
       res.reports.forEach(report => {
         this.report_markers.push({
+          id: report.id,
           lat: report.position.y,
           lng: report.position.x,
           type: report.type,
           user_id: report.user_id,
           user_name: report.name,
+          vote_count: report.votes,
           label: "R"
         });
       });
@@ -47,10 +69,12 @@ export class ReportMarkersComponent implements OnInit, OnChanges {
 }
 
 interface ReportMarker {
+  id: number;
   lat: number;
   lng: number;
   type: number;
   user_id: number;
   user_name: string;
+  vote_count: number;
   label?: string;
 }

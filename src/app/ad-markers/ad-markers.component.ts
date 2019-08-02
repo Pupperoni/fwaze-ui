@@ -22,7 +22,7 @@ export class AdMarkersComponent implements OnInit, OnChanges {
   constructor(private advertisementService: AdvertisementService) {}
 
   ngOnInit() {
-    this.assignAdMarkers();
+    // this.assignAdMarkers();
   }
 
   ngOnChanges(changes: SimpleChanges) {

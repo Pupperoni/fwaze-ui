@@ -19,6 +19,21 @@
           <h6 *ngIf="marker.type == 6">Minor Accident</h6>
           <h6 *ngIf="marker.type == 7">Major Accident</h6>
         </div>
+
+        <div *ngIf="currentUser; else elseBlock" class="upvote-button">
+          <button class="btn" (click)="addVote(marker.id, currentUser.id)">
+            <i class="fa fa-thumbs-up"></i>
+          </button>
+          <label>{{ marker.vote_count }}</label>
+        </div>
+
+        <ng-template #elseBlock>
+          <div class="upvote-button">
+            <i class="fa fa-thumbs-up"></i>
+            <label>{{ marker.vote_count }}</label>
+          </div>
+        </ng-template>
+
         <div class="report-user-info row align-self-left">
           Reported by &nbsp;
           <strong>

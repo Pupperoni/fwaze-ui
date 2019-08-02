@@ -4,6 +4,7 @@ export class Report {
   position: Position;
   user_id: number;
   name: string;
+  votes: number;
 }
 
 interface Position {
