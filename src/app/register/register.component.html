@@ -17,6 +17,14 @@
             formControlName="name"
           />
         </div>
+        <div
+          *ngIf="name.invalid && (name.dirty || name.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="name.errors.required">
+            Name is required.
+          </div>
+        </div>
         <div class="form-group">
           <label>Email address: </label>
           <input
@@ -27,7 +35,14 @@
             aria-describedby="emailHelp"
           />
         </div>
-
+        <div
+          *ngIf="email.invalid && (email.dirty || email.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="email.errors.required">
+            Email is required.
+          </div>
+        </div>
         <div class="form-group">
           <label>Password: </label>
           <input
@@ -37,7 +52,14 @@
             formControlName="password"
           />
         </div>
-
+        <div
+          *ngIf="password.invalid && (password.dirty || password.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="password.errors.required">
+            Password is required.
+          </div>
+        </div>
         <div class="form-group">
           <label>Confirm password: </label>
           <input
@@ -46,6 +68,17 @@
             id="confirm-password"
             formControlName="confirm_password"
           />
+        </div>
+        <div
+          *ngIf="
+            confirm_password.invalid &&
+            (confirm_password.dirty || confirm_password.touched)
+          "
+          class="alert alert-danger"
+        >
+          <div *ngIf="confirm_password.errors.required">
+            Password confirmation is required.
+          </div>
         </div>
         <div class="login-redirect">
           <a routerLink="/login">Already a member? Login here!</a>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
+import { FormGroup, Validators, FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { UserService } from "../user.service";
 @Component({
@@ -8,17 +8,13 @@ import { UserService } from "../user.service";
   styleUrls: ["./register.component.css"]
 })
 export class RegisterComponent implements OnInit {
-  registerForm;
-  constructor(
-    private userService: UserService,
-    private formBuilder: FormBuilder,
-    private router: Router
-  ) {
-    this.registerForm = this.formBuilder.group({
-      name: "",
-      email: "",
-      password: "",
-      confirm_password: ""
+  registerForm: FormGroup;
+  constructor(private userService: UserService, private router: Router) {
+    this.registerForm = new FormGroup({
+      name: new FormControl("", [Validators.required]),
+      email: new FormControl("", [Validators.required]),
+      password: new FormControl("", [Validators.required]),
+      confirm_password: new FormControl("", [Validators.required])
     });
   }
 
@@ -48,5 +44,18 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(["/login"]);
       });
     }
+  }
+
+  get name() {
+    return this.registerForm.get("name");
+  }
+  get email() {
+    return this.registerForm.get("email");
+  }
+  get password() {
+    return this.registerForm.get("password");
+  }
+  get confirm_password() {
+    return this.registerForm.get("confirm_password");
   }
 }

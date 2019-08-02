@@ -20,10 +20,12 @@
           <h6 *ngIf="marker.type == 7">Major Accident</h6>
         </div>
         <div class="report-user-info row align-self-left">
-          Reported by
-          <a routerLink="/detail/{{ marker.user_id }}">
-            {{ marker.user_name }}
-          </a>
+          Reported by &nbsp;
+          <strong>
+            <a routerLink="/detail/{{ marker.user_id }}">
+              {{ marker.user_name }}
+            </a>
+          </strong>
         </div>
         <div class="report-position-info row align-self-left">
           Located at ({{ marker.lat }},{{ marker.lng }})

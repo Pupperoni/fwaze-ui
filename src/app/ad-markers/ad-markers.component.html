@@ -13,10 +13,12 @@
           <h6>{{ marker.caption }}</h6>
         </div>
         <div class="report-user-info row align-self-left">
-          by
-          <a routerLink="/detail/{{ marker.user_id }}">
-            {{ marker.user_name }}
-          </a>
+          by &nbsp;
+          <strong>
+            <a routerLink="/detail/{{ marker.user_id }}">
+              {{ marker.user_name }}
+            </a>
+          </strong>
         </div>
         <div class="report-position-info row align-self-left">
           Located at ({{ marker.lat }},{{ marker.lng }})

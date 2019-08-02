@@ -25,6 +25,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  get name() {
+    return this.loginForm.get("name");
+  }
+  get password() {
+    return this.loginForm.get("password");
+  }
+
   onSubmit(userData) {
     // Process form here
     console.log("Login form submitted");
