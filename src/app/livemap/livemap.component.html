@@ -5,7 +5,7 @@
 
   <app-ad-modal></app-ad-modal>
 
-  <!-- Form for source and destination -->
+  <!-- Form for source and destination: Move to another component -->
   <form>
     <div class="map-form form-row d-flex justify-content-center">
       <div class="src form-group col">
@@ -59,6 +59,12 @@
     <app-report-markers [toReset]="reportSubmit"></app-report-markers>
 
     <app-ad-markers [toReset]="adSubmit"></app-ad-markers>
+
+    <agm-direction
+      *ngIf="source && destination"
+      [origin]="source"
+      [destination]="destination"
+    ></agm-direction>
 
     <!-- Current marker clicked -->
     <agm-marker

@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 
-import { Router, ActivatedRoute } from "@angular/router";
-import { Location } from "@angular/common";
+import { Router } from "@angular/router";
 import { UserService } from "../user.service";
 import { User } from "../user";
 
@@ -16,10 +15,10 @@ import { CookieService } from "ngx-cookie-service";
 export class EditProfileComponent implements OnInit {
   currentUser: User = undefined;
   profileForm: FormGroup;
+
+  avatarUpload = null;
   constructor(
     private userService: UserService,
-    private route: ActivatedRoute,
-    private location: Location,
     private cookieService: CookieService,
     private router: Router
   ) {}
@@ -40,9 +39,16 @@ export class EditProfileComponent implements OnInit {
     });
   }
 
+  handleFileInput(files: FileList) {
+    this.avatarUpload = files.item(0);
+    console.log(this.avatarUpload);
+  }
+
   onSubmit(formData) {
     formData.role = parseInt(formData.role);
     formData.id = this.currentUser.id;
+
+    formData.avatar = this.avatarUpload;
     console.log(formData);
 
     this.userService.updateUser(formData).subscribe(res => {

@@ -14,13 +14,16 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CookieService } from "ngx-cookie-service";
 
 import { AgmCoreModule } from "@agm/core";
+import { AgmDirectionModule } from "agm-direction";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import { Config } from "../../config";
-import { ReportMarkersComponent } from './report-markers/report-markers.component';
-import { AdMarkersComponent } from './ad-markers/ad-markers.component';
-import { ReportModalComponent } from './report-modal/report-modal.component';
-import { AdModalComponent } from './ad-modal/ad-modal.component';
+import { ReportMarkersComponent } from "./report-markers/report-markers.component";
+import { AdMarkersComponent } from "./ad-markers/ad-markers.component";
+import { ReportModalComponent } from "./report-modal/report-modal.component";
+import { AdModalComponent } from "./ad-modal/ad-modal.component";
+
+import { Secret } from "./config";
 
 @NgModule({
   declarations: [
@@ -43,8 +46,10 @@ import { AdModalComponent } from './ad-modal/ad-modal.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    // AgmCoreModule.forRoot({ apiKey: "AIzaSyApVP0g5iCgHHbwoUIdJa4YfZ9WPM6QyE0" })
-    AgmCoreModule.forRoot({ apiKey: "AIzaSyCvwX5W1Lv3Ozj5RYl06w3PbaBH8_8XSjA" })
+    AgmCoreModule.forRoot({
+      apiKey: "secret-api-key"
+    }),
+    AgmDirectionModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

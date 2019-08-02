@@ -35,7 +35,12 @@
 
         <!-- <div class="form-group">
           <label>Upload display picture:</label>
-          <input type="file" class="form-control-file" id="avatar" />
+          <input
+            type="file"
+            class="form-control-file"
+            id="avatar"
+            (change)="handleFileInput($event.target.files)"
+          />
         </div> -->
         <div class="role-radios">
           <div class="role-radio-regular">
