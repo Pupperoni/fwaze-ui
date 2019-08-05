@@ -30,11 +30,14 @@ export class ReportMarkersComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+    if (this.cookieService.get("currentUser"))
+      this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     // this.assignReportMarkers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (this.cookieService.get("currentUser"))
+      this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     this.assignReportMarkers();
   }
 
@@ -71,35 +74,49 @@ export class ReportMarkersComponent implements OnInit, OnChanges {
     // TO DO: Get only for the current border
     this.reportService.getAllReports().subscribe(res => {
       res.reports.forEach(report => {
-        this.reportService
-          .getUserVotePair(report.id, this.currentUser.id)
-          .subscribe(res2 => {
-            if (res2) {
-              this.report_markers.push({
-                id: report.id,
-                lat: report.position.y,
-                lng: report.position.x,
-                type: report.type,
-                user_id: report.user_id,
-                user_name: report.name,
-                vote_count: report.votes,
-                cur_user_voted: true,
-                label: "R"
-              });
-            } else {
-              this.report_markers.push({
-                id: report.id,
-                lat: report.position.y,
-                lng: report.position.x,
-                type: report.type,
-                user_id: report.user_id,
-                user_name: report.name,
-                vote_count: report.votes,
-                cur_user_voted: false,
-                label: "R"
-              });
-            }
+        if (this.currentUser) {
+          this.reportService
+            .getUserVotePair(report.id, this.currentUser.id)
+            .subscribe(res2 => {
+              if (res2) {
+                this.report_markers.push({
+                  id: report.id,
+                  lat: report.position.y,
+                  lng: report.position.x,
+                  type: report.type,
+                  user_id: report.user_id,
+                  user_name: report.name,
+                  vote_count: report.votes,
+                  cur_user_voted: true,
+                  label: "R"
+                });
+              } else {
+                this.report_markers.push({
+                  id: report.id,
+                  lat: report.position.y,
+                  lng: report.position.x,
+                  type: report.type,
+                  user_id: report.user_id,
+                  user_name: report.name,
+                  vote_count: report.votes,
+                  cur_user_voted: false,
+                  label: "R"
+                });
+              }
+            });
+        } else {
+          this.report_markers.push({
+            id: report.id,
+            lat: report.position.y,
+            lng: report.position.x,
+            type: report.type,
+            user_id: report.user_id,
+            user_name: report.name,
+            vote_count: report.votes,
+            cur_user_voted: true,
+            label: "R"
           });
+        }
       });
     });
   }
