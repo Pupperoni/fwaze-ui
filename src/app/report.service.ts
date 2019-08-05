@@ -16,6 +16,11 @@ interface VoteResponse {
   votes: number;
 }
 
+interface VoterPair {
+  report: number;
+  user: number;
+}
+
 @Injectable({
   providedIn: "root"
 })
@@ -44,6 +49,19 @@ export class ReportService {
     console.log(`Sending PUT request to ${this.url}/up`);
     console.log(data);
     return this.http.put(`${this.url}/up`, data, this.httpOptions);
+  }
+
+  deleteVote(data) {
+    console.log(`Sending PUT request to ${this.url}/down`);
+    console.log(data);
+    return this.http.put(`${this.url}/down`, data, this.httpOptions);
+  }
+
+  getUserVotePair(reportId, userId): Observable<VoterPair> {
+    console.log(
+      `Sending GET request to ${this.url}/${reportId}/voted/${userId}`
+    );
+    return this.http.get<VoterPair>(`${this.url}/${reportId}/voted/${userId}`);
   }
 
   getVoteCount(id): Observable<VoteResponse> {

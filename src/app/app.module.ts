@@ -12,18 +12,19 @@ import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { CookieService } from "ngx-cookie-service";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
 import { AgmCoreModule } from "@agm/core";
 import { AgmDirectionModule } from "agm-direction";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
-import { Config } from "../../config";
+
 import { ReportMarkersComponent } from "./report-markers/report-markers.component";
 import { AdMarkersComponent } from "./ad-markers/ad-markers.component";
 import { ReportModalComponent } from "./report-modal/report-modal.component";
 import { AdModalComponent } from "./ad-modal/ad-modal.component";
-
-import { Secret } from "./config";
 
 @NgModule({
   declarations: [
@@ -47,11 +48,16 @@ import { Secret } from "./config";
     FormsModule,
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
-      apiKey: "secret-api-key"
+      apiKey: "AIzaSyCvwX5W1Lv3Ozj5RYl06w3PbaBH8_8XSjA"
     }),
-    AgmDirectionModule
+    AgmDirectionModule,
+    FontAwesomeModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    library.add(faThumbsUp);
+  }
+}

@@ -60,6 +60,11 @@ export class LivemapComponent implements OnInit {
     this.currentMarker = this.currentMarkerService.getMarker();
   }
 
+  toggleInfoWindow(cwindow) {
+    if (cwindow != null) cwindow.close();
+    else cwindow.open();
+  }
+
   sourceAddressChange($event) {
     this.source = {
       lat: $event.geometry.location.lat(),

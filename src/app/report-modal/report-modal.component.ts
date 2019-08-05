@@ -11,6 +11,7 @@ import { ReportService } from "../report.service";
   styleUrls: ["./report-modal.component.css"]
 })
 export class ReportModalComponent implements OnInit {
+  @Input() window;
   currentUser: User = undefined;
   currentMarker: marker = undefined;
 
@@ -28,7 +29,7 @@ export class ReportModalComponent implements OnInit {
     else this.currentUser = undefined;
   }
 
-  reportSubmit() {
+  reportSubmit(window) {
     this.currentMarker = this.currentMarkerService.getMarker();
 
     var reportSubmission = {
@@ -42,6 +43,7 @@ export class ReportModalComponent implements OnInit {
       console.log(res);
       this.selectedOption = 0;
       this.currentMarkerService.reportSubmit(reportSubmission);
+      window.close();
     });
   }
 }

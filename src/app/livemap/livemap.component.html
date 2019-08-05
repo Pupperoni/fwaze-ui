@@ -1,10 +1,6 @@
 <div class="livemap-component">
   <!-- <img src="../../assets/GoogleMapTA.jpg" /> -->
 
-  <app-report-modal></app-report-modal>
-
-  <app-ad-modal></app-ad-modal>
-
   <!-- Form for source and destination: Move to another component -->
   <form>
     <div class="map-form form-row d-flex justify-content-center">
@@ -74,7 +70,7 @@
       [label]="currentMarker.label"
       [markerDraggable]="false"
     >
-      <agm-info-window>
+      <agm-info-window #cwindow>
         <div>
           <strong>Latitude:</strong>
           <span>{{ currentMarker.lat }}</span>
@@ -91,6 +87,7 @@
             class="btn btn-primary"
             data-toggle="modal"
             data-target="#adModal"
+            (click)="toggleInfoWindow(cwindow)"
           >
             Advertise
           </button>
@@ -100,6 +97,7 @@
             class="btn btn-danger"
             data-toggle="modal"
             data-target="#reportModal"
+            (click)="toggleInfoWindow(cwindow)"
           >
             Report
           </button>
@@ -107,4 +105,8 @@
       </agm-info-window>
     </agm-marker>
   </agm-map>
+
+  <app-report-modal></app-report-modal>
+
+  <app-ad-modal></app-ad-modal>
 </div>

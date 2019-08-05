@@ -38,13 +38,31 @@ export class ReportMarkersComponent implements OnInit, OnChanges {
     this.assignReportMarkers();
   }
 
-  addVote(reportId: number, userId: number) {
+  addVote(reportId: number, userId: number, iwindow) {
     const data = {
       report_id: reportId,
       user_id: userId
     };
     this.reportService.addVote(data).subscribe(res => {
       console.log(res);
+      iwindow.close();
+      // something changed - reset all :(
+      this.assignReportMarkers();
+      // iwindow.open();
+    });
+  }
+
+  deleteVote(reportId: number, userId: number, iwindow) {
+    const data = {
+      report_id: reportId,
+      user_id: userId
+    };
+    this.reportService.deleteVote(data).subscribe(res => {
+      console.log(res);
+      iwindow.close();
+      // something changed - reset all :(
+      this.assignReportMarkers();
+      // iwindow.open();
     });
   }
 
@@ -53,16 +71,35 @@ export class ReportMarkersComponent implements OnInit, OnChanges {
     // TO DO: Get only for the current border
     this.reportService.getAllReports().subscribe(res => {
       res.reports.forEach(report => {
-        this.report_markers.push({
-          id: report.id,
-          lat: report.position.y,
-          lng: report.position.x,
-          type: report.type,
-          user_id: report.user_id,
-          user_name: report.name,
-          vote_count: report.votes,
-          label: "R"
-        });
+        this.reportService
+          .getUserVotePair(report.id, this.currentUser.id)
+          .subscribe(res2 => {
+            if (res2) {
+              this.report_markers.push({
+                id: report.id,
+                lat: report.position.y,
+                lng: report.position.x,
+                type: report.type,
+                user_id: report.user_id,
+                user_name: report.name,
+                vote_count: report.votes,
+                cur_user_voted: true,
+                label: "R"
+              });
+            } else {
+              this.report_markers.push({
+                id: report.id,
+                lat: report.position.y,
+                lng: report.position.x,
+                type: report.type,
+                user_id: report.user_id,
+                user_name: report.name,
+                vote_count: report.votes,
+                cur_user_voted: false,
+                label: "R"
+              });
+            }
+          });
       });
     });
   }
@@ -76,5 +113,6 @@ interface ReportMarker {
   user_id: number;
   user_name: string;
   vote_count: number;
+  cur_user_voted: boolean;
   label?: string;
 }

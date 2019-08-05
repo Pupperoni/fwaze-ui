@@ -7,7 +7,7 @@
     [label]="marker.label"
     [markerDraggable]="false"
   >
-    <agm-info-window>
+    <agm-info-window #iwindow>
       <div class="container-fluid report-info">
         <div class="report-type-info row">
           <h6 *ngIf="marker.type == 0">Traffic Jam</h6>
@@ -21,8 +21,25 @@
         </div>
 
         <div *ngIf="currentUser; else elseBlock" class="upvote-button">
-          <button class="btn" (click)="addVote(marker.id, currentUser.id)">
-            <i class="fa fa-thumbs-up"></i>
+          <!-- current user hasnt upvoted - give him a chance to do so -->
+          <button
+            *ngIf="!marker.cur_user_voted"
+            class="btn"
+            (click)="addVote(marker.id, currentUser.id, iwindow)"
+          >
+            <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
+          </button>
+
+          <!-- current user has upvoted - clicking this will revoke his upvote -->
+          <button
+            *ngIf="marker.cur_user_voted"
+            class="btn"
+            (click)="deleteVote(marker.id, currentUser.id, iwindow)"
+          >
+            <fa-icon
+              [icon]="['fa', 'thumbs-up']"
+              [styles]="{ color: 'blue' }"
+            ></fa-icon>
           </button>
           <label>{{ marker.vote_count }}</label>
         </div>
