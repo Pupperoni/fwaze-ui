@@ -52,7 +52,13 @@
     >
     </agm-marker>
 
-    <app-report-markers [toReset]="reportSubmit"></app-report-markers>
+    <!-- Report markers -->
+    <div
+      *ngFor="let marker of report_markers; let i = index"
+      class="report-markers-component"
+    >
+      <app-report-markers [marker]="marker"></app-report-markers>
+    </div>
 
     <app-ad-markers [toReset]="adSubmit"></app-ad-markers>
 

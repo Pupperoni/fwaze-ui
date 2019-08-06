@@ -8,21 +8,22 @@ export class CurrentMarkerService {
   currentMarker: marker;
   reportSubmit$: Observable<any>;
   adSubmit$: Observable<any>;
+  voteIncr$: Observable<any>;
+  voteDecr$: Observable<any>;
 
   // private currentMarkerSubject = new Subject<marker>();
   private reportSubmitSubject = new Subject<marker>();
   private adSubmitSubject = new Subject<marker>();
+  private voteIncrSubject = new Subject<marker>();
+  private voteDecrSubject = new Subject<marker>();
 
   constructor() {
     // this.currentMarker$ = this.currentMarkerSubject.asObservable();
     this.reportSubmit$ = this.reportSubmitSubject.asObservable();
     this.adSubmit$ = this.adSubmitSubject.asObservable();
+    this.voteIncr$ = this.voteIncrSubject.asObservable();
+    this.voteDecr$ = this.voteDecrSubject.asObservable();
   }
-
-  // currentMarker(data) {
-  //   console.log(data);
-  //   this.currentMarkerSubject.next(data);
-  // }
 
   getMarker() {
     return this.currentMarker;
@@ -40,6 +41,16 @@ export class CurrentMarkerService {
   adSubmit(data) {
     console.log(data);
     this.adSubmitSubject.next(data);
+  }
+
+  voteIncr(data) {
+    console.log(data);
+    this.voteIncrSubject.next(data);
+  }
+
+  voteDecr(data) {
+    console.log(data);
+    this.voteDecrSubject.next(data);
   }
 }
 

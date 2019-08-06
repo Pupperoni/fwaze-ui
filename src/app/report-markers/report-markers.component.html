@@ -1,68 +1,64 @@
-<div class="report-markers-component">
-  <!-- Report markers -->
-  <agm-marker
-    *ngFor="let marker of report_markers; let i = index"
-    [latitude]="marker.lat"
-    [longitude]="marker.lng"
-    [label]="marker.label"
-    [markerDraggable]="false"
-  >
-    <agm-info-window #iwindow>
-      <div class="container-fluid report-info">
-        <div class="report-type-info row">
-          <h6 *ngIf="marker.type == 0">Traffic Jam</h6>
-          <h6 *ngIf="marker.type == 1">Heavy Traffic Jam</h6>
-          <h6 *ngIf="marker.type == 2">Police</h6>
-          <h6 *ngIf="marker.type == 3">Road Closed</h6>
-          <h6 *ngIf="marker.type == 4">Stopped Car</h6>
-          <h6 *ngIf="marker.type == 5">Construction</h6>
-          <h6 *ngIf="marker.type == 6">Minor Accident</h6>
-          <h6 *ngIf="marker.type == 7">Major Accident</h6>
-        </div>
+<agm-marker
+  [latitude]="marker.lat"
+  [longitude]="marker.lng"
+  [label]="marker.label"
+  [markerDraggable]="false"
+>
+  <agm-info-window #iwindow>
+    <div class="container-fluid report-info">
+      <div class="report-type-info row">
+        <h6 *ngIf="marker.type == 0">Traffic Jam</h6>
+        <h6 *ngIf="marker.type == 1">Heavy Traffic Jam</h6>
+        <h6 *ngIf="marker.type == 2">Police</h6>
+        <h6 *ngIf="marker.type == 3">Road Closed</h6>
+        <h6 *ngIf="marker.type == 4">Stopped Car</h6>
+        <h6 *ngIf="marker.type == 5">Construction</h6>
+        <h6 *ngIf="marker.type == 6">Minor Accident</h6>
+        <h6 *ngIf="marker.type == 7">Major Accident</h6>
+      </div>
 
-        <div *ngIf="currentUser; else elseBlock" class="upvote-button">
-          <!-- current user hasnt upvoted - give him a chance to do so -->
-          <button
-            *ngIf="!marker.cur_user_voted"
-            class="btn"
-            (click)="addVote(marker.id, currentUser.id, iwindow)"
-          >
-            <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
-          </button>
+      <div *ngIf="currentUser; else elseBlock" class="upvote-button">
+        <!-- current user hasnt upvoted - give him a chance to do so -->
+        <button
+          *ngIf="!marker.cur_user_voted"
+          class="btn"
+          (click)="addVote(marker.id, currentUser.id, iwindow)"
+        >
+          <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
+        </button>
 
-          <!-- current user has upvoted - clicking this will revoke his upvote -->
-          <button
-            *ngIf="marker.cur_user_voted"
-            class="btn"
-            (click)="deleteVote(marker.id, currentUser.id, iwindow)"
-          >
-            <fa-icon
-              [icon]="['fa', 'thumbs-up']"
-              [styles]="{ color: 'blue' }"
-            ></fa-icon>
-          </button>
+        <!-- current user has upvoted - clicking this will revoke his upvote -->
+        <button
+          *ngIf="marker.cur_user_voted"
+          class="btn"
+          (click)="deleteVote(marker.id, currentUser.id, iwindow)"
+        >
+          <fa-icon
+            [icon]="['fa', 'thumbs-up']"
+            [styles]="{ color: 'blue' }"
+          ></fa-icon>
+        </button>
+        <label>{{ marker.vote_count }}</label>
+      </div>
+
+      <ng-template #elseBlock>
+        <div class="upvote-button">
+          <i class="fa fa-thumbs-up"></i>
           <label>{{ marker.vote_count }}</label>
         </div>
+      </ng-template>
 
-        <ng-template #elseBlock>
-          <div class="upvote-button">
-            <i class="fa fa-thumbs-up"></i>
-            <label>{{ marker.vote_count }}</label>
-          </div>
-        </ng-template>
-
-        <div class="report-user-info row align-self-left">
-          Reported by &nbsp;
-          <strong>
-            <a routerLink="/detail/{{ marker.user_id }}">
-              {{ marker.user_name }}
-            </a>
-          </strong>
-        </div>
-        <div class="report-position-info row align-self-left">
-          Located at ({{ marker.lat }},{{ marker.lng }})
-        </div>
+      <div class="report-user-info row align-self-left">
+        Reported by &nbsp;
+        <strong>
+          <a routerLink="/detail/{{ marker.user_id }}">
+            {{ marker.user_name }}
+          </a>
+        </strong>
       </div>
-    </agm-info-window>
-  </agm-marker>
-</div>
+      <div class="report-position-info row align-self-left">
+        Located at ({{ marker.lat }},{{ marker.lng }})
+      </div>
+    </div>
+  </agm-info-window>
+</agm-marker>
