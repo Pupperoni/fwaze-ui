@@ -4,7 +4,7 @@ export class Report {
   position: Position;
   latitude: number;
   longitude: number;
-  user_id: number;
+  userId: number;
   name: string;
   votes: number;
 }

@@ -1,7 +1,7 @@
 export class Advertisement {
   id: string;
   caption: string;
-  user_id: number;
+  userId: number;
   name: string;
   position: Position;
 }

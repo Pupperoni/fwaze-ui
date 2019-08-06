@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
 
@@ -33,15 +33,14 @@ export class ReportModalComponent implements OnInit {
 
     var reportSubmission = {
       type: this.selectedOption,
-      user_id: this.currentUser.id,
+      userId: this.currentUser.id,
       latitude: this.currentMarker.lat,
       longitude: this.currentMarker.lng
     };
 
-    this.reportService.addReport(reportSubmission).subscribe(res => {
-      console.log(res);
+    this.reportService.addReport(reportSubmission).subscribe((res: any) => {
       this.selectedOption = 0;
-      this.currentMarkerService.reportSubmit(reportSubmission);
+      this.currentMarkerService.reportSubmit(res.data);
     });
   }
 }

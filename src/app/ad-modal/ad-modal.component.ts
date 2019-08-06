@@ -42,7 +42,7 @@ export class AdModalComponent implements OnInit {
       this.currentMarker = this.currentMarkerService.getMarker();
 
       var adSubmission = {
-        user_id: this.currentUser.id,
+        userId: this.currentUser.id,
         caption: formData.caption,
         latitude: this.currentMarker.lat,
         longitude: this.currentMarker.lng

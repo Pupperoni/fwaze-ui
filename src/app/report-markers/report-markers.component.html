@@ -20,7 +20,7 @@
       <div *ngIf="currentUser; else elseBlock" class="upvote-button">
         <!-- current user hasnt upvoted - give him a chance to do so -->
         <button
-          *ngIf="!marker.cur_user_voted"
+          *ngIf="!marker.curUserVoted"
           class="btn"
           (click)="addVote(marker.id, currentUser.id, iwindow)"
         >
@@ -29,7 +29,7 @@
 
         <!-- current user has upvoted - clicking this will revoke his upvote -->
         <button
-          *ngIf="marker.cur_user_voted"
+          *ngIf="marker.curUserVoted"
           class="btn"
           (click)="deleteVote(marker.id, currentUser.id, iwindow)"
         >
@@ -38,21 +38,21 @@
             [styles]="{ color: 'blue' }"
           ></fa-icon>
         </button>
-        <label>{{ marker.vote_count }}</label>
+        <label>{{ marker.voteCount }}</label>
       </div>
 
       <ng-template #elseBlock>
         <div class="upvote-button">
           <i class="fa fa-thumbs-up"></i>
-          <label>{{ marker.vote_count }}</label>
+          <label>{{ marker.voteCount }}</label>
         </div>
       </ng-template>
 
       <div class="report-user-info row align-self-left">
         Reported by &nbsp;
         <strong>
-          <a routerLink="/detail/{{ marker.user_id }}">
-            {{ marker.user_name }}
+          <a routerLink="/detail/{{ marker.userId }}">
+            {{ marker.userName }}
           </a>
         </strong>
       </div>

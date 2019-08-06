@@ -30,24 +30,24 @@ export class ReportMarkersComponent implements OnInit {
   addVote(reportId: number, userId: number, iwindow) {
     console.log(this.index);
     const data = {
-      report_id: reportId,
-      user_id: userId
+      reportId: reportId,
+      userId: userId
     };
     this.reportService.addVote(data).subscribe(res => {
       console.log(res);
-      iwindow.close();
+      // iwindow.close();
       this.currentMarkerService.voteIncr(this.index);
     });
   }
 
   deleteVote(reportId: number, userId: number, iwindow) {
     const data = {
-      report_id: reportId,
-      user_id: userId
+      reportId: reportId,
+      userId: userId
     };
     this.reportService.deleteVote(data).subscribe(res => {
       console.log(res);
-      iwindow.close();
+      // iwindow.close();
       this.currentMarkerService.voteDecr(this.index);
     });
   }

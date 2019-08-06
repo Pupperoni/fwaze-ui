@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnChanges, SimpleChanges } from "@angular/core";
 
 import { MouseEvent } from "@agm/core";
 import { User } from "../user";
@@ -12,7 +12,7 @@ import { CurrentMarkerService } from "../current-marker.service";
   templateUrl: "./livemap.component.html",
   styleUrls: ["./livemap.component.css"]
 })
-export class LivemapComponent implements OnInit {
+export class LivemapComponent implements OnInit, OnChanges {
   currentUser: User = undefined;
 
   // center of BGC
@@ -31,10 +31,10 @@ export class LivemapComponent implements OnInit {
   public voteDecr;
 
   // marker for reports
-  report_markers: ReportMarker[] = [];
+  reportMarkers: ReportMarker[] = [];
 
   // markers for ads
-  ad_markers: adMarker[] = [];
+  adMarkers: AdMarker[] = [];
 
   constructor(
     private cookieService: CookieService,
@@ -44,22 +44,29 @@ export class LivemapComponent implements OnInit {
   ) {
     this.currentMarkerService.reportSubmit$.subscribe(data => {
       this.reportSubmit = data;
-      this.assignReportMarkers();
+      console.log(data);
+      data.votes = 0;
+      this.reportService.getUserVotePair(data.id, this.currentUser.id);
+      this.reportMarkers.push({
+        id: data.id,
+        lat: data.latitude,
+        lng: data.longitude,
+        type: data.type,
+        label: "R"
+      });
     });
-    this.currentMarkerService.adSubmit$.subscribe(data => {
-      this.adSubmit = data;
-      this.assignAdMarkers();
-    });
-    this.currentMarkerService.voteIncr$.subscribe(data => {
-      this.voteIncr = data;
-      // this.assignReportMarkers();
-      this.updateReportMarker(data);
-    });
-    this.currentMarkerService.voteDecr$.subscribe(data => {
-      this.voteDecr = data;
-      // this.assignReportMarkers();
-      this.updateReportMarker(data);
-    });
+    // this.currentMarkerService.adSubmit$.subscribe(data => {
+    //   this.adSubmit = data;
+    //   this.assignAdMarkers();
+    // });
+    // this.currentMarkerService.voteIncr$.subscribe(data => {
+    //   this.voteIncr = data;
+    //   this.updateReportMarker(data);
+    // });
+    // this.currentMarkerService.voteDecr$.subscribe(data => {
+    //   this.voteDecr = data;
+    //   this.updateReportMarker(data);
+    // });
   }
 
   ngOnInit() {
@@ -70,6 +77,8 @@ export class LivemapComponent implements OnInit {
     this.assignReportMarkers();
     this.assignAdMarkers();
   }
+
+  ngOnChanges(change: SimpleChanges) {}
 
   onMapClick($event: MouseEvent) {
     console.log("map clicked");
@@ -108,67 +117,51 @@ export class LivemapComponent implements OnInit {
     this.lng = this.destination.lng;
   }
 
-  addReportToMarkers(report, cur_user_voted) {
-    this.report_markers.push({
+  addReportToMarkers(report, curUserVoted) {
+    this.reportMarkers.push({
       id: report.id,
       lat: report.position.y || report.latitude,
       lng: report.position.x || report.longitude,
       type: report.type,
-      user_id: report.user_id,
-      user_name: report.name,
-      vote_count: report.votes,
-      cur_user_voted: cur_user_voted ? true : false,
       label: "R"
     });
   }
 
   private updateReportMarker(index: number) {
-    var update_report_id = this.report_markers.splice(index, 1)[0].id;
+    var updateReportId = this.reportMarkers.splice(index, 1)[0].id;
 
-    this.reportService.getReportById(update_report_id).subscribe(res => {
+    this.reportService.getReportById(updateReportId).subscribe(res => {
       console.log(res);
 
       if (this.currentUser) {
         this.reportService
-          .getUserVotePair(update_report_id, this.currentUser.id)
+          .getUserVotePair(updateReportId, this.currentUser.id)
           .subscribe(res2 => {
             console.log(res2);
             if (res2) {
-              this.report_markers.push({
+              this.reportMarkers.push({
                 id: res.report.id,
                 lat: res.report.latitude,
                 lng: res.report.longitude,
                 type: res.report.type,
-                user_id: res.report.user_id,
-                user_name: res.report.name,
-                vote_count: res.report.votes,
-                cur_user_voted: true,
                 label: "R"
               });
             } else {
-              this.report_markers.push({
+              this.reportMarkers.push({
                 id: res.report.id,
                 lat: res.report.latitude,
                 lng: res.report.longitude,
                 type: res.report.type,
-                user_id: res.report.user_id,
-                user_name: res.report.name,
-                vote_count: res.report.votes,
-                cur_user_voted: false,
                 label: "R"
               });
             }
           });
       } else {
-        this.report_markers.push({
+        this.reportMarkers.push({
           id: res.report.id,
           lat: res.report.latitude,
           lng: res.report.longitude,
           type: res.report.type,
-          user_id: res.report.user_id,
-          user_name: res.report.name,
-          vote_count: res.report.votes ? res.report.votes : 0,
-          cur_user_voted: false,
           label: "R"
         });
       }
@@ -176,7 +169,7 @@ export class LivemapComponent implements OnInit {
   }
 
   private assignReportMarkers() {
-    this.report_markers = [];
+    this.reportMarkers = [];
     // TO DO: Get only for the current border
     this.reportService.getAllReports().subscribe(res => {
       res.reports.forEach(report => {
@@ -194,14 +187,12 @@ export class LivemapComponent implements OnInit {
 
   // Retrieve all ads and display on the map
   private assignAdMarkers() {
-    this.ad_markers = [];
+    this.adMarkers = [];
     this.advertisementService.getAllAds().subscribe(res => {
       res.ads.forEach(ad => {
-        this.ad_markers.push({
+        this.adMarkers.push({
           lat: ad.position.y,
           lng: ad.position.x,
-          user_id: ad.user_id,
-          user_name: ad.name,
           caption: ad.caption,
           label: "A"
         });
@@ -221,18 +212,12 @@ interface ReportMarker {
   lat: number;
   lng: number;
   type: number;
-  user_id: number;
-  user_name: string;
-  vote_count: number;
-  cur_user_voted: boolean;
   label?: string;
 }
 
-interface adMarker {
+interface AdMarker {
   lat: number;
   lng: number;
   caption: string;
-  user_id: number;
-  user_name: string;
   label?: string;
 }

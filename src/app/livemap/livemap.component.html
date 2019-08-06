@@ -54,7 +54,7 @@
 
     <!-- Report markers -->
     <div
-      *ngFor="let marker of report_markers; let i = index"
+      *ngFor="let marker of reportMarkers; let i = index"
       class="report-markers-component"
     >
       <app-report-markers [marker]="marker" [index]="i"></app-report-markers>
@@ -62,7 +62,7 @@
 
     <!-- Ad markers -->
     <div
-      *ngFor="let marker of ad_markers; let i = index"
+      *ngFor="let marker of adMarkers; let i = index"
       class="ad-markers-component"
     >
       <app-ad-markers [marker]="marker" [index]="i"></app-ad-markers>
