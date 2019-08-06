@@ -25,6 +25,7 @@ import { ReportMarkersComponent } from "./report-markers/report-markers.componen
 import { AdMarkersComponent } from "./ad-markers/ad-markers.component";
 import { ReportModalComponent } from "./report-modal/report-modal.component";
 import { AdModalComponent } from "./ad-modal/ad-modal.component";
+import { ReportInfoWindowComponent } from './report-info-window/report-info-window.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { AdModalComponent } from "./ad-modal/ad-modal.component";
     ReportMarkersComponent,
     AdMarkersComponent,
     ReportModalComponent,
-    AdModalComponent
+    AdModalComponent,
+    ReportInfoWindowComponent
   ],
   imports: [
     GooglePlaceModule,
