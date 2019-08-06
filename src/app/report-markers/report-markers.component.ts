@@ -12,6 +12,8 @@ import { ReportService } from "../report.service";
 })
 export class ReportMarkersComponent implements OnInit {
   @Input() marker;
+  @Input() index;
+
   currentUser: User = undefined;
 
   constructor(
@@ -26,6 +28,7 @@ export class ReportMarkersComponent implements OnInit {
   }
 
   addVote(reportId: number, userId: number, iwindow) {
+    console.log(this.index);
     const data = {
       report_id: reportId,
       user_id: userId
@@ -33,7 +36,7 @@ export class ReportMarkersComponent implements OnInit {
     this.reportService.addVote(data).subscribe(res => {
       console.log(res);
       iwindow.close();
-      this.currentMarkerService.voteIncr(Math.random());
+      this.currentMarkerService.voteIncr(this.index);
     });
   }
 
@@ -45,7 +48,7 @@ export class ReportMarkersComponent implements OnInit {
     this.reportService.deleteVote(data).subscribe(res => {
       console.log(res);
       iwindow.close();
-      this.currentMarkerService.voteDecr(Math.random());
+      this.currentMarkerService.voteDecr(this.index);
     });
   }
 }

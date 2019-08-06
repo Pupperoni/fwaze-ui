@@ -40,6 +40,11 @@ export class ReportService {
     return this.http.get<ReportArrayResponse>(this.url);
   }
 
+  getReportById(id: string): Observable<ReportResponse> {
+    console.log(`Sending GET request to ${this.url}/${id}`);
+    return this.http.get<ReportResponse>(`${this.url}/${id}`);
+  }
+
   addReport(report: any) {
     console.log(`Sending POST request to ${this.url}/new`);
     return this.http.post(`${this.url}/new`, report, this.httpOptions);

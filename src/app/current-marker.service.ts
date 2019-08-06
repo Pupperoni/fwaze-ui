@@ -34,22 +34,18 @@ export class CurrentMarkerService {
   }
 
   reportSubmit(data) {
-    console.log(data);
     this.reportSubmitSubject.next(data);
   }
 
   adSubmit(data) {
-    console.log(data);
     this.adSubmitSubject.next(data);
   }
 
   voteIncr(data) {
-    console.log(data);
     this.voteIncrSubject.next(data);
   }
 
   voteDecr(data) {
-    console.log(data);
     this.voteDecrSubject.next(data);
   }
 }

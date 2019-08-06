@@ -9,6 +9,8 @@ import { CookieService } from "ngx-cookie-service";
 })
 export class AdMarkersComponent implements OnInit {
   @Input() marker;
+  @Input() index;
+
   currentUser: User = undefined;
   constructor(private cookieService: CookieService) {}
 

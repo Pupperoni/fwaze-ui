@@ -52,11 +52,13 @@ export class LivemapComponent implements OnInit {
     });
     this.currentMarkerService.voteIncr$.subscribe(data => {
       this.voteIncr = data;
-      this.assignReportMarkers();
+      // this.assignReportMarkers();
+      this.updateReportMarker(data);
     });
     this.currentMarkerService.voteDecr$.subscribe(data => {
       this.voteDecr = data;
-      this.assignReportMarkers();
+      // this.assignReportMarkers();
+      this.updateReportMarker(data);
     });
   }
 
@@ -109,14 +111,67 @@ export class LivemapComponent implements OnInit {
   addReportToMarkers(report, cur_user_voted) {
     this.report_markers.push({
       id: report.id,
-      lat: report.position.y,
-      lng: report.position.x,
+      lat: report.position.y || report.latitude,
+      lng: report.position.x || report.longitude,
       type: report.type,
       user_id: report.user_id,
       user_name: report.name,
       vote_count: report.votes,
       cur_user_voted: cur_user_voted ? true : false,
       label: "R"
+    });
+  }
+
+  private updateReportMarker(index: number) {
+    var update_report_id = this.report_markers.splice(index, 1)[0].id;
+
+    this.reportService.getReportById(update_report_id).subscribe(res => {
+      console.log(res);
+
+      if (this.currentUser) {
+        this.reportService
+          .getUserVotePair(update_report_id, this.currentUser.id)
+          .subscribe(res2 => {
+            console.log(res2);
+            if (res2) {
+              this.report_markers.push({
+                id: res.report.id,
+                lat: res.report.latitude,
+                lng: res.report.longitude,
+                type: res.report.type,
+                user_id: res.report.user_id,
+                user_name: res.report.name,
+                vote_count: res.report.votes,
+                cur_user_voted: true,
+                label: "R"
+              });
+            } else {
+              this.report_markers.push({
+                id: res.report.id,
+                lat: res.report.latitude,
+                lng: res.report.longitude,
+                type: res.report.type,
+                user_id: res.report.user_id,
+                user_name: res.report.name,
+                vote_count: res.report.votes,
+                cur_user_voted: false,
+                label: "R"
+              });
+            }
+          });
+      } else {
+        this.report_markers.push({
+          id: res.report.id,
+          lat: res.report.latitude,
+          lng: res.report.longitude,
+          type: res.report.type,
+          user_id: res.report.user_id,
+          user_name: res.report.name,
+          vote_count: res.report.votes ? res.report.votes : 0,
+          cur_user_voted: false,
+          label: "R"
+        });
+      }
     });
   }
 
@@ -129,6 +184,7 @@ export class LivemapComponent implements OnInit {
           this.reportService
             .getUserVotePair(report.id, this.currentUser.id)
             .subscribe(res2 => {
+              console.log(res2);
               this.addReportToMarkers(report, res2);
             });
         } else this.addReportToMarkers(report, false);
