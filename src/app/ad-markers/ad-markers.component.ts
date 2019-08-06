@@ -1,52 +1,19 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  OnChanges,
-  SimpleChanges
-} from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
+import { User } from "../user";
 
-import { AdvertisementService } from "../advertisement.service";
-
+import { CookieService } from "ngx-cookie-service";
 @Component({
   selector: "app-ad-markers",
   templateUrl: "./ad-markers.component.html",
   styleUrls: ["./ad-markers.component.css"]
 })
-export class AdMarkersComponent implements OnInit, OnChanges {
+export class AdMarkersComponent implements OnInit {
   @Input() marker;
-  constructor(private advertisementService: AdvertisementService) {}
+  currentUser: User = undefined;
+  constructor(private cookieService: CookieService) {}
 
   ngOnInit() {
-    // this.assignAdMarkers();
+    if (this.cookieService.get("currentUser"))
+      this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
   }
-
-  ngOnChanges(changes: SimpleChanges) {
-    // this.assignAdMarkers();
-  }
-
-  //   // Retrieve all ads and display on the map
-  //   private assignAdMarkers() {
-  //     this.advertisementService.getAllAds().subscribe(res => {
-  //       res.ads.forEach(ad => {
-  //         this.ad_markers.push({
-  //           lat: ad.position.y,
-  //           lng: ad.position.x,
-  //           user_id: ad.user_id,
-  //           user_name: ad.name,
-  //           caption: ad.caption,
-  //           label: "A"
-  //         });
-  //       });
-  //     });
-  //   }
 }
-
-// interface adMarker {
-//   lat: number;
-//   lng: number;
-//   caption: string;
-//   user_id: number;
-//   user_name: string;
-//   label?: string;
-// }

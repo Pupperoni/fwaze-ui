@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnChanges,
-  Input,
-  SimpleChanges
-} from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 
 import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
@@ -16,7 +10,7 @@ import { ReportService } from "../report.service";
   templateUrl: "./report-markers.component.html",
   styleUrls: ["./report-markers.component.css"]
 })
-export class ReportMarkersComponent implements OnInit, OnChanges {
+export class ReportMarkersComponent implements OnInit {
   @Input() marker;
   currentUser: User = undefined;
 
@@ -29,13 +23,6 @@ export class ReportMarkersComponent implements OnInit, OnChanges {
   ngOnInit() {
     if (this.cookieService.get("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-    // this.assignReportMarkers();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.cookieService.get("currentUser"))
-      this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-    // this.assignReportMarkers();
   }
 
   addVote(reportId: number, userId: number, iwindow) {
@@ -61,68 +48,4 @@ export class ReportMarkersComponent implements OnInit, OnChanges {
       this.currentMarkerService.voteDecr(Math.random());
     });
   }
-
-  // Retrieve all reports and display on the map
-  // private assignReportMarkers() {
-  //   // TO DO: Get only for the current border
-  //   this.reportService.getAllReports().subscribe(res => {
-  //     res.reports.forEach(report => {
-  //       if (this.currentUser) {
-  //         this.reportService
-  //           .getUserVotePair(report.id, this.currentUser.id)
-  //           .subscribe(res2 => {
-  //             if (res2) {
-  //               this.report_markers.push({
-  //                 id: report.id,
-  //                 lat: report.position.y,
-  //                 lng: report.position.x,
-  //                 type: report.type,
-  //                 user_id: report.user_id,
-  //                 user_name: report.name,
-  //                 vote_count: report.votes,
-  //                 cur_user_voted: true,
-  //                 label: "R"
-  //               });
-  //             } else {
-  //               this.report_markers.push({
-  //                 id: report.id,
-  //                 lat: report.position.y,
-  //                 lng: report.position.x,
-  //                 type: report.type,
-  //                 user_id: report.user_id,
-  //                 user_name: report.name,
-  //                 vote_count: report.votes,
-  //                 cur_user_voted: false,
-  //                 label: "R"
-  //               });
-  //             }
-  //           });
-  //       } else {
-  //         this.report_markers.push({
-  //           id: report.id,
-  //           lat: report.position.y,
-  //           lng: report.position.x,
-  //           type: report.type,
-  //           user_id: report.user_id,
-  //           user_name: report.name,
-  //           vote_count: report.votes,
-  //           cur_user_voted: true,
-  //           label: "R"
-  //         });
-  //       }
-  //     });
-  //   });
-  // }
-}
-
-interface ReportMarker {
-  id: string;
-  lat: number;
-  lng: number;
-  type: number;
-  user_id: number;
-  user_name: string;
-  vote_count: number;
-  cur_user_voted: boolean;
-  label?: string;
 }
