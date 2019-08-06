@@ -1,5 +1,5 @@
 export class Advertisement {
-  id: number;
+  id: string;
   caption: string;
   user_id: number;
   name: string;

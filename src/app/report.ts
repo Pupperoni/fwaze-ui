@@ -1,5 +1,5 @@
 export class Report {
-  id: number;
+  id: string;
   type: number;
   position: Position;
   user_id: number;

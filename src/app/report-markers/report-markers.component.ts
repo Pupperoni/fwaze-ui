@@ -123,7 +123,7 @@ export class ReportMarkersComponent implements OnInit, OnChanges {
 }
 
 interface ReportMarker {
-  id: number;
+  id: string;
   lat: number;
   lng: number;
   type: number;
