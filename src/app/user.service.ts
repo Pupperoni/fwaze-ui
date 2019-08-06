@@ -50,7 +50,7 @@ export class UserService {
     return this.http.post(`${this.url}/login`, userData, this.httpOptions);
   }
 
-  getUser(id: number): Observable<UserResponse> {
+  getUser(id: string): Observable<UserResponse> {
     console.log(`Submit GET request to ${this.url}/${id}`);
     return this.http.get<UserResponse>(`${this.url}/${id}`);
   }
