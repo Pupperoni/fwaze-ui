@@ -1,29 +1,25 @@
-<div class="ad-markers-component">
-  <!-- Ad markers -->
-  <agm-marker
-    *ngFor="let marker of ad_markers; let i = index"
-    [latitude]="marker.lat"
-    [longitude]="marker.lng"
-    [label]="marker.label"
-    [markerDraggable]="false"
-  >
-    <agm-info-window>
-      <div class="container-fluid ad-info">
-        <div class="row">
-          <h6>{{ marker.caption }}</h6>
-        </div>
-        <div class="report-user-info row align-self-left">
-          by &nbsp;
-          <strong>
-            <a routerLink="/detail/{{ marker.user_id }}">
-              {{ marker.user_name }}
-            </a>
-          </strong>
-        </div>
-        <div class="report-position-info row align-self-left">
-          Located at ({{ marker.lat }},{{ marker.lng }})
-        </div>
+<agm-marker
+  [latitude]="marker.lat"
+  [longitude]="marker.lng"
+  [label]="marker.label"
+  [markerDraggable]="false"
+>
+  <agm-info-window>
+    <div class="container-fluid ad-info">
+      <div class="row">
+        <h6>{{ marker.caption }}</h6>
       </div>
-    </agm-info-window>
-  </agm-marker>
-</div>
+      <div class="report-user-info row align-self-left">
+        by &nbsp;
+        <strong>
+          <a routerLink="/detail/{{ marker.user_id }}">
+            {{ marker.user_name }}
+          </a>
+        </strong>
+      </div>
+      <div class="report-position-info row align-self-left">
+        Located at ({{ marker.lat }},{{ marker.lng }})
+      </div>
+    </div>
+  </agm-info-window>
+</agm-marker>

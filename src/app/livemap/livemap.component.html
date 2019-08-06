@@ -60,7 +60,13 @@
       <app-report-markers [marker]="marker"></app-report-markers>
     </div>
 
-    <app-ad-markers [toReset]="adSubmit"></app-ad-markers>
+    <!-- Ad markers -->
+    <div
+      *ngFor="let marker of ad_markers; let i = index"
+      class="ad-markers-component"
+    >
+      <app-ad-markers [marker]="marker"></app-ad-markers>
+    </div>
 
     <agm-direction
       *ngIf="source && destination"

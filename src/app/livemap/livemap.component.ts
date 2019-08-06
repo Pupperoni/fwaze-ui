@@ -5,6 +5,7 @@ import { User } from "../user";
 
 import { CookieService } from "ngx-cookie-service";
 import { ReportService } from "../report.service";
+import { AdvertisementService } from "../advertisement.service";
 import { CurrentMarkerService } from "../current-marker.service";
 @Component({
   selector: "app-livemap",
@@ -29,12 +30,17 @@ export class LivemapComponent implements OnInit {
   public voteIncr;
   public voteDecr;
 
+  // marker for reports
   report_markers: ReportMarker[] = [];
+
+  // markers for ads
+  ad_markers: adMarker[] = [];
 
   constructor(
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
-    private reportService: ReportService
+    private reportService: ReportService,
+    private advertisementService: AdvertisementService
   ) {
     this.currentMarkerService.reportSubmit$.subscribe(data => {
       this.reportSubmit = data;
@@ -42,6 +48,7 @@ export class LivemapComponent implements OnInit {
     });
     this.currentMarkerService.adSubmit$.subscribe(data => {
       this.adSubmit = data;
+      this.assignAdMarkers();
     });
     this.currentMarkerService.voteIncr$.subscribe(data => {
       this.voteIncr = data;
@@ -59,6 +66,7 @@ export class LivemapComponent implements OnInit {
     else this.currentUser = undefined;
 
     this.assignReportMarkers();
+    this.assignAdMarkers();
   }
 
   onMapClick($event: MouseEvent) {
@@ -127,6 +135,23 @@ export class LivemapComponent implements OnInit {
       });
     });
   }
+
+  // Retrieve all ads and display on the map
+  private assignAdMarkers() {
+    this.ad_markers = [];
+    this.advertisementService.getAllAds().subscribe(res => {
+      res.ads.forEach(ad => {
+        this.ad_markers.push({
+          lat: ad.position.y,
+          lng: ad.position.x,
+          user_id: ad.user_id,
+          user_name: ad.name,
+          caption: ad.caption,
+          label: "A"
+        });
+      });
+    });
+  }
 }
 
 interface marker {
@@ -144,5 +169,14 @@ interface ReportMarker {
   user_name: string;
   vote_count: number;
   cur_user_voted: boolean;
+  label?: string;
+}
+
+interface adMarker {
+  lat: number;
+  lng: number;
+  caption: string;
+  user_id: number;
+  user_name: string;
   label?: string;
 }

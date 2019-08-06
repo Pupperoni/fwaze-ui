@@ -14,11 +14,7 @@ import { AdvertisementService } from "../advertisement.service";
   styleUrls: ["./ad-markers.component.css"]
 })
 export class AdMarkersComponent implements OnInit, OnChanges {
-  @Input() toReset;
-
-  // markers for ads
-  ad_markers: adMarker[] = [];
-
+  @Input() marker;
   constructor(private advertisementService: AdvertisementService) {}
 
   ngOnInit() {
@@ -26,31 +22,31 @@ export class AdMarkersComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.assignAdMarkers();
+    // this.assignAdMarkers();
   }
 
-  // Retrieve all ads and display on the map
-  private assignAdMarkers() {
-    this.advertisementService.getAllAds().subscribe(res => {
-      res.ads.forEach(ad => {
-        this.ad_markers.push({
-          lat: ad.position.y,
-          lng: ad.position.x,
-          user_id: ad.user_id,
-          user_name: ad.name,
-          caption: ad.caption,
-          label: "A"
-        });
-      });
-    });
-  }
+  //   // Retrieve all ads and display on the map
+  //   private assignAdMarkers() {
+  //     this.advertisementService.getAllAds().subscribe(res => {
+  //       res.ads.forEach(ad => {
+  //         this.ad_markers.push({
+  //           lat: ad.position.y,
+  //           lng: ad.position.x,
+  //           user_id: ad.user_id,
+  //           user_name: ad.name,
+  //           caption: ad.caption,
+  //           label: "A"
+  //         });
+  //       });
+  //     });
+  //   }
 }
 
-interface adMarker {
-  lat: number;
-  lng: number;
-  caption: string;
-  user_id: number;
-  user_name: string;
-  label?: string;
-}
+// interface adMarker {
+//   lat: number;
+//   lng: number;
+//   caption: string;
+//   user_id: number;
+//   user_name: string;
+//   label?: string;
+// }
