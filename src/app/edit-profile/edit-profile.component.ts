@@ -32,7 +32,10 @@ export class EditProfileComponent implements OnInit {
   setUser() {
     this.profileForm = new FormGroup({
       name: new FormControl(this.currentUser.name, [Validators.required]),
-      email: new FormControl(this.currentUser.email, [Validators.required]),
+      email: new FormControl(this.currentUser.email, [
+        Validators.required,
+        Validators.email
+      ]),
       role: new FormControl(this.currentUser.role.toString(), [
         Validators.required
       ])
@@ -57,5 +60,15 @@ export class EditProfileComponent implements OnInit {
       this.cookieService.set("currentUser", JSON.stringify(formData));
       this.router.navigate([`/detail/${this.currentUser.id}`]);
     });
+  }
+
+  get name() {
+    return this.profileForm.get("name");
+  }
+  get email() {
+    return this.profileForm.get("email");
+  }
+  get role() {
+    return this.profileForm.get("role");
   }
 }
