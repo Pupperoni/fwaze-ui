@@ -30,6 +30,11 @@ export class AdvertisementService {
     return this.http.get<AdvertisementArrayResponse>(`${this.url}`);
   }
 
+  getAdById(id: string): Observable<AdvertisementResponse> {
+    console.log(`Submit GET request to ${this.url}/${id}`);
+    return this.http.get<AdvertisementResponse>(`${this.url}/${id}`);
+  }
+
   addAd(ad: any) {
     console.log(`Sending POST request to ${this.url}/new`);
     return this.http.post(`${this.url}/new`, ad, this.httpOptions);

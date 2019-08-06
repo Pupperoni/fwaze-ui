@@ -30,8 +30,7 @@ export class ReportMarkersComponent implements OnInit {
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
   }
 
-  toggleInfoWindow(id: string, thing) {
-    console.log(thing);
+  toggleInfoWindow(id: string) {
     this.reportService.getReportById(id).subscribe((res: any) => {
       if (this.currentUser) {
         this.reportService
@@ -39,12 +38,10 @@ export class ReportMarkersComponent implements OnInit {
           .subscribe(res2 => {
             res.report.curUserVoted = res2 ? true : false;
             this.markerInfo = res.report;
-            // iwindow.open();
           });
       } else {
         res.report.curUserVoted = false;
         this.markerInfo = res.report;
-        // iwindow.open();
       }
     });
   }

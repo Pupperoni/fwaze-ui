@@ -55,18 +55,25 @@ export class LivemapComponent implements OnInit, OnChanges {
         label: "R"
       });
     });
-    // this.currentMarkerService.adSubmit$.subscribe(data => {
-    //   this.adSubmit = data;
-    //   this.assignAdMarkers();
-    // });
-    // this.currentMarkerService.voteIncr$.subscribe(data => {
-    //   this.voteIncr = data;
-    //   this.updateReportMarker(data);
-    // });
-    // this.currentMarkerService.voteDecr$.subscribe(data => {
-    //   this.voteDecr = data;
-    //   this.updateReportMarker(data);
-    // });
+    this.currentMarkerService.adSubmit$.subscribe(data => {
+      this.adSubmit = data;
+      console.log(data);
+      this.adMarkers.push({
+        id: data.id,
+        lat: data.latitude,
+        lng: data.longitude,
+        label: "A"
+      });
+      console.log(this.adMarkers);
+    });
+    this.currentMarkerService.voteIncr$.subscribe(data => {
+      this.voteIncr = data;
+      this.updateReportMarker(data);
+    });
+    this.currentMarkerService.voteDecr$.subscribe(data => {
+      this.voteDecr = data;
+      this.updateReportMarker(data);
+    });
   }
 
   ngOnInit() {
@@ -191,9 +198,9 @@ export class LivemapComponent implements OnInit, OnChanges {
     this.advertisementService.getAllAds().subscribe(res => {
       res.ads.forEach(ad => {
         this.adMarkers.push({
+          id: ad.id,
           lat: ad.position.y,
           lng: ad.position.x,
-          caption: ad.caption,
           label: "A"
         });
       });
@@ -216,8 +223,8 @@ interface ReportMarker {
 }
 
 interface AdMarker {
+  id: string;
   lat: number;
   lng: number;
-  caption: string;
   label?: string;
 }

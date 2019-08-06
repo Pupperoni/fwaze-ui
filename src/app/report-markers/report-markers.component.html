@@ -4,7 +4,7 @@
   [label]="marker.label"
   [markerDraggable]="false"
   [openInfoWindow]="true"
-  (markerClick)="toggleInfoWindow(marker.id, this)"
+  (markerClick)="toggleInfoWindow(marker.id)"
 >
   <agm-info-window>
     <div *ngIf="markerInfo">

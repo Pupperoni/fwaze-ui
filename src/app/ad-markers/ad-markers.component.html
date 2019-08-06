@@ -3,22 +3,25 @@
   [longitude]="marker.lng"
   [label]="marker.label"
   [markerDraggable]="false"
+  (markerClick)="toggleInfoWindow(marker.id)"
 >
   <agm-info-window>
-    <div class="container-fluid ad-info">
-      <div class="row">
-        <h6>{{ marker.caption }}</h6>
-      </div>
-      <div class="report-user-info row align-self-left">
-        by &nbsp;
-        <strong>
-          <a routerLink="/detail/{{ marker.userId }}">
-            {{ marker.userName }}
-          </a>
-        </strong>
-      </div>
-      <div class="report-position-info row align-self-left">
-        Located at ({{ marker.lat }},{{ marker.lng }})
+    <div *ngIf="markerInfo">
+      <div class="container-fluid ad-info">
+        <div class="row">
+          <h6>{{ markerInfo.caption }}</h6>
+        </div>
+        <div class="report-user-info row align-self-left">
+          by &nbsp;
+          <strong>
+            <a routerLink="/detail/{{ markerInfo.userId }}">
+              {{ markerInfo.userName }}
+            </a>
+          </strong>
+        </div>
+        <div class="report-position-info row align-self-left">
+          Located at ({{ markerInfo.latitude }},{{ markerInfo.longitude }})
+        </div>
       </div>
     </div>
   </agm-info-window>
