@@ -116,15 +116,36 @@ export class LivemapComponent implements OnInit, OnChanges {
     this.lng = this.destination.lng;
   }
 
-  mapPositionChange($event) {
-    var tright = `${$event.na.l},${$event.ga.l}`;
-    var bleft = `${$event.na.j},${$event.ga.j}`;
-
-    console.log(tright);
-    console.log(bleft);
-    this.assignReportMarkers(tright, bleft);
-    this.assignAdMarkers(tright, bleft);
+  // source: https://davidwalsh.name/javascript-debounce-function
+  debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this,
+        args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
   }
+
+  mapPositionChange = this.debounce(
+    function($event) {
+      var tright = `${$event.na.l},${$event.ga.l}`;
+      var bleft = `${$event.na.j},${$event.ga.j}`;
+
+      console.log(tright);
+      console.log(bleft);
+      this.assignReportMarkers(tright, bleft);
+      this.assignAdMarkers(tright, bleft);
+    },
+    100,
+    false
+  );
 
   addReportToMarkers(report) {
     this.reportMarkers.push({
