@@ -52,6 +52,8 @@ export class LivemapComponent implements OnInit, OnChanges {
         type: data.type,
         label: "R"
       });
+      this.currentMarkerService.setMarker(undefined);
+      this.currentMarker = this.currentMarkerService.getMarker();
     });
     this.currentMarkerService.adSubmit$.subscribe(data => {
       this.adSubmit = data;
@@ -61,6 +63,8 @@ export class LivemapComponent implements OnInit, OnChanges {
         lng: data.longitude,
         label: "A"
       });
+      this.currentMarkerService.setMarker(undefined);
+      this.currentMarker = this.currentMarkerService.getMarker();
     });
     this.currentMarkerService.voteIncr$.subscribe(data => {
       this.voteIncr = data;

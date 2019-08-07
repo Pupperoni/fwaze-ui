@@ -19,6 +19,8 @@ export class ReportMarkersComponent implements OnInit {
 
   currentUser: User = undefined;
 
+  icon = undefined;
+
   constructor(
     private reportService: ReportService,
     private cookieService: CookieService,
@@ -28,6 +30,14 @@ export class ReportMarkersComponent implements OnInit {
   ngOnInit() {
     if (this.cookieService.get("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+
+    this.icon = {
+      url: `../../assets/report${this.marker.type}.png`,
+      scaledSize: {
+        width: 30,
+        height: 30
+      }
+    };
   }
 
   toggleInfoWindow(id: string) {

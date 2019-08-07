@@ -1,9 +1,8 @@
 <agm-marker
   [latitude]="marker.lat"
   [longitude]="marker.lng"
-  [label]="marker.label"
   [markerDraggable]="false"
-  [openInfoWindow]="true"
+  [iconUrl]="icon"
   (markerClick)="toggleInfoWindow(marker.id)"
 >
   <agm-info-window>
