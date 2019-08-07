@@ -47,14 +47,11 @@ export class ReportMarkersComponent implements OnInit {
   }
 
   addVote(reportId: number, userId: number, iwindow) {
-    console.log(this.index);
     const data = {
       reportId: reportId,
       userId: userId
     };
     this.reportService.addVote(data).subscribe(res => {
-      console.log(res);
-      // iwindow.close();
       this.currentMarkerService.voteIncr(this.index);
     });
   }
@@ -65,8 +62,6 @@ export class ReportMarkersComponent implements OnInit {
       userId: userId
     };
     this.reportService.deleteVote(data).subscribe(res => {
-      console.log(res);
-      // iwindow.close();
       this.currentMarkerService.voteDecr(this.index);
     });
   }

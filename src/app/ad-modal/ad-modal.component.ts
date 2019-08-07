@@ -49,7 +49,6 @@ export class AdModalComponent implements OnInit {
       };
       // console.log(adSubmission);
       this.advertisementService.addAd(adSubmission).subscribe((res: any) => {
-        console.log(res);
         this.currentMarkerService.adSubmit(res.data);
       });
     }

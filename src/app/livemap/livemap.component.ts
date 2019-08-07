@@ -44,9 +44,7 @@ export class LivemapComponent implements OnInit, OnChanges {
   ) {
     this.currentMarkerService.reportSubmit$.subscribe(data => {
       this.reportSubmit = data;
-      console.log(data);
       data.votes = 0;
-      this.reportService.getUserVotePair(data.id, this.currentUser.id);
       this.reportMarkers.push({
         id: data.id,
         lat: data.latitude,
@@ -57,14 +55,12 @@ export class LivemapComponent implements OnInit, OnChanges {
     });
     this.currentMarkerService.adSubmit$.subscribe(data => {
       this.adSubmit = data;
-      console.log(data);
       this.adMarkers.push({
         id: data.id,
         lat: data.latitude,
         lng: data.longitude,
         label: "A"
       });
-      console.log(this.adMarkers);
     });
     this.currentMarkerService.voteIncr$.subscribe(data => {
       this.voteIncr = data;
@@ -88,7 +84,6 @@ export class LivemapComponent implements OnInit, OnChanges {
   ngOnChanges(change: SimpleChanges) {}
 
   onMapClick($event: MouseEvent) {
-    console.log("map clicked");
     this.currentMarkerService.setMarker({
       lat: $event.coords.lat,
       lng: $event.coords.lng
@@ -138,13 +133,10 @@ export class LivemapComponent implements OnInit, OnChanges {
     var updateReportId = this.reportMarkers.splice(index, 1)[0].id;
 
     this.reportService.getReportById(updateReportId).subscribe(res => {
-      console.log(res);
-
       if (this.currentUser) {
         this.reportService
           .getUserVotePair(updateReportId, this.currentUser.id)
           .subscribe(res2 => {
-            console.log(res2);
             if (res2) {
               this.reportMarkers.push({
                 id: res.report.id,
@@ -184,7 +176,6 @@ export class LivemapComponent implements OnInit, OnChanges {
           this.reportService
             .getUserVotePair(report.id, this.currentUser.id)
             .subscribe(res2 => {
-              console.log(res2);
               this.addReportToMarkers(report, res2);
             });
         } else this.addReportToMarkers(report, false);

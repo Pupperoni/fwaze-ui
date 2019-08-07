@@ -52,13 +52,11 @@ export class ReportService {
 
   addVote(data) {
     console.log(`Sending PUT request to ${this.url}/up`);
-    console.log(data);
     return this.http.put(`${this.url}/up`, data, this.httpOptions);
   }
 
   deleteVote(data) {
     console.log(`Sending PUT request to ${this.url}/down`);
-    console.log(data);
     return this.http.put(`${this.url}/down`, data, this.httpOptions);
   }
 
