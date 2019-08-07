@@ -77,7 +77,6 @@ export class LivemapComponent implements OnInit, OnChanges {
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     else this.currentUser = undefined;
 
-    this.assignReportMarkers();
     this.assignAdMarkers();
   }
 
@@ -117,6 +116,16 @@ export class LivemapComponent implements OnInit, OnChanges {
     console.log(this.destination);
     this.lat = this.destination.lat;
     this.lng = this.destination.lng;
+  }
+
+  mapPositionChange($event) {
+    var tright = `${$event.na.l},${$event.ga.l}`;
+    var bleft = `${$event.na.j},${$event.ga.j}`;
+
+    console.log(tright);
+    console.log(bleft);
+    this.assignReportMarkers(tright, bleft);
+    this.assignAdMarkers(tright, bleft);
   }
 
   addReportToMarkers(report, curUserVoted) {
@@ -167,10 +176,10 @@ export class LivemapComponent implements OnInit, OnChanges {
     });
   }
 
-  private assignReportMarkers() {
-    this.reportMarkers = [];
+  private assignReportMarkers(tright, bleft) {
     // TO DO: Get only for the current border
-    this.reportService.getAllReports().subscribe(res => {
+    this.reportMarkers = [];
+    this.reportService.getAllReportsByBounds(tright, bleft).subscribe(res => {
       res.reports.forEach(report => {
         if (this.currentUser) {
           this.reportService
@@ -184,18 +193,21 @@ export class LivemapComponent implements OnInit, OnChanges {
   }
 
   // Retrieve all ads and display on the map
-  private assignAdMarkers() {
-    this.adMarkers = [];
-    this.advertisementService.getAllAds().subscribe(res => {
-      res.ads.forEach(ad => {
-        this.adMarkers.push({
-          id: ad.id,
-          lat: ad.position.y,
-          lng: ad.position.x,
-          label: "A"
+  private assignAdMarkers(tright, bleft) {
+    var subMarkers = [];
+    this.advertisementService
+      .getAllAdsByBounds(tright, bleft)
+      .subscribe(res => {
+        res.ads.forEach(ad => {
+          subMarkers.push({
+            id: ad.id,
+            lat: ad.position.y,
+            lng: ad.position.x,
+            label: "A"
+          });
         });
+        this.adMarkers = subMarkers;
       });
-    });
   }
 }
 

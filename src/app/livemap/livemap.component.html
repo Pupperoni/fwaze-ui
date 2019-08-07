@@ -33,6 +33,7 @@
     [longitude]="lng"
     [zoom]="zoom"
     (mapClick)="onMapClick($event)"
+    (boundsChange)="mapPositionChange($event)"
   >
     <!-- Source and destination markers -->
     <agm-marker

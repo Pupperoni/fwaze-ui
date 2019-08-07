@@ -30,6 +30,17 @@ export class AdvertisementService {
     return this.http.get<AdvertisementArrayResponse>(`${this.url}`);
   }
 
+  getAllAdsByBounds(tright, bleft): Observable<AdvertisementArrayResponse> {
+    console.log(
+      `Sending GET request to ${
+        this.url
+      }/range/?tright=${tright}&bleft=${bleft}`
+    );
+    return this.http.get<AdvertisementArrayResponse>(
+      `${this.url}/range?tright=${tright}&bleft=${bleft}`
+    );
+  }
+
   getAdById(id: string): Observable<AdvertisementResponse> {
     console.log(`Submit GET request to ${this.url}/${id}`);
     return this.http.get<AdvertisementResponse>(`${this.url}/${id}`);
