@@ -161,37 +161,13 @@ export class LivemapComponent implements OnInit, OnChanges {
     var updateReportId = this.reportMarkers.splice(index, 1)[0].id;
 
     this.reportService.getReportById(updateReportId).subscribe(res => {
-      if (this.currentUser) {
-        this.reportService
-          .getUserVotePair(updateReportId, this.currentUser.id)
-          .subscribe(res2 => {
-            if (res2) {
-              this.reportMarkers.push({
-                id: res.report.id,
-                lat: res.report.latitude,
-                lng: res.report.longitude,
-                type: res.report.type,
-                label: "R"
-              });
-            } else {
-              this.reportMarkers.push({
-                id: res.report.id,
-                lat: res.report.latitude,
-                lng: res.report.longitude,
-                type: res.report.type,
-                label: "R"
-              });
-            }
-          });
-      } else {
-        this.reportMarkers.push({
-          id: res.report.id,
-          lat: res.report.latitude,
-          lng: res.report.longitude,
-          type: res.report.type,
-          label: "R"
-        });
-      }
+      this.reportMarkers.push({
+        id: res.report.id,
+        lat: res.report.latitude,
+        lng: res.report.longitude,
+        type: res.report.type,
+        label: "R"
+      });
     });
   }
 
