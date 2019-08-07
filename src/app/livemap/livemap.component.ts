@@ -76,8 +76,6 @@ export class LivemapComponent implements OnInit, OnChanges {
     if (this.cookieService.get("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     else this.currentUser = undefined;
-
-    this.assignAdMarkers();
   }
 
   ngOnChanges(change: SimpleChanges) {}
@@ -128,7 +126,7 @@ export class LivemapComponent implements OnInit, OnChanges {
     this.assignAdMarkers(tright, bleft);
   }
 
-  addReportToMarkers(report, curUserVoted) {
+  addReportToMarkers(report) {
     this.reportMarkers.push({
       id: report.id,
       lat: report.position.y || report.latitude,
@@ -177,36 +175,72 @@ export class LivemapComponent implements OnInit, OnChanges {
   }
 
   private assignReportMarkers(tright, bleft) {
-    // TO DO: Get only for the current border
-    this.reportMarkers = [];
     this.reportService.getAllReportsByBounds(tright, bleft).subscribe(res => {
+      // Clean up current report list
+      for (var i = 0; i < this.reportMarkers.length; i++) {
+        var toDelete = true;
+        for (var j = 0; j < res.reports.length; j++) {
+          if (this.reportMarkers[i].id === res.reports[j].id) {
+            // element matched - don't delete as we will just render this again
+            toDelete = false;
+            break;
+          }
+        }
+        // no element matched so we will remove it from the list
+        if (toDelete) this.reportMarkers.splice(i, 1);
+      }
+
       res.reports.forEach(report => {
-        if (this.currentUser) {
-          this.reportService
-            .getUserVotePair(report.id, this.currentUser.id)
-            .subscribe(res2 => {
-              this.addReportToMarkers(report, res2);
-            });
-        } else this.addReportToMarkers(report, false);
+        var toAdd = true;
+        for (var i = 0; i < this.reportMarkers.length; i++) {
+          // matched element - we don't add to avoid duplicates in the list
+          if (this.reportMarkers[i].id === report.id) {
+            toAdd = false;
+            break;
+          }
+        }
+        if (toAdd) this.addReportToMarkers(report);
       });
     });
   }
 
   // Retrieve all ads and display on the map
   private assignAdMarkers(tright, bleft) {
-    var subMarkers = [];
     this.advertisementService
       .getAllAdsByBounds(tright, bleft)
       .subscribe(res => {
+        // Clean up current ads list
+        for (var i = 0; i < this.adMarkers.length; i++) {
+          var toDelete = true;
+          for (var j = 0; j < res.ads.length; j++) {
+            if (this.adMarkers[i].id === res.ads[j].id) {
+              // element matched - don't delete as we will just render this again
+              toDelete = false;
+              break;
+            }
+          }
+          // no element matched so we will remove it from the list
+          if (toDelete) this.adMarkers.splice(i, 1);
+        }
+
         res.ads.forEach(ad => {
-          subMarkers.push({
-            id: ad.id,
-            lat: ad.position.y,
-            lng: ad.position.x,
-            label: "A"
-          });
+          var toAdd = true;
+          for (var i = 0; i < this.adMarkers.length; i++) {
+            // matched element - we don't add to avoid duplicates in the list
+            if (this.adMarkers[i].id === ad.id) {
+              toAdd = false;
+              break;
+            }
+          }
+          if (toAdd) {
+            this.adMarkers.push({
+              id: ad.id,
+              lat: ad.position.y,
+              lng: ad.position.x,
+              label: "A"
+            });
+          }
         });
-        this.adMarkers = subMarkers;
       });
   }
 }
