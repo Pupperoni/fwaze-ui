@@ -11,6 +11,7 @@ import { AdvertisementService } from "../advertisement.service";
 export class AdMarkersComponent implements OnInit {
   @Input() marker;
   @Input() index;
+  icon = undefined;
 
   markerInfo = undefined;
   currentUser: User = undefined;
@@ -22,6 +23,14 @@ export class AdMarkersComponent implements OnInit {
   ngOnInit() {
     if (this.cookieService.get("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+
+    this.icon = {
+      url: "../../assets/ad.png",
+      scaledSize: {
+        width: 30,
+        height: 30
+      }
+    };
   }
 
   toggleInfoWindow(id: string) {
