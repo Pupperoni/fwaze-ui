@@ -34,9 +34,7 @@ export class AdMarkersComponent implements OnInit {
   }
 
   toggleInfoWindow(id: string) {
-    console.log(id);
     this.advertisementService.getAdById(id).subscribe((res: any) => {
-      console.log(res);
       this.markerInfo = res.ad;
     });
   }

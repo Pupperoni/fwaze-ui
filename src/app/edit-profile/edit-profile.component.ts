@@ -59,10 +59,7 @@ export class EditProfileComponent implements OnInit {
       uploadData.append("avatar", this.avatarUpload, this.avatarUpload.name);
 
     this.userService.updateUser(uploadData).subscribe(res => {
-      console.log(res);
       this.router.navigate([`/detail/${this.currentUser.id}`]);
-      // this.location.go(`/detail/${this.currentUser.id}`);
-      // this.location.back();
     });
   }
 

@@ -47,7 +47,6 @@ export class AdModalComponent implements OnInit {
         latitude: this.currentMarker.lat,
         longitude: this.currentMarker.lng
       };
-      // console.log(adSubmission);
       this.advertisementService.addAd(adSubmission).subscribe((res: any) => {
         this.currentMarkerService.adSubmit(res.data);
       });
