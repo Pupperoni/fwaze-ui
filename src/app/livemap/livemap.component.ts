@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 
 import { MouseEvent } from "@agm/core";
 import { User } from "../user";
@@ -12,7 +12,7 @@ import { CurrentMarkerService } from "../current-marker.service";
   templateUrl: "./livemap.component.html",
   styleUrls: ["./livemap.component.css"]
 })
-export class LivemapComponent implements OnInit, OnChanges {
+export class LivemapComponent implements OnInit {
   currentUser: User = undefined;
 
   // center of BGC
@@ -20,6 +20,8 @@ export class LivemapComponent implements OnInit, OnChanges {
   lng: number = 121.0503;
   zoom: number = 16;
 
+  sourceData = undefined;
+  destData = undefined;
   source: marker = undefined;
   destination: marker = undefined;
 
@@ -40,7 +42,8 @@ export class LivemapComponent implements OnInit, OnChanges {
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
     private reportService: ReportService,
-    private advertisementService: AdvertisementService
+    private advertisementService: AdvertisementService,
+    private cdr: ChangeDetectorRef
   ) {
     this.currentMarkerService.reportSubmit$.subscribe(data => {
       this.reportSubmit = data;
@@ -82,8 +85,6 @@ export class LivemapComponent implements OnInit, OnChanges {
     else this.currentUser = undefined;
   }
 
-  ngOnChanges(change: SimpleChanges) {}
-
   onMapClick($event: MouseEvent) {
     this.currentMarkerService.setMarker({
       lat: $event.coords.lat,
@@ -103,8 +104,13 @@ export class LivemapComponent implements OnInit, OnChanges {
       lng: $event.geometry.location.lng(),
       label: "S"
     };
+    this.sourceData = {
+      lat: $event.geometry.location.lat(),
+      lng: $event.geometry.location.lng(),
+      label: "S"
+    };
 
-    console.log(this.source);
+    // console.log(this.source);
     this.lat = this.source.lat;
     this.lng = this.source.lng;
   }
@@ -115,9 +121,20 @@ export class LivemapComponent implements OnInit, OnChanges {
       lng: $event.geometry.location.lng(),
       label: "D"
     };
-    console.log(this.destination);
+    this.destData = {
+      lat: $event.geometry.location.lat(),
+      lng: $event.geometry.location.lng(),
+      label: "D"
+    };
+    // console.log(this.destination);
     this.lat = this.destination.lat;
     this.lng = this.destination.lng;
+  }
+
+  deleteMarkers($event) {
+    this.source = undefined;
+    this.destination = undefined;
+    this.cdr.detectChanges();
   }
 
   // source: https://davidwalsh.name/javascript-debounce-function

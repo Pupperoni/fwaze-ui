@@ -70,9 +70,10 @@
     </div>
 
     <agm-direction
-      *ngIf="source && destination"
-      [origin]="source"
-      [destination]="destination"
+      *ngIf="sourceData && destData"
+      [origin]="sourceData"
+      [destination]="destData"
+      (onChange)="deleteMarkers($event)"
     ></agm-direction>
 
     <!-- Current marker clicked -->
