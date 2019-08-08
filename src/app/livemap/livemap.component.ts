@@ -110,7 +110,6 @@ export class LivemapComponent implements OnInit {
       label: "S"
     };
 
-    // console.log(this.source);
     this.lat = this.source.lat;
     this.lng = this.source.lng;
   }
@@ -126,7 +125,6 @@ export class LivemapComponent implements OnInit {
       lng: $event.geometry.location.lng(),
       label: "D"
     };
-    // console.log(this.destination);
     this.lat = this.destination.lat;
     this.lng = this.destination.lng;
   }
@@ -158,9 +156,6 @@ export class LivemapComponent implements OnInit {
     function($event) {
       var tright = `${$event.na.l},${$event.ga.l}`;
       var bleft = `${$event.na.j},${$event.ga.j}`;
-
-      console.log(tright);
-      console.log(bleft);
       this.assignReportMarkers(tright, bleft);
       this.assignAdMarkers(tright, bleft);
     },

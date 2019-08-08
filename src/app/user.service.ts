@@ -66,7 +66,6 @@ export class UserService {
 
   updateUser(userData): Observable<any> {
     console.log(`Submit PUT request to ${this.url}/edit`);
-    console.log(userData);
     return this.http.put(`${this.url}/edit`, userData);
   }
 }
