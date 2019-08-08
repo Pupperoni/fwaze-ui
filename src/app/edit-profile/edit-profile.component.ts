@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-
+import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { UserService } from "../user.service";
 import { User } from "../user";
@@ -20,6 +20,7 @@ export class EditProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private cookieService: CookieService,
+    private location: Location,
     private router: Router
   ) {}
 
@@ -42,23 +43,26 @@ export class EditProfileComponent implements OnInit {
     });
   }
 
-  handleFileInput(files: FileList) {
-    this.avatarUpload = files.item(0);
-    console.log(this.avatarUpload);
+  handleFileInput($event) {
+    this.avatarUpload = $event.target.files[0];
   }
 
   onSubmit(formData) {
     formData.role = parseInt(formData.role);
-    formData.id = this.currentUser.id;
+    var uploadData = new FormData();
 
-    formData.avatar = this.avatarUpload;
-    console.log(formData);
+    uploadData.append("name", formData.name);
+    uploadData.append("email", formData.email);
+    uploadData.append("role", formData.role);
+    uploadData.append("id", this.currentUser.id);
+    if (this.avatarUpload)
+      uploadData.append("avatar", this.avatarUpload, this.avatarUpload.name);
 
-    this.userService.updateUser(formData).subscribe(res => {
+    this.userService.updateUser(uploadData).subscribe(res => {
       console.log(res);
-      this.cookieService.delete("currentUser");
-      this.cookieService.set("currentUser", JSON.stringify(formData));
       this.router.navigate([`/detail/${this.currentUser.id}`]);
+      // this.location.go(`/detail/${this.currentUser.id}`);
+      // this.location.back();
     });
   }
 

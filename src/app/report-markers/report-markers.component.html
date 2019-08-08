@@ -24,7 +24,7 @@
           <button
             *ngIf="!markerInfo.curUserVoted"
             class="btn"
-            (click)="addVote(markerInfo.id, currentUser.id, iwindow)"
+            (click)="addVote(markerInfo.id, currentUser.id)"
           >
             <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
           </button>
@@ -33,7 +33,7 @@
           <button
             *ngIf="markerInfo.curUserVoted"
             class="btn"
-            (click)="deleteVote(markerInfo.id, currentUser.id, iwindow)"
+            (click)="deleteVote(markerInfo.id, currentUser.id)"
           >
             <fa-icon
               [icon]="['fa', 'thumbs-up']"

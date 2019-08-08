@@ -1,10 +1,18 @@
 <div class="user-detail-component row justify-content-center">
-  <div
-    class="user-image-container col col-md-9 col-sm-9 col-9 col-lg-3 col-xl-3"
-  >
-    <img class="user-image" src="../../assets/default-user-profile-image.png" />
+  <div *ngIf="user">
+    <div
+      *ngIf="user.avatarPath; else noImage"
+      class="user-image-container col col-md-9 col-sm-9 col-9 col-lg-3 col-xl-3"
+    >
+      <img class="user-image" [src]="getImagePath()" [alt]="user.name" />
+    </div>
+    <ng-template #noImage>
+      <img
+        class="user-image"
+        src="../../assets/default-user-profile-image.png"
+      />
+    </ng-template>
   </div>
-
   <div class="user-info col col-md-9 col-sm-12 col-12 col-lg-3 col-xl-3">
     <div *ngIf="user">
       <div class="user-name-large">

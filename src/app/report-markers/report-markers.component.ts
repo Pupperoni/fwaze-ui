@@ -56,7 +56,7 @@ export class ReportMarkersComponent implements OnInit {
     });
   }
 
-  addVote(reportId: number, userId: number, iwindow) {
+  addVote(reportId: number, userId: number) {
     const data = {
       reportId: reportId,
       userId: userId
@@ -66,7 +66,7 @@ export class ReportMarkersComponent implements OnInit {
     });
   }
 
-  deleteVote(reportId: number, userId: number, iwindow) {
+  deleteVote(reportId: number, userId: number) {
     const data = {
       reportId: reportId,
       userId: userId

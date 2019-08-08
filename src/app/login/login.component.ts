@@ -43,6 +43,9 @@ export class LoginComponent implements OnInit {
       // All looks good
       this.userService.loginUser(userData).subscribe(res => {
         console.log(res);
+        if (this.cookieService.get("currentUser")) {
+          this.cookieService.delete("currentUser");
+        }
         this.cookieService.set("currentUser", JSON.stringify(res.user));
         this.router.navigate(["/"]);
       });

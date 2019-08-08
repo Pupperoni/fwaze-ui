@@ -31,6 +31,10 @@ export class UserService {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
 
+  imageOptions = {
+    headers: new HttpHeaders({ "Content-Type": "multipart/form-data" })
+  };
+
   constructor(private http: HttpClient) {}
 
   // HTTP methods here
@@ -55,8 +59,14 @@ export class UserService {
     return this.http.get<UserResponse>(`${this.url}/${id}`);
   }
 
+  getImage(id: string): Observable<any> {
+    console.log(`Submit GET request to ${this.url}/${id}/image`);
+    return this.http.get<any>(`${this.url}/${id}/image`);
+  }
+
   updateUser(userData): Observable<any> {
-    console.log(`Submit PUT request to ${this.url}/${userData.id}`);
-    return this.http.put(`${this.url}/edit`, userData, this.httpOptions);
+    console.log(`Submit PUT request to ${this.url}/edit`);
+    console.log(userData);
+    return this.http.put(`${this.url}/edit`, userData);
   }
 }
