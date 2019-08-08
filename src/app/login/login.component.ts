@@ -16,7 +16,12 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private cookieService: CookieService,
     private router: Router
-  ) {}
+  ) {
+    // Don't get logged in users log in again lol
+    if (this.cookieService.get("currentUser")) {
+      this.router.navigate(["/"]);
+    }
+  }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -35,14 +40,12 @@ export class LoginComponent implements OnInit {
   onSubmit(userData) {
     // Process form here
     console.log("Login form submitted");
-    console.log(userData);
     if (userData.name == "" || userData.password == "") {
       // Can't have empty fields
       console.log("Empty field found");
     } else {
       // All looks good
       this.userService.loginUser(userData).subscribe(res => {
-        console.log(res);
         if (this.cookieService.get("currentUser")) {
           this.cookieService.delete("currentUser");
         }

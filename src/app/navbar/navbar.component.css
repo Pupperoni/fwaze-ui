@@ -22,15 +22,14 @@ a:hover {
   color: #ff7bff;
 }
 
-.logout-button {
+.user-button {
   background: none;
   color: #007bff;
   border: none;
-  padding: 0;
   cursor: pointer;
 }
 
-.logout-button:hover {
+.user-button:hover {
   color: #ff7bff;
 }
 

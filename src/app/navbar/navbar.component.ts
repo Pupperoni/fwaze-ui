@@ -37,10 +37,13 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.currentUser = undefined;
   }
 
+  goTo(id) {
+    this.router.navigate([`/detail/${id}`]);
+  }
+
   onLogout() {
     this.cookieService.delete("currentUser");
     this.currentUser = undefined;
-    console.log("Logged out");
     this.router.navigate(["/"]);
   }
 }

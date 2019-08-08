@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, Validators, FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { UserService } from "../user.service";
+import { CookieService } from "ngx-cookie-service";
 @Component({
   selector: "app-register",
   templateUrl: "./register.component.html",
@@ -9,7 +10,15 @@ import { UserService } from "../user.service";
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  constructor(private userService: UserService, private router: Router) {
+  constructor(
+    private userService: UserService,
+    private cookieService: CookieService,
+    private router: Router
+  ) {
+    if (this.cookieService.get("currentUser")) {
+      this.router.navigate(["/"]);
+    }
+
     this.registerForm = new FormGroup({
       name: new FormControl("", [Validators.required]),
       email: new FormControl("", [Validators.required, Validators.email]),
@@ -25,7 +34,6 @@ export class RegisterComponent implements OnInit {
     console.log("Register form submitted");
     console.log("Automatically setting role: Regular(0)");
     userData.role = 0;
-    console.log(userData);
     if (
       userData.name == "" ||
       userData.email == "" ||
@@ -40,7 +48,6 @@ export class RegisterComponent implements OnInit {
     } else {
       // All looks good
       this.userService.registerUser(userData).subscribe(res => {
-        console.log(res);
         this.router.navigate(["/login"]);
       });
     }
