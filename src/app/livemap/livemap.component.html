@@ -2,25 +2,33 @@
   <!-- <img src="../../assets/GoogleMapTA.jpg" /> -->
 
   <!-- Form for source and destination: Move to another component -->
-  <form>
+  <form [formGroup]="directionForm">
     <div class="map-form form-row d-flex justify-content-center">
-      <div class="src form-group col">
+      <div class="src form-group col-5">
         <label>Enter source:</label>
         <input
           ngx-google-places-autocomplete
           class="form-control"
           type="text"
           id="src"
+          formControlName="source"
           (onAddressChange)="sourceAddressChange($event)"
         />
       </div>
-      <div class="dest form-group col">
+      <div class="col-1">
+        <button class="btn btn-secondary" (click)="swap()">
+          Swap
+        </button>
+      </div>
+
+      <div class="dest form-group col-5">
         <label>Enter destination:</label>
         <input
           ngx-google-places-autocomplete
           class="form-control"
           type="text"
           id="dest"
+          formControlName="destination"
           (onAddressChange)="destinationAddressChange($event)"
         />
       </div>

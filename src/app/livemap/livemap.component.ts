@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { FormGroup, FormControl } from "@angular/forms";
 
 import { MouseEvent } from "@agm/core";
 import { User } from "../user";
@@ -15,6 +16,9 @@ import { CurrentMarkerService } from "../current-marker.service";
 export class LivemapComponent implements OnInit {
   currentUser: User = undefined;
 
+  directionForm: FormGroup = undefined;
+  sourceString = "";
+  destString = "";
   // center of BGC
   lat: number = 14.5409;
   lng: number = 121.0503;
@@ -45,6 +49,10 @@ export class LivemapComponent implements OnInit {
     private advertisementService: AdvertisementService,
     private cdr: ChangeDetectorRef
   ) {
+    this.directionForm = new FormGroup({
+      source: new FormControl(""),
+      destination: new FormControl("")
+    });
     this.currentMarkerService.reportSubmit$.subscribe(data => {
       this.reportSubmit = data;
       data.votes = 0;
@@ -93,12 +101,30 @@ export class LivemapComponent implements OnInit {
     this.currentMarker = this.currentMarkerService.getMarker();
   }
 
-  toggleInfoWindow(cwindow) {
-    if (cwindow != null) cwindow.close();
-    else cwindow.open();
+  swap() {
+    if (this.source && this.destination) {
+      var bridge = JSON.parse(JSON.stringify(this.source));
+      this.source = JSON.parse(JSON.stringify(this.destination));
+      this.destination = JSON.parse(JSON.stringify(bridge));
+    }
+    if (this.sourceData && this.destData) {
+      var bridge = JSON.parse(JSON.stringify(this.sourceData));
+      this.sourceData = JSON.parse(JSON.stringify(this.destData));
+      this.destData = JSON.parse(JSON.stringify(bridge));
+    }
+
+    this.directionForm.setValue({
+      source: this.destString,
+      destination: this.sourceString
+    });
+    var bridge2 = this.sourceString.slice(0);
+    this.sourceString = this.destString.slice(0);
+    this.destString = bridge2.slice(0);
+    this.cdr.detectChanges();
   }
 
   sourceAddressChange($event) {
+    console.log($event);
     this.source = {
       lat: $event.geometry.location.lat(),
       lng: $event.geometry.location.lng(),
@@ -109,12 +135,21 @@ export class LivemapComponent implements OnInit {
       lng: $event.geometry.location.lng(),
       label: "S"
     };
-
+    this.sourceString = "";
+    for (var i = 0; i < $event.address_components.length; i++) {
+      this.sourceString = this.sourceString.concat(
+        $event.address_components[i].long_name
+      );
+      if (i != $event.address_components.length - 1)
+        this.sourceString = this.sourceString.concat(", ");
+    }
     this.lat = this.source.lat;
     this.lng = this.source.lng;
   }
 
   destinationAddressChange($event) {
+    console.log($event);
+
     this.destination = {
       lat: $event.geometry.location.lat(),
       lng: $event.geometry.location.lng(),
@@ -125,6 +160,14 @@ export class LivemapComponent implements OnInit {
       lng: $event.geometry.location.lng(),
       label: "D"
     };
+    this.destString = "";
+    for (var i = 0; i < $event.address_components.length; i++) {
+      this.destString = this.destString.concat(
+        $event.address_components[i].long_name
+      );
+      if (i != $event.address_components.length - 1)
+        this.destString = this.destString.concat(", ");
+    }
     this.lat = this.destination.lat;
     this.lng = this.destination.lng;
   }
