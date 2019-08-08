@@ -68,4 +68,14 @@ export class UserService {
     console.log(`Submit PUT request to ${this.url}/edit`);
     return this.http.put(`${this.url}/edit`, userData);
   }
+
+  addHomeAd(userData): Observable<any> {
+    console.log(`Submit PUT request to ${this.url}/home`);
+    return this.http.put(`${this.url}/home`, userData);
+  }
+
+  addWorkAd(userData): Observable<any> {
+    console.log(`Submit PUT request to ${this.url}/work`);
+    return this.http.put(`${this.url}/work`, userData);
+  }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { UserService } from "../user.service";
 import { User } from "../user";
@@ -17,10 +16,24 @@ export class EditProfileComponent implements OnInit {
   profileForm: FormGroup;
 
   avatarUpload = null;
+
+  homeSubmit = false;
+  workSubmit = false;
+  home = {
+    latitude: undefined,
+    longitude: undefined,
+    address: ""
+  };
+
+  work = {
+    latitude: undefined,
+    longitude: undefined,
+    address: ""
+  };
+
   constructor(
     private userService: UserService,
     private cookieService: CookieService,
-    private location: Location,
     private router: Router
   ) {}
 
@@ -31,6 +44,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   setUser() {
+    console.log(this.currentUser.role);
     this.profileForm = new FormGroup({
       name: new FormControl(this.currentUser.name, [Validators.required]),
       email: new FormControl(this.currentUser.email, [
@@ -47,6 +61,36 @@ export class EditProfileComponent implements OnInit {
     this.avatarUpload = $event.target.files[0];
   }
 
+  setHomeAddress($event) {
+    this.home.address = "";
+    this.home.latitude = $event.geometry.location.lat();
+    this.home.longitude = $event.geometry.location.lng();
+    for (var i = 0; i < $event.address_components.length; i++) {
+      this.home.address = this.home.address.concat(
+        $event.address_components[i].long_name
+      );
+      if (i != $event.address_components.length - 1)
+        this.home.address = this.home.address.concat(", ");
+    }
+    this.homeSubmit = true;
+    console.log(this.home);
+  }
+
+  setWorkAddress($event) {
+    this.work.address = "";
+    this.work.latitude = $event.geometry.location.lat();
+    this.work.longitude = $event.geometry.location.lng();
+    for (var i = 0; i < $event.address_components.length; i++) {
+      this.work.address = this.work.address.concat(
+        $event.address_components[i].long_name
+      );
+      if (i != $event.address_components.length - 1)
+        this.work.address = this.work.address.concat(", ");
+    }
+    this.workSubmit = true;
+    console.log(this.work);
+  }
+
   onSubmit(formData) {
     formData.role = parseInt(formData.role);
     var uploadData = new FormData();
@@ -54,12 +98,75 @@ export class EditProfileComponent implements OnInit {
     uploadData.append("name", formData.name);
     uploadData.append("email", formData.email);
     uploadData.append("role", formData.role);
+    uploadData.append("work", formData.work);
     uploadData.append("id", this.currentUser.id);
+
     if (this.avatarUpload)
       uploadData.append("avatar", this.avatarUpload, this.avatarUpload.name);
 
     this.userService.updateUser(uploadData).subscribe(res => {
-      this.router.navigate([`/detail/${this.currentUser.id}`]);
+      var arr = [];
+      var homeForm = {
+        latitude: this.home.latitude,
+        longitude: this.home.longitude,
+        address: this.home.address,
+        submit: this.homeSubmit,
+        id: this.currentUser.id
+      };
+      this.userService.addHomeAd(homeForm).subscribe(res => {
+        arr.push(res);
+        if (arr.length == 2) {
+          this.currentUser = {
+            name: formData.name,
+            email: formData.email,
+            role: formData.role,
+            id: this.currentUser.id,
+            home: this.currentUser.home,
+            work: this.currentUser.work
+          };
+          this.currentUser.home =
+            this.home.address === ""
+              ? this.currentUser.home
+              : this.home.address;
+          this.currentUser.work =
+            this.work.address === ""
+              ? this.currentUser.work
+              : this.work.address;
+          this.cookieService.set(
+            "currentUser",
+            JSON.stringify(this.currentUser)
+          );
+          this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+          this.router.navigate([`/detail/${this.currentUser.id}`]);
+        }
+      });
+      var workForm = {
+        latitude: this.work.latitude,
+        longitude: this.work.longitude,
+        address: this.work.address,
+        submit: this.workSubmit,
+        id: this.currentUser.id
+      };
+      this.userService.addWorkAd(workForm).subscribe(res => {
+        arr.push(res);
+        if (arr.length == 2) {
+          this.currentUser.name = formData.name;
+          this.currentUser.email = formData.email;
+          this.currentUser.role = formData.role;
+          this.currentUser.home = this.homeSubmit
+            ? this.home
+            : this.currentUser.home;
+          this.currentUser.work = this.workSubmit
+            ? this.work
+            : this.currentUser.work;
+          this.cookieService.set(
+            "currentUser",
+            JSON.stringify(this.currentUser)
+          );
+          this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+          this.router.navigate([`/detail/${this.currentUser.id}`]);
+        }
+      });
     });
   }
 

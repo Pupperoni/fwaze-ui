@@ -45,6 +45,28 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label>Enter home address:</label>
+          <input
+            ngx-google-places-autocomplete
+            class="form-control"
+            type="text"
+            [value]="currentUser.home.address"
+            (onAddressChange)="setHomeAddress($event)"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Enter work address:</label>
+          <input
+            ngx-google-places-autocomplete
+            class="form-control"
+            type="text"
+            [value]="currentUser.work.address"
+            (onAddressChange)="setWorkAddress($event)"
+          />
+        </div>
+
         <!-- <div class="form-group">
           <label>Password: </label>
           <input type="password" class="form-control" id="password" />
