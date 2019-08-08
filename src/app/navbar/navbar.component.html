@@ -47,14 +47,13 @@
       >
         {{ currentUser.name }}
       </a>
-      <a
+      <button
         *ngIf="currentUser; else notLoggedIn"
-        class="nav-link user-button"
-        href=""
+        class="nav-link logout-button"
         (click)="onLogout()"
       >
         Logout
-      </a>
+      </button>
 
       <!-- Else show login and register buttons -->
       <ng-template #notLoggedIn>
