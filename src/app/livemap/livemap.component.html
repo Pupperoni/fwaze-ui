@@ -15,14 +15,14 @@
           (onAddressChange)="sourceAddressChange($event)"
         />
         <button
-          *ngIf="currentUser"
+          *ngIf="currentUser && currentUser.home.address != ''"
           class="btn btn-primary"
           (click)="addHome('source')"
         >
           Home
         </button>
         <button
-          *ngIf="currentUser"
+          *ngIf="currentUser && currentUser.work.address != ''"
           class="btn btn-primary"
           (click)="addWork('source')"
         >
@@ -46,14 +46,14 @@
           (onAddressChange)="destinationAddressChange($event)"
         />
         <button
-          *ngIf="currentUser"
+          *ngIf="currentUser && currentUser.home.address != ''"
           class="btn btn-primary"
           (click)="addHome('destination')"
         >
           Home
         </button>
         <button
-          *ngIf="currentUser"
+          *ngIf="currentUser && currentUser.work.address != ''"
           class="btn btn-primary"
           (click)="addWork('destination')"
         >
@@ -73,7 +73,7 @@
   >
     <!-- Source and destination markers -->
     <agm-marker
-      *ngIf="source"
+      *ngIf="source.lat"
       [latitude]="source.lat"
       [longitude]="source.lng"
       [label]="source.label"
@@ -81,11 +81,11 @@
     >
     </agm-marker>
     <agm-marker
-      *ngIf="destination"
+      *ngIf="destination.lat"
       [latitude]="destination.lat"
       [longitude]="destination.lng"
       [label]="destination.label"
-      [markerDraggable]="false"
+      [markerDraggable]="true"
     >
     </agm-marker>
 
@@ -106,7 +106,7 @@
     </div>
 
     <agm-direction
-      *ngIf="sourceData && destData"
+      *ngIf="sourceData.lat && destData.lat"
       [origin]="sourceData"
       [destination]="destData"
       (onChange)="deleteMarkers($event)"

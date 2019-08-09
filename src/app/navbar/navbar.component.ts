@@ -44,6 +44,9 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
   onLogout() {
     this.cookieService.delete("currentUser");
     this.currentUser = undefined;
-    this.router.navigate(["/"]);
+    this.cdr.detectChanges();
+
+    // this.router.navigate(["/"]);
+    this.router.navigateByUrl("/livemap");
   }
 }

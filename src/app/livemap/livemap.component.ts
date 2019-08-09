@@ -24,10 +24,24 @@ export class LivemapComponent implements OnInit {
   lng: number = 121.0503;
   zoom: number = 16;
 
-  sourceData = undefined;
-  destData = undefined;
-  source: marker = undefined;
-  destination: marker = undefined;
+  sourceData = {
+    lat: undefined,
+    lng: undefined,
+    label: "S"
+  };
+  destData = {
+    lat: undefined,
+    lng: undefined,
+    label: "D"
+  };
+  source: marker = {
+    lat: undefined,
+    lng: undefined
+  };
+  destination: marker = {
+    lat: undefined,
+    lng: undefined
+  };
 
   // marker when clicking map (for reporting/making ad)
   public currentMarker: marker = undefined;
@@ -61,8 +75,7 @@ export class LivemapComponent implements OnInit {
         autoOpen: false,
         lat: data.latitude,
         lng: data.longitude,
-        type: data.type,
-        label: "R"
+        type: data.type
       });
       this.currentMarkerService.setMarker(undefined);
       this.currentMarker = this.currentMarkerService.getMarker();
@@ -72,8 +85,7 @@ export class LivemapComponent implements OnInit {
       this.adMarkers.push({
         id: data.id,
         lat: data.latitude,
-        lng: data.longitude,
-        label: "A"
+        lng: data.longitude
       });
       this.currentMarkerService.setMarker(undefined);
       this.currentMarker = this.currentMarkerService.getMarker();
@@ -103,24 +115,62 @@ export class LivemapComponent implements OnInit {
   }
 
   swap() {
-    if (this.source && this.destination) {
-      var bridge = JSON.parse(JSON.stringify(this.source));
-      this.source = JSON.parse(JSON.stringify(this.destination));
-      this.destination = JSON.parse(JSON.stringify(bridge));
-    }
-    if (this.sourceData && this.destData) {
-      var bridge = JSON.parse(JSON.stringify(this.sourceData));
-      this.sourceData = JSON.parse(JSON.stringify(this.destData));
-      this.destData = JSON.parse(JSON.stringify(bridge));
+    var sourceCopy = JSON.parse(JSON.stringify(this.sourceData));
+    var destCopy = JSON.parse(JSON.stringify(this.destData));
+    if (this.sourceData.lat && this.destData.lat) {
+      this.source = JSON.parse(JSON.stringify(destCopy));
+      this.sourceData = JSON.parse(JSON.stringify(destCopy));
+      this.destination = JSON.parse(JSON.stringify(sourceCopy));
+      this.destData = JSON.parse(JSON.stringify(sourceCopy));
+      var bridge2 = this.sourceString.slice(0);
+      this.sourceString = this.destString.slice(0);
+      this.destString = bridge2.slice(0);
+    } else if (this.sourceData.lat) {
+      this.destination = JSON.parse(JSON.stringify(sourceCopy));
+      this.destData = JSON.parse(JSON.stringify(sourceCopy));
+      this.destination.label = "D";
+      this.destData.label = "D";
+
+      this.source = {
+        lat: undefined,
+        lng: undefined,
+        label: "S"
+      };
+      this.sourceData = {
+        lat: undefined,
+        lng: undefined,
+        label: "S"
+      };
+      this.destString = this.sourceString.slice(0);
+      this.sourceString = "";
+      this.lat = sourceCopy.lat;
+      this.lng = sourceCopy.lng;
+    } else if (this.destData.lat) {
+      this.source = JSON.parse(JSON.stringify(destCopy));
+      this.sourceData = JSON.parse(JSON.stringify(destCopy));
+      this.source.label = "S";
+      this.sourceData.label = "S";
+      this.destination = {
+        lat: undefined,
+        lng: undefined,
+        label: "D"
+      };
+      this.destData = {
+        lat: undefined,
+        lng: undefined,
+        label: "D"
+      };
+      this.sourceString = this.destString.slice(0);
+      this.destString = "";
+      this.lat = destCopy.lat;
+      this.lng = destCopy.lng;
     }
 
     this.directionForm.setValue({
-      source: this.destString,
-      destination: this.sourceString
+      source: this.sourceString,
+      destination: this.destString
     });
-    var bridge2 = this.sourceString.slice(0);
-    this.sourceString = this.destString.slice(0);
-    this.destString = bridge2.slice(0);
+
     this.cdr.detectChanges();
   }
 
@@ -160,7 +210,7 @@ export class LivemapComponent implements OnInit {
 
   addWork(pos: string) {
     this.directionForm.get(pos).setValue(this.currentUser.work.address);
-
+    console.log(this.currentUser.work);
     if (pos == "source") {
       this.sourceString = this.currentUser.work.address;
       this.source = {
@@ -242,8 +292,16 @@ export class LivemapComponent implements OnInit {
   }
 
   deleteMarkers($event) {
-    this.source = undefined;
-    this.destination = undefined;
+    this.source = {
+      lat: undefined,
+      lng: undefined,
+      label: "S"
+    };
+    this.destination = {
+      lat: undefined,
+      lng: undefined,
+      label: "D"
+    };
     this.cdr.detectChanges();
   }
 
@@ -290,14 +348,14 @@ export class LivemapComponent implements OnInit {
     var updateReportId = this.reportMarkers.splice(index, 1)[0].id;
 
     this.reportService.getReportById(updateReportId).subscribe(res => {
-      this.reportMarkers.push({
+      this.reportMarkers[index] = {
         id: res.report.id,
         autoOpen: true,
         lat: res.report.latitude,
         lng: res.report.longitude,
         type: res.report.type,
         label: "R"
-      });
+      };
     });
   }
 

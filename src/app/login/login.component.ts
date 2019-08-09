@@ -50,6 +50,11 @@ export class LoginComponent implements OnInit {
         if (this.cookieService.get("currentUser")) {
           this.cookieService.delete("currentUser");
         }
+        res.user.home.latitude = parseFloat(res.user.home.latitude);
+        res.user.home.longitude = parseFloat(res.user.home.longitude);
+        res.user.work.latitude = parseFloat(res.user.work.latitude);
+        res.user.work.longitude = parseFloat(res.user.work.longitude);
+
         this.cookieService.set("currentUser", JSON.stringify(res.user));
         this.router.navigate(["/"]);
       });
