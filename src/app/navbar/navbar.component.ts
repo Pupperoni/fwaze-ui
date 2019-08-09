@@ -47,6 +47,6 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.cdr.detectChanges();
 
     // this.router.navigate(["/"]);
-    this.router.navigateByUrl("/livemap");
+    this.router.navigateByUrl("/");
   }
 }
