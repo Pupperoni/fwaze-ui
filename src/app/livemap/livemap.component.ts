@@ -295,6 +295,7 @@ export class LivemapComponent implements OnInit {
   }
 
   deleteMarkers($event) {
+    console.log($event);
     this.distance = $event.routes[0].legs[0].distance.text;
     this.eta = $event.routes[0].legs[0].duration.text;
     this.source = {

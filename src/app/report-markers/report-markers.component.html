@@ -45,7 +45,7 @@
 
         <ng-template #elseBlock>
           <div class="upvote-button">
-            <i class="fa fa-thumbs-up"></i>
+            <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
             <label>{{ markerInfo.votes }}</label>
           </div>
         </ng-template>
@@ -61,6 +61,19 @@
         <div class="report-position-info row align-self-left">
           Located at ({{ markerInfo.latitude }},{{ markerInfo.longitude }})
         </div>
+      </div>
+      <button class="btn" (click)="toggleComments()">
+        <fa-icon [icon]="['fa', 'comment']"></fa-icon>
+      </button>
+      <div *ngIf="commentUp" class="comments">
+        <form class="form-inline">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Type something..."
+          />
+          <button type="submit" class="btn btn-secondary">Send</button>
+        </form>
       </div>
     </div>
   </agm-info-window>

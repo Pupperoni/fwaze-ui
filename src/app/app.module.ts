@@ -14,7 +14,12 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CookieService } from "ngx-cookie-service";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faThumbsUp, faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faThumbsUp,
+  faExchangeAlt,
+  faComment,
+  faCommentAlt
+} from "@fortawesome/free-solid-svg-icons";
 
 import { AgmCoreModule } from "@agm/core";
 import { AgmDirectionModule } from "agm-direction";
@@ -62,5 +67,6 @@ export class AppModule {
   constructor() {
     library.add(faThumbsUp);
     library.add(faExchangeAlt);
+    library.add(faComment);
   }
 }
