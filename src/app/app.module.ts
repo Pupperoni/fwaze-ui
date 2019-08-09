@@ -14,7 +14,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CookieService } from "ngx-cookie-service";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp, faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { AgmCoreModule } from "@agm/core";
 import { AgmDirectionModule } from "agm-direction";
@@ -25,7 +25,7 @@ import { ReportMarkersComponent } from "./report-markers/report-markers.componen
 import { AdMarkersComponent } from "./ad-markers/ad-markers.component";
 import { ReportModalComponent } from "./report-modal/report-modal.component";
 import { AdModalComponent } from "./ad-modal/ad-modal.component";
-import { ReportInfoWindowComponent } from './report-info-window/report-info-window.component';
+import { ReportInfoWindowComponent } from "./report-info-window/report-info-window.component";
 
 @NgModule({
   declarations: [
@@ -61,5 +61,6 @@ import { ReportInfoWindowComponent } from './report-info-window/report-info-wind
 export class AppModule {
   constructor() {
     library.add(faThumbsUp);
+    library.add(faExchangeAlt);
   }
 }

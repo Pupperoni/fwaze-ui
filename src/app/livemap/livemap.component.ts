@@ -16,6 +16,9 @@ import { CurrentMarkerService } from "../current-marker.service";
 export class LivemapComponent implements OnInit {
   currentUser: User = undefined;
 
+  distance = undefined;
+  eta = undefined;
+
   directionForm: FormGroup = undefined;
   sourceString = "";
   destString = "";
@@ -292,6 +295,8 @@ export class LivemapComponent implements OnInit {
   }
 
   deleteMarkers($event) {
+    this.distance = $event.routes[0].legs[0].distance.text;
+    this.eta = $event.routes[0].legs[0].duration.text;
     this.source = {
       lat: undefined,
       lng: undefined,

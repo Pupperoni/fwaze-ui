@@ -16,8 +16,6 @@ export class ReportMarkersComponent implements OnInit {
   @Input() marker;
   @Input() index;
 
-  openCounter = 0;
-
   markerInfo = undefined;
   infoWindowOpen = false;
 
@@ -34,8 +32,7 @@ export class ReportMarkersComponent implements OnInit {
   ngOnInit() {
     if (this.cookieService.get("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-    this.openCounter++;
-    console.log(this.openCounter);
+
     this.icon = {
       url: `../../assets/report${this.marker.type}.png`,
       scaledSize: {

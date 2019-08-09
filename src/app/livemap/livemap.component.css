@@ -21,3 +21,9 @@ agm-map {
 .btn {
   margin: 1em;
 }
+
+.direction-data {
+  border: springgreen;
+  border-radius: 0.25cm 0.25cm 0.25cm 0.25cm;
+  background-color: #b3ffff;
+}

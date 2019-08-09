@@ -58,7 +58,17 @@ export class EditProfileComponent implements OnInit {
   }
 
   handleFileInput($event) {
-    this.avatarUpload = $event.target.files[0];
+    console.log($event.target.files[0]);
+    if ($event.target.files.length > 0) {
+      if (
+        $event.target.files[0].type == "image/png" ||
+        $event.target.files[0].type == "image/jpeg"
+      )
+        this.avatarUpload = $event.target.files[0];
+      else {
+        console.log("File uploaded is not an image");
+      }
+    }
   }
 
   setHomeAddress($event) {
