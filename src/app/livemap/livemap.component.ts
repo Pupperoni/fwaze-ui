@@ -58,6 +58,7 @@ export class LivemapComponent implements OnInit {
       data.votes = 0;
       this.reportMarkers.push({
         id: data.id,
+        autoOpen: false,
         lat: data.latitude,
         lng: data.longitude,
         type: data.type,
@@ -121,6 +122,74 @@ export class LivemapComponent implements OnInit {
     this.sourceString = this.destString.slice(0);
     this.destString = bridge2.slice(0);
     this.cdr.detectChanges();
+  }
+
+  addHome(pos: string) {
+    this.directionForm.get(pos).setValue(this.currentUser.home.address);
+
+    if (pos == "source") {
+      this.sourceString = this.currentUser.home.address;
+      this.source = {
+        lat: this.currentUser.home.latitude,
+        lng: this.currentUser.home.longitude,
+        label: "S"
+      };
+      this.sourceData = {
+        lat: this.currentUser.home.latitude,
+        lng: this.currentUser.home.longitude,
+        label: "S"
+      };
+      this.lat = this.source.lat;
+      this.lng = this.source.lng;
+    } else if (pos == "destination") {
+      this.destString = this.currentUser.home.address;
+      this.destination = {
+        lat: this.currentUser.home.latitude,
+        lng: this.currentUser.home.longitude,
+        label: "D"
+      };
+      this.destData = {
+        lat: this.currentUser.home.latitude,
+        lng: this.currentUser.home.longitude,
+        label: "D"
+      };
+      this.lat = this.destination.lat;
+      this.lng = this.destination.lng;
+    }
+  }
+
+  addWork(pos: string) {
+    this.directionForm.get(pos).setValue(this.currentUser.work.address);
+
+    if (pos == "source") {
+      this.sourceString = this.currentUser.work.address;
+      this.source = {
+        lat: this.currentUser.work.latitude,
+        lng: this.currentUser.work.longitude,
+        label: "S"
+      };
+      this.sourceData = {
+        lat: this.currentUser.work.latitude,
+        lng: this.currentUser.work.longitude,
+        label: "S"
+      };
+      this.lat = this.source.lat;
+      this.lng = this.source.lng;
+    } else if (pos == "destination") {
+      this.destString = this.currentUser.work.address;
+      this.destination = {
+        lat: this.currentUser.work.latitude,
+        lng: this.currentUser.work.longitude,
+        label: "D"
+      };
+      this.destData = {
+        lat: this.currentUser.work.latitude,
+        lng: this.currentUser.work.longitude,
+        label: "D"
+      };
+      this.lat = this.destination.lat;
+      this.lng = this.destination.lng;
+    }
   }
 
   sourceAddressChange($event) {
@@ -209,6 +278,7 @@ export class LivemapComponent implements OnInit {
   addReportToMarkers(report) {
     this.reportMarkers.push({
       id: report.id,
+      autoOpen: false,
       lat: report.position.y || report.latitude,
       lng: report.position.x || report.longitude,
       type: report.type,
@@ -222,6 +292,7 @@ export class LivemapComponent implements OnInit {
     this.reportService.getReportById(updateReportId).subscribe(res => {
       this.reportMarkers.push({
         id: res.report.id,
+        autoOpen: true,
         lat: res.report.latitude,
         lng: res.report.longitude,
         type: res.report.type,
@@ -309,6 +380,7 @@ interface marker {
 
 interface ReportMarker {
   id: string;
+  autoOpen: boolean;
   lat: number;
   lng: number;
   type: number;

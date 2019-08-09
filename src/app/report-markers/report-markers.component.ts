@@ -4,6 +4,8 @@ import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
 import { CurrentMarkerService } from "../current-marker.service";
 import { ReportService } from "../report.service";
+import { PromiseState } from "q";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-report-markers",
@@ -13,6 +15,8 @@ import { ReportService } from "../report.service";
 export class ReportMarkersComponent implements OnInit {
   @Input() marker;
   @Input() index;
+
+  openCounter = 0;
 
   markerInfo = undefined;
   infoWindowOpen = false;
@@ -30,7 +34,8 @@ export class ReportMarkersComponent implements OnInit {
   ngOnInit() {
     if (this.cookieService.get("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-
+    this.openCounter++;
+    console.log(this.openCounter);
     this.icon = {
       url: `../../assets/report${this.marker.type}.png`,
       scaledSize: {
@@ -40,20 +45,35 @@ export class ReportMarkersComponent implements OnInit {
     };
   }
 
-  toggleInfoWindow(id: string) {
-    this.reportService.getReportById(id).subscribe((res: any) => {
-      if (this.currentUser) {
-        this.reportService
-          .getUserVotePair(res.report.id, this.currentUser.id)
-          .subscribe(res2 => {
-            res.report.curUserVoted = res2 ? true : false;
-            this.markerInfo = res.report;
-          });
-      } else {
-        res.report.curUserVoted = false;
-        this.markerInfo = res.report;
-      }
-    });
+  toggleInfoWindow(id: string): Promise<Subscription> {
+    var subscriptionVal = this.reportService
+      .getReportById(id)
+      .subscribe((res: any) => {
+        if (this.currentUser) {
+          this.reportService
+            .getUserVotePair(res.report.id, this.currentUser.id)
+            .subscribe(res2 => {
+              res.report.curUserVoted = res2 ? true : false;
+              this.markerInfo = res.report;
+              return true;
+            });
+        } else {
+          res.report.curUserVoted = false;
+          this.markerInfo = res.report;
+          return true;
+        }
+      });
+    return Promise.resolve(subscriptionVal);
+  }
+
+  // Automatically open when updated from upvotes
+  isWindowOpen(willOpen: boolean, window) {
+    if (willOpen) {
+      this.marker.autoOpen = false;
+      this.toggleInfoWindow(this.marker.id).then(res => {
+        window.open();
+      });
+    }
   }
 
   addVote(reportId: number, userId: number) {

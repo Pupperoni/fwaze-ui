@@ -5,7 +5,7 @@
   [iconUrl]="icon"
   (markerClick)="toggleInfoWindow(marker.id)"
 >
-  <agm-info-window>
+  <agm-info-window #iwindow [isOpen]="isWindowOpen(marker.autoOpen, iwindow)">
     <div *ngIf="markerInfo">
       <div class="container-fluid report-info">
         <div class="report-type-info row">
