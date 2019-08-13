@@ -36,7 +36,11 @@ export class AdMarkersComponent implements OnInit {
   toggleInfoWindow(id: string) {
     this.advertisementService.getAdById(id).subscribe((res: any) => {
       this.markerInfo = res.ad;
-      this.imagePath = `http://localhost:3000/map/ads/${this.marker.id}/image`;
+      if (this.markerInfo.photoPath)
+        this.imagePath = `http://localhost:3000/map/ads/${
+          this.marker.id
+        }/image`;
+      console.log(this.markerInfo);
     });
   }
 }

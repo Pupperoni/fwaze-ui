@@ -11,7 +11,9 @@
         <div class="row">
           <h6>{{ markerInfo.caption }}</h6>
         </div>
-        <img [src]="this.imagePath" />
+        <div *ngIf="this.imagePath">
+          <img [src]="this.imagePath" />
+        </div>
         <div class="report-user-info row align-self-left">
           by &nbsp;
           <strong>
