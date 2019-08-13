@@ -23,9 +23,9 @@ export class LivemapComponent implements OnInit {
   sourceString = "";
   destString = "";
   // center of BGC
-  lat: number = 14.5409;
-  lng: number = 121.0503;
-  zoom: number = 16;
+  lat: number = 14.5349;
+  lng: number = 121.0403;
+  zoom: number = 18;
 
   sourceData = {
     lat: undefined,
@@ -295,7 +295,6 @@ export class LivemapComponent implements OnInit {
   }
 
   deleteMarkers($event) {
-    console.log($event);
     this.distance = $event.routes[0].legs[0].distance.text;
     this.eta = $event.routes[0].legs[0].duration.text;
     this.source = {
@@ -330,14 +329,25 @@ export class LivemapComponent implements OnInit {
 
   mapPositionChange = this.debounce(
     function($event) {
-      var tright = `${$event.na.l},${$event.ga.l}`;
-      var bleft = `${$event.na.j},${$event.ga.j}`;
-      this.assignReportMarkers(tright, bleft);
-      this.assignAdMarkers(tright, bleft);
+      if (this.zoom > 15) {
+        var tright = `${$event.na.l},${$event.ga.l}`;
+        var bleft = `${$event.na.j},${$event.ga.j}`;
+        this.assignReportMarkers(tright, bleft);
+        this.assignAdMarkers(tright, bleft);
+      }
     },
     100,
     false
   );
+
+  mapZoomChange($event) {
+    console.log($event);
+    this.zoom = $event;
+    if (this.zoom <= 15) {
+      this.reportMarkers = [];
+      this.adMarkers = [];
+    }
+  }
 
   addReportToMarkers(report) {
     this.reportMarkers.push({

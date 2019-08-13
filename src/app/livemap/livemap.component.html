@@ -87,6 +87,7 @@
     [zoom]="zoom"
     (mapClick)="onMapClick($event)"
     (boundsChange)="mapPositionChange($event)"
+    (zoomChange)="mapZoomChange($event)"
   >
     <!-- Source and destination markers -->
     <agm-marker
