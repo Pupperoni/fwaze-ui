@@ -361,7 +361,7 @@ export class LivemapComponent implements OnInit {
   }
 
   private updateReportMarker(index: number) {
-    var updateReportId = this.reportMarkers.splice(index, 1)[0].id;
+    var updateReportId = this.reportMarkers.slice(index, index + 1)[0].id;
 
     this.reportService.getReportById(updateReportId).subscribe(res => {
       this.reportMarkers[index] = {
