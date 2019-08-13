@@ -12,7 +12,7 @@ export class AdMarkersComponent implements OnInit {
   @Input() marker;
   @Input() index;
   icon = undefined;
-
+  imagePath = undefined;
   markerInfo = undefined;
   currentUser: User = undefined;
   constructor(
@@ -36,6 +36,7 @@ export class AdMarkersComponent implements OnInit {
   toggleInfoWindow(id: string) {
     this.advertisementService.getAdById(id).subscribe((res: any) => {
       this.markerInfo = res.ad;
+      this.imagePath = `http://localhost:3000/map/ads/${this.marker.id}/image`;
     });
   }
 }

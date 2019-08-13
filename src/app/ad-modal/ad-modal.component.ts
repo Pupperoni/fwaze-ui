@@ -14,7 +14,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 export class AdModalComponent implements OnInit {
   currentUser: User = undefined;
   currentMarker: marker = undefined;
-
+  photoUpload = undefined;
   adForm: FormGroup;
 
   constructor(
@@ -32,6 +32,19 @@ export class AdModalComponent implements OnInit {
     });
   }
 
+  handleFileInput($event) {
+    if ($event.target.files.length > 0) {
+      if (
+        $event.target.files[0].type == "image/png" ||
+        $event.target.files[0].type == "image/jpeg"
+      )
+        this.photoUpload = $event.target.files[0];
+      else {
+        console.log("File uploaded is not an image");
+      }
+    }
+  }
+
   adSubmit(formData) {
     if (formData.caption == "") {
       // Can't have empty fields
@@ -40,14 +53,23 @@ export class AdModalComponent implements OnInit {
       // All good!
 
       this.currentMarker = this.currentMarkerService.getMarker();
+      var uploadData = new FormData();
 
-      var adSubmission = {
-        userId: this.currentUser.id,
-        caption: formData.caption,
-        latitude: this.currentMarker.lat,
-        longitude: this.currentMarker.lng
-      };
-      this.advertisementService.addAd(adSubmission).subscribe((res: any) => {
+      uploadData.append("userId", this.currentUser.id);
+      uploadData.append("caption", formData.caption);
+      uploadData.append("latitude", this.currentMarker.lat.toString());
+      uploadData.append("longitude", this.currentMarker.lng.toString());
+
+      if (this.photoUpload)
+        uploadData.append("photo", this.photoUpload, this.photoUpload.name);
+
+      // var adSubmission = {
+      //   userId: this.currentUser.id,
+      //   caption: formData.caption,
+      //   latitude: this.currentMarker.lat,
+      //   longitude: this.currentMarker.lng
+      // };
+      this.advertisementService.addAd(uploadData).subscribe((res: any) => {
         this.currentMarkerService.adSubmit(res.data);
       });
     }

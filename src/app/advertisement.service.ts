@@ -48,6 +48,6 @@ export class AdvertisementService {
 
   addAd(ad: any) {
     console.log(`Sending POST request to ${this.url}/new`);
-    return this.http.post(`${this.url}/new`, ad, this.httpOptions);
+    return this.http.post(`${this.url}/new`, ad);
   }
 }

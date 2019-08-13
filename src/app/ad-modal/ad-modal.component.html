@@ -25,6 +25,7 @@
         </div>
         <div class="modal-body">
           <form [formGroup]="adForm">
+            <label>Enter caption:</label>
             <textarea
               class="form-control"
               rows="5"
@@ -32,15 +33,24 @@
               formControlName="caption"
             >
             </textarea>
-          </form>
-          <div
-            *ngIf="caption.invalid && (caption.dirty || caption.touched)"
-            class="alert alert-danger"
-          >
-            <div *ngIf="caption.errors.required">
-              Caption is required.
+            <div
+              *ngIf="caption.invalid && (caption.dirty || caption.touched)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="caption.errors.required">
+                Caption is required.
+              </div>
             </div>
-          </div>
+            <div class="form-group">
+              <label>Upload photo:</label>
+              <input
+                type="file"
+                class="form-control-file"
+                id="avatar"
+                (change)="handleFileInput($event)"
+              />
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
