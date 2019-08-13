@@ -96,6 +96,9 @@ export class ReportMarkersComponent implements OnInit {
     else
       this.commentService.createComment(data).subscribe(res => {
         console.log(res);
+        this.commentForm.setValue({
+          body: ""
+        });
         this.commentList.push(data);
       });
   }
