@@ -13,4 +13,7 @@
 
 .comment-data {
   display: block;
+  background-color: #c7c7c7;
+  padding: 0.5em;
+  border-radius: 0.25cm;
 }
