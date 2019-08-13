@@ -67,11 +67,27 @@
         <fa-icon [icon]="['fa', 'comment']"></fa-icon>
       </button>
       <div *ngIf="commentUp" class="comments">
-        <form class="form-inline">
+        <div *ngFor="let comment of commentList" class="commentList">
+          <div class="comment-data">
+            <div>
+              {{ comment.body }}
+            </div>
+            <div>
+              <strong>{{ comment.userName }}</strong>
+            </div>
+          </div>
+        </div>
+        <form
+          *ngIf="currentUser"
+          class="form-inline"
+          [formGroup]="commentForm"
+          (ngSubmit)="onSubmit(commentForm.value)"
+        >
           <input
             class="form-control"
             type="text"
             placeholder="Type something..."
+            formControlName="body"
           />
           <button type="submit" class="btn btn-secondary">Send</button>
         </form>

@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
-
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
 import { CurrentMarkerService } from "../current-marker.service";
 import { ReportService } from "../report.service";
+import { CommentService } from "../comment.service";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -15,9 +16,11 @@ export class ReportMarkersComponent implements OnInit {
   @Input() marker;
   @Input() index;
   commentUp = false;
+  commentForm: FormGroup;
 
   markerInfo = undefined;
   infoWindowOpen = false;
+  commentList = [];
 
   currentUser: User = undefined;
 
@@ -25,10 +28,15 @@ export class ReportMarkersComponent implements OnInit {
 
   constructor(
     private reportService: ReportService,
+    private commentService: CommentService,
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    this.commentForm = new FormGroup({
+      body: new FormControl("")
+    });
+  }
 
   ngOnInit() {
     if (this.cookieService.get("currentUser"))
@@ -65,8 +73,28 @@ export class ReportMarkersComponent implements OnInit {
   }
 
   toggleComments() {
+    this.commentList = [];
     this.commentUp = !this.commentUp;
+    this.commentService
+      .getCommentsbyReport(this.marker.id)
+      .subscribe((res: any) => {
+        res.data.forEach(comment => {
+          this.commentList.push(comment);
+        });
+      });
     this.cdr.detectChanges();
+  }
+
+  onSubmit(data) {
+    data.reportId = this.marker.id;
+    data.userName = this.currentUser.name;
+    console.log(data);
+    if (data.body == "") console.log("Missing comment text");
+    else
+      this.commentService.createComment(data).subscribe(res => {
+        console.log(res);
+        this.commentList.push(data);
+      });
   }
 
   // Automatically open when updated from upvotes

@@ -1,8 +1,16 @@
 .up {
   fill: #00a2ff;
-  /* color: #00a2ff; */
 }
 
 .reportmarker {
   background-color: yellow;
+}
+
+.commentList {
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+.comment-data {
+  display: block;
 }
