@@ -69,12 +69,14 @@
       <div *ngIf="commentUp" class="comments">
         <div *ngFor="let comment of commentList" class="commentList">
           <div class="comment-data">
-            <div>
+            <div class="comment-text">
               {{ comment.body }}
             </div>
-            <div>
-              <strong>{{ comment.userName }}</strong>
-            </div>
+            <strong>
+              <a routerLink="/detail/{{ comment.userId }}/">
+                {{ comment.userName }}
+              </a>
+            </strong>
           </div>
         </div>
         <form

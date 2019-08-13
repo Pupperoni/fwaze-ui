@@ -79,6 +79,8 @@ export class ReportMarkersComponent implements OnInit {
       .getCommentsbyReport(this.marker.id)
       .subscribe((res: any) => {
         res.data.forEach(comment => {
+          // console.log(comment);
+          comment.userId = comment.user_id;
           this.commentList.push(comment);
         });
       });
@@ -87,6 +89,7 @@ export class ReportMarkersComponent implements OnInit {
 
   onSubmit(data) {
     data.reportId = this.marker.id;
+    data.userId = this.currentUser.id;
     data.userName = this.currentUser.name;
     console.log(data);
     if (data.body == "") console.log("Missing comment text");
