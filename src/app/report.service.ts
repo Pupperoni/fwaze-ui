@@ -58,7 +58,7 @@ export class ReportService {
 
   addReport(report: any) {
     console.log(`Sending POST request to ${this.url}/new`);
-    return this.http.post(`${this.url}/new`, report, this.httpOptions);
+    return this.http.post(`${this.url}/new`, report);
   }
 
   addVote(data) {

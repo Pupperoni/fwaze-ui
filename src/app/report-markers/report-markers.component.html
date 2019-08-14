@@ -20,36 +20,9 @@
           <h6 *ngIf="markerInfo.type == 8">Others</h6>
         </div>
 
-        <div *ngIf="currentUser; else elseBlock" class="upvote-button">
-          <!-- current user hasnt upvoted - give him a chance to do so -->
-          <button
-            *ngIf="!markerInfo.curUserVoted"
-            class="btn"
-            (click)="addVote(markerInfo.id, currentUser.id)"
-          >
-            <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
-          </button>
-
-          <!-- current user has upvoted - clicking this will revoke his upvote -->
-          <button
-            *ngIf="markerInfo.curUserVoted"
-            class="btn"
-            (click)="deleteVote(markerInfo.id, currentUser.id)"
-          >
-            <fa-icon
-              [icon]="['fa', 'thumbs-up']"
-              [styles]="{ color: 'blue' }"
-            ></fa-icon>
-          </button>
-          <label>{{ markerInfo.votes }}</label>
+        <div *ngIf="imagePath" class="image-block row justify-content-center">
+          <img [src]="imagePath" />
         </div>
-
-        <ng-template #elseBlock>
-          <div class="upvote-button">
-            <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
-            <label>{{ markerInfo.votes }}</label>
-          </div>
-        </ng-template>
 
         <div class="report-user-info row align-self-left">
           Reported by &nbsp;
@@ -63,9 +36,47 @@
           Located at ({{ markerInfo.latitude }},{{ markerInfo.longitude }})
         </div>
       </div>
-      <button class="btn" (click)="toggleComments()">
-        <fa-icon [icon]="['fa', 'comment']"></fa-icon>
-      </button>
+      <div class="button-group row">
+        <div class="comment-button-div col-2">
+          <button class="btn" (click)="toggleComments()">
+            <fa-icon [icon]="['fa', 'comment']"></fa-icon>
+          </button>
+        </div>
+
+        <div class="upvote-button-div col">
+          <div *ngIf="currentUser; else elseBlock" class="upvote-button">
+            <!-- current user hasnt upvoted - give him a chance to do so -->
+            <button
+              *ngIf="!markerInfo.curUserVoted"
+              class="btn"
+              (click)="addVote(markerInfo.id, currentUser.id)"
+            >
+              <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
+            </button>
+
+            <!-- current user has upvoted - clicking this will revoke his upvote -->
+            <button
+              *ngIf="markerInfo.curUserVoted"
+              class="btn"
+              (click)="deleteVote(markerInfo.id, currentUser.id)"
+            >
+              <fa-icon
+                [icon]="['fa', 'thumbs-up']"
+                [styles]="{ color: 'blue' }"
+              ></fa-icon>
+            </button>
+            <label>{{ markerInfo.votes }}</label>
+          </div>
+
+          <ng-template #elseBlock>
+            <div class="upvote-button">
+              <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
+              <label>{{ markerInfo.votes }}</label>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
       <div *ngIf="commentUp" class="comments">
         <div *ngFor="let comment of commentList" class="commentList">
           <div class="comment-data">

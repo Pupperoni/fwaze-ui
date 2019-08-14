@@ -17,6 +17,7 @@ export class ReportMarkersComponent implements OnInit {
   @Input() index;
   commentUp = false;
   commentForm: FormGroup;
+  imagePath = undefined;
 
   markerInfo = undefined;
   infoWindowOpen = false;
@@ -55,17 +56,27 @@ export class ReportMarkersComponent implements OnInit {
     var subscriptionVal = this.reportService
       .getReportById(id)
       .subscribe((res: any) => {
+        console.log(res);
+
         if (this.currentUser) {
           this.reportService
             .getUserVotePair(res.report.id, this.currentUser.id)
             .subscribe(res2 => {
               res.report.curUserVoted = res2 ? true : false;
               this.markerInfo = res.report;
+              if (this.markerInfo.photoPath)
+                this.imagePath = `http://localhost:3000/map/reports/${
+                  this.markerInfo.id
+                }/image`;
               return true;
             });
         } else {
           res.report.curUserVoted = false;
           this.markerInfo = res.report;
+          if (this.markerInfo.photoPath)
+            this.imagePath = `http://localhost:3000/map/reports/${
+              this.markerInfo.id
+            }/image`;
           return true;
         }
       });
@@ -79,7 +90,6 @@ export class ReportMarkersComponent implements OnInit {
       .getCommentsbyReport(this.marker.id)
       .subscribe((res: any) => {
         res.data.forEach(comment => {
-          // console.log(comment);
           comment.userId = comment.user_id;
           this.commentList.push(comment);
         });
