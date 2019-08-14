@@ -142,7 +142,7 @@ export class ReportMarkersComponent implements OnInit {
     if (willOpen) {
       this.marker.autoOpen = false;
       this.toggleInfoWindow(this.marker.id).then(res => {
-        window.open();
+        return willOpen;
       });
     }
   }
