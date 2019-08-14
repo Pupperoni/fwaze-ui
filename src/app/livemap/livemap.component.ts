@@ -246,7 +246,6 @@ export class LivemapComponent implements OnInit {
   }
 
   sourceAddressChange($event) {
-    console.log($event);
     this.source = {
       lat: $event.geometry.location.lat(),
       lng: $event.geometry.location.lng(),
@@ -270,8 +269,6 @@ export class LivemapComponent implements OnInit {
   }
 
   destinationAddressChange($event) {
-    console.log($event);
-
     this.destination = {
       lat: $event.geometry.location.lat(),
       lng: $event.geometry.location.lng(),
@@ -341,7 +338,6 @@ export class LivemapComponent implements OnInit {
   );
 
   mapZoomChange($event) {
-    console.log($event);
     this.zoom = $event;
     if (this.zoom <= 15) {
       this.reportMarkers = [];

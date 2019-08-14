@@ -4,7 +4,7 @@
   <!-- Form for source and destination: Move to another component -->
   <form [formGroup]="directionForm">
     <div class="map-form form-row d-flex justify-content-center">
-      <div class="src form-group col-5">
+      <div class="src form-group col-sm-12 col-md-12 col-lg-5">
         <label>Enter source:</label>
         <input
           ngx-google-places-autocomplete
@@ -29,10 +29,11 @@
           Work
         </button>
       </div>
-      <div class="col-1">
+      <div class="col-sm-12 col-md-12 col-lg-1">
         <div class="row justify-content-center">
           <button class="btn btn-secondary" (click)="swap()">
-            <fa-icon [icon]="['fa', 'exchange-alt']"></fa-icon>
+            &nbsp;&nbsp;<fa-icon [icon]="['fa', 'exchange-alt']"></fa-icon
+            >&nbsp;&nbsp;
           </button>
         </div>
 
@@ -52,7 +53,7 @@
         </div>
       </div>
 
-      <div class="dest form-group col-5">
+      <div class="dest form-group col-sm-12 col-md-12 col-lg-5">
         <label>Enter destination:</label>
         <input
           ngx-google-places-autocomplete
