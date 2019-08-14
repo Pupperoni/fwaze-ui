@@ -1,3 +1,7 @@
 textarea {
   resize: none;
 }
+
+.form-group {
+  margin-top: 1em;
+}
