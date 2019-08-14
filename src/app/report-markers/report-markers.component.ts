@@ -18,6 +18,8 @@ export class ReportMarkersComponent implements OnInit {
   commentUp = false;
   commentForm: FormGroup;
   imagePath = undefined;
+  pageNum = 0;
+  maxPages = undefined;
 
   markerInfo = undefined;
   infoWindowOpen = false;
@@ -58,6 +60,13 @@ export class ReportMarkersComponent implements OnInit {
       .subscribe((res: any) => {
         console.log(res);
 
+        this.commentService
+          .countCommentsbyReport(id)
+          .subscribe((count: any) => {
+            this.maxPages = Math.ceil(count.data / 5);
+            console.log(this.maxPages);
+          });
+
         if (this.currentUser) {
           this.reportService
             .getUserVotePair(res.report.id, this.currentUser.id)
@@ -87,7 +96,21 @@ export class ReportMarkersComponent implements OnInit {
     this.commentList = [];
     this.commentUp = !this.commentUp;
     this.commentService
-      .getCommentsbyReport(this.marker.id)
+      .getCommentsbyReport(this.marker.id, this.pageNum)
+      .subscribe((res: any) => {
+        res.data.forEach(comment => {
+          comment.userId = comment.user_id;
+          this.commentList.push(comment);
+        });
+      });
+    this.cdr.detectChanges();
+  }
+
+  changePage(num: number) {
+    this.pageNum = num;
+    this.commentList = [];
+    this.commentService
+      .getCommentsbyReport(this.marker.id, this.pageNum)
       .subscribe((res: any) => {
         res.data.forEach(comment => {
           comment.userId = comment.user_id;
@@ -102,15 +125,18 @@ export class ReportMarkersComponent implements OnInit {
     data.userId = this.currentUser.id;
     data.userName = this.currentUser.name;
     console.log(data);
+
     if (data.body == "") console.log("Missing comment text");
-    else
-      this.commentService.createComment(data).subscribe(res => {
-        console.log(res);
+    else {
+      this.commentService.createComment(data).subscribe((res: any) => {
+        this.maxPages = Math.ceil(res.count / 5);
         this.commentForm.setValue({
           body: ""
         });
-        this.commentList.push(data);
+        // After adding comment, go to the first page again
+        this.changePage(0);
       });
+    }
   }
 
   // Automatically open when updated from upvotes

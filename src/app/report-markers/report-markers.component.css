@@ -6,8 +6,12 @@
   background-color: yellow;
 }
 
+.form-control {
+  width: 80%;
+}
+
 .commentList {
-  margin-left: 1em;
+  /* margin-left: 1em; */
   margin-bottom: 1em;
 }
 
@@ -25,4 +29,9 @@ img {
 
 .report-user-info {
   margin-top: 1em;
+}
+
+.page-buttons {
+  margin-top: 1em;
+  margin-bottom: 1em;
 }

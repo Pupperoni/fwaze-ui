@@ -19,8 +19,15 @@ export class CommentService {
     return this.http.post(`${this.url}/new`, data, this.httpOptions);
   }
 
-  getCommentsbyReport(report_id) {
-    console.log(`Sending GET request to ${this.url}/report/${report_id}`);
-    return this.http.get(`${this.url}/report/${report_id}`);
+  getCommentsbyReport(report_id, pageNum) {
+    console.log(
+      `Sending GET request to ${this.url}/report/${report_id}?page=${pageNum}`
+    );
+    return this.http.get(`${this.url}/report/${report_id}?page=${pageNum}`);
+  }
+
+  countCommentsbyReport(report_id) {
+    console.log(`Sending GET request to ${this.url}/report/${report_id}/count`);
+    return this.http.get(`${this.url}/report/${report_id}/count`);
   }
 }

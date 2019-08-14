@@ -104,6 +104,26 @@
           />
           <button type="submit" class="btn btn-secondary">Send</button>
         </form>
+        <div class="page-buttons row">
+          <div class="col-6">
+            <button
+              *ngIf="pageNum > 0"
+              class="btn btn-block btn-secondary"
+              (click)="changePage(pageNum - 1)"
+            >
+              &lt;
+            </button>
+          </div>
+          <div class="col-6">
+            <button
+              *ngIf="maxPages > pageNum + 1"
+              class="btn btn-block btn-secondary"
+              (click)="changePage(pageNum + 1)"
+            >
+              &gt;
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </agm-info-window>
