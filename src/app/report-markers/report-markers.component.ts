@@ -58,13 +58,10 @@ export class ReportMarkersComponent implements OnInit {
     var subscriptionVal = this.reportService
       .getReportById(id)
       .subscribe((res: any) => {
-        console.log(res);
-
         this.commentService
           .countCommentsbyReport(id)
           .subscribe((count: any) => {
             this.maxPages = Math.ceil(count.data / 5);
-            console.log(this.maxPages);
           });
 
         if (this.currentUser) {
@@ -124,7 +121,6 @@ export class ReportMarkersComponent implements OnInit {
     data.reportId = this.marker.id;
     data.userId = this.currentUser.id;
     data.userName = this.currentUser.name;
-    console.log(data);
 
     if (data.body == "") console.log("Missing comment text");
     else {
