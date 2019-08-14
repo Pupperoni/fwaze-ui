@@ -359,16 +359,18 @@ export class LivemapComponent implements OnInit {
   private updateReportMarker(index: number) {
     var updateReportId = this.reportMarkers.slice(index, index + 1)[0].id;
 
-    this.reportService.getReportById(updateReportId).subscribe(res => {
-      this.reportMarkers[index] = {
-        id: res.report.id,
-        autoOpen: true,
-        lat: res.report.latitude,
-        lng: res.report.longitude,
-        type: res.report.type,
-        label: "R"
-      };
-    });
+    this.reportMarkers[index].autoOpen = true;
+
+    // this.reportService.getReportById(updateReportId).subscribe(res => {
+    //   this.reportMarkers[index] = {
+    //     id: res.report.id,
+    //     autoOpen: true,
+    //     lat: res.report.latitude,
+    //     lng: res.report.longitude,
+    //     type: res.report.type,
+    //     label: "R"
+    //   };
+    // });
   }
 
   private assignReportMarkers(tright, bleft) {

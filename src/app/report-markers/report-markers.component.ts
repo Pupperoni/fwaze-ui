@@ -92,15 +92,17 @@ export class ReportMarkersComponent implements OnInit {
   toggleComments() {
     this.commentList = [];
     this.commentUp = !this.commentUp;
-    this.commentService
-      .getCommentsbyReport(this.marker.id, this.pageNum)
-      .subscribe((res: any) => {
-        res.data.forEach(comment => {
-          comment.userId = comment.user_id;
-          this.commentList.push(comment);
+    if (this.commentUp) {
+      this.commentService
+        .getCommentsbyReport(this.marker.id, this.pageNum)
+        .subscribe((res: any) => {
+          res.data.forEach(comment => {
+            comment.userId = comment.user_id;
+            this.commentList.push(comment);
+          });
         });
-      });
-    this.cdr.detectChanges();
+      this.cdr.detectChanges();
+    }
   }
 
   changePage(num: number) {
