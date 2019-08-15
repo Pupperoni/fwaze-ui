@@ -78,4 +78,16 @@ export class UserService {
     // console.log(`Submit PUT request to ${this.url}/work`);
     return this.http.put(`${this.url}/work`, userData);
   }
+
+  addFaveRoute(routeData): Observable<any> {
+    return this.http.post<any>(
+      `${this.url}/faves/new`,
+      routeData,
+      this.httpOptions
+    );
+  }
+
+  getfaveRoutes(userId): Observable<any> {
+    return this.http.get<any>(`${this.url}/faves/${userId}`);
+  }
 }

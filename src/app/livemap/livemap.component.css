@@ -27,3 +27,7 @@ agm-map {
   border-radius: 0.25cm 0.25cm 0.25cm 0.25cm;
   background-color: #b3ffff;
 }
+
+select {
+  width: 40%;
+}

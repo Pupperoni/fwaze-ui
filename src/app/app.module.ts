@@ -18,8 +18,9 @@ import {
   faThumbsUp,
   faExchangeAlt,
   faComment,
-  faCommentAlt,
-  faLocationArrow
+  faLocationArrow,
+  faHeart,
+  faArrowRight
 } from "@fortawesome/free-solid-svg-icons";
 
 import { AgmCoreModule } from "@agm/core";
@@ -74,5 +75,7 @@ export class AppModule {
     library.add(faExchangeAlt);
     library.add(faComment);
     library.add(faLocationArrow);
+    library.add(faHeart);
+    library.add(faArrowRight);
   }
 }

@@ -6,6 +6,7 @@ import { User } from "../user";
 
 import { CookieService } from "ngx-cookie-service";
 import { ReportService } from "../report.service";
+import { UserService } from "../user.service";
 import { AdvertisementService } from "../advertisement.service";
 import { CurrentMarkerService } from "../current-marker.service";
 import { Subscription } from "rxjs";
@@ -21,6 +22,8 @@ export class LivemapComponent implements OnInit {
   distance = undefined;
   eta = undefined;
 
+  faveRoutes = [];
+  selectedRoute: number = -1;
   reportFilter = true;
   adFilter = true;
 
@@ -81,6 +84,7 @@ export class LivemapComponent implements OnInit {
   constructor(
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
+    private userService: UserService,
     private reportService: ReportService,
     private advertisementService: AdvertisementService,
     private cdr: ChangeDetectorRef
@@ -129,6 +133,13 @@ export class LivemapComponent implements OnInit {
     if (this.cookieService.get("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     else this.currentUser = undefined;
+
+    this.userService.getfaveRoutes(this.currentUser.id).subscribe(res => {
+      console.log(res);
+      res.routes.forEach(route => {
+        this.faveRoutes.push(route);
+      });
+    });
   }
 
   onMapClick($event: MouseEvent) {
@@ -345,6 +356,74 @@ export class LivemapComponent implements OnInit {
       });
     } else {
       alert("Geolocation not supported by your browser! :(");
+    }
+  }
+
+  useRoute() {
+    if (this.selectedRoute == -1) {
+      // do nothing
+    } else {
+      // use em
+      this.destination = {
+        lat: this.faveRoutes[this.selectedRoute].destination_coords.y,
+        lng: this.faveRoutes[this.selectedRoute].destination_coords.x,
+        label: "D"
+      };
+      this.destData = {
+        lat: this.faveRoutes[this.selectedRoute].destination_coords.y,
+        lng: this.faveRoutes[this.selectedRoute].destination_coords.x,
+        label: "D"
+      };
+
+      this.source = {
+        lat: this.faveRoutes[this.selectedRoute].source_coords.y,
+        lng: this.faveRoutes[this.selectedRoute].source_coords.x,
+        label: "S"
+      };
+      this.sourceData = {
+        lat: this.faveRoutes[this.selectedRoute].source_coords.y,
+        lng: this.faveRoutes[this.selectedRoute].source_coords.x,
+        label: "S"
+      };
+
+      this.destString = this.faveRoutes[this.selectedRoute].destination_string;
+      this.sourceString = this.faveRoutes[this.selectedRoute].source_string;
+
+      this.directionForm.setValue({
+        source: this.sourceString,
+        destination: this.destString
+      });
+
+      this.cdr.detectChanges();
+    }
+  }
+
+  saveRoute() {
+    if (this.sourceData.lat && this.destData.lat) {
+      // create json of route details
+      var routeData = {
+        sourceLatitude: this.sourceData.lat,
+        sourceLongitude: this.sourceData.lng,
+        destinationLatitude: this.destData.lat,
+        destinationLongitude: this.destData.lng,
+        sourceString: this.sourceString,
+        destinationString: this.destString,
+        userId: this.currentUser.id
+      };
+
+      this.userService.addFaveRoute(routeData).subscribe(res => {
+        alert("Route saved successfully");
+        this.userService.getfaveRoutes(this.currentUser.id).subscribe(res => {
+          this.faveRoutes = [];
+          res.routes.forEach(route => {
+            this.faveRoutes.push(route);
+          });
+        });
+      });
+    } else if (!this.currentUser) {
+      alert("Please login");
+    } else {
+      alert("Please add both source and destination");
     }
   }
 
