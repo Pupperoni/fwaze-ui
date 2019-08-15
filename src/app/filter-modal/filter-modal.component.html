@@ -32,7 +32,7 @@
             <div class="row justify-content-center">
               <div
                 *ngFor="let choice of btnClicked; let i = index"
-                class="text-center col-lg-3 col-md-4 col-sm-6 align-self-center"
+                class="text-center col-lg-3 col-md-6 col-sm-6 align-self-center"
               >
                 <button
                   class="btn btn-secondary choice-button-type"
@@ -47,7 +47,7 @@
               <h3>Group</h3>
             </div>
             <div class="row justify-content-center">
-              <div class="text-center col-lg-3 col-md-4">
+              <div class="text-center col-lg-3 col-md-6 col-sm-6">
                 <button
                   class="btn btn-secondary choice-button-group"
                   [class.active]="isGroupActive(0)"
@@ -56,7 +56,7 @@
                   Reports
                 </button>
               </div>
-              <div class="text-center col-lg-3 col-md-4">
+              <div class="text-center col-lg-3 col-md-6 col-sm-6">
                 <button
                   class="btn btn-secondary choice-button-group"
                   [class.active]="isGroupActive(1)"

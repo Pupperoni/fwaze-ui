@@ -91,24 +91,27 @@ export class LivemapComponent implements OnInit {
     });
     this.currentMarkerService.reportSubmit$.subscribe(data => {
       this.reportSubmit = data;
-      data.votes = 0;
-      this.reportMarkers.push({
-        id: data.id,
-        autoOpen: false,
-        lat: data.latitude,
-        lng: data.longitude,
-        type: data.type
-      });
+      if (this.reportFilter && this.filterList[data.type].active) {
+        this.reportMarkers.push({
+          id: data.id,
+          autoOpen: false,
+          lat: data.latitude,
+          lng: data.longitude,
+          type: data.type
+        });
+      }
       this.currentMarkerService.setMarker(undefined);
       this.currentMarker = this.currentMarkerService.getMarker();
     });
     this.currentMarkerService.adSubmit$.subscribe(data => {
       this.adSubmit = data;
-      this.adMarkers.push({
-        id: data.id,
-        lat: data.latitude,
-        lng: data.longitude
-      });
+      if (this.adFilter) {
+        this.adMarkers.push({
+          id: data.id,
+          lat: data.latitude,
+          lng: data.longitude
+        });
+      }
       this.currentMarkerService.setMarker(undefined);
       this.currentMarker = this.currentMarkerService.getMarker();
     });
@@ -173,7 +176,6 @@ export class LivemapComponent implements OnInit {
   }
 
   onFilterSubmit($event) {
-    console.log($event);
     this.filterList = $event.type;
     this.reportFilter = $event.group[0];
     this.adFilter = $event.group[1];
