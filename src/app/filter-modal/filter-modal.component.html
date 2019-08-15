@@ -36,7 +36,7 @@
               >
                 <button
                   class="btn btn-secondary choice-button-type"
-                  [class.active]="isActive(i)"
+                  [class.activated]="isActive(i)"
                   (click)="onBtnClicked(i)"
                 >
                   {{ choice.name }}
@@ -50,7 +50,7 @@
               <div class="text-center col-lg-3 col-md-6 col-sm-6">
                 <button
                   class="btn btn-secondary choice-button-group"
-                  [class.active]="isGroupActive(0)"
+                  [class.activated]="isGroupActive(0)"
                   (click)="onGroupBtnClicked(0)"
                 >
                   Reports
@@ -59,7 +59,7 @@
               <div class="text-center col-lg-3 col-md-6 col-sm-6">
                 <button
                   class="btn btn-secondary choice-button-group"
-                  [class.active]="isGroupActive(1)"
+                  [class.activated]="isGroupActive(1)"
                   (click)="onGroupBtnClicked(1)"
                 >
                   Advertisements
