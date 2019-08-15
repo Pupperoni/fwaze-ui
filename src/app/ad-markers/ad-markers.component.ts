@@ -40,7 +40,6 @@ export class AdMarkersComponent implements OnInit {
         this.imagePath = `http://localhost:3000/map/ads/${
           this.marker.id
         }/image`;
-      console.log(this.markerInfo);
     });
   }
 }

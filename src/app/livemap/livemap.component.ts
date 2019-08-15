@@ -21,6 +21,9 @@ export class LivemapComponent implements OnInit {
   distance = undefined;
   eta = undefined;
 
+  reportFilter = true;
+  adFilter = true;
+
   filterList = [
     { name: "Traffic Jam", apiName: "traffic_jam", active: true },
     { name: "Heavy Traffic Jam", apiName: "heavy_traffic_jam", active: true },
@@ -170,32 +173,22 @@ export class LivemapComponent implements OnInit {
   }
 
   onFilterSubmit($event) {
-    this.filterList = $event;
-    var wantedResults = [];
-    var itemsProcessed = 0;
-    $event.forEach(type => {
-      if (type.active) {
-        this.reportService
-          .getAllReportsByTypeBounds(type.apiName, this.tright, this.bleft)
-          .subscribe(res => {
-            res.reports.forEach(report => {
-              wantedResults.push(report);
-            });
-            itemsProcessed++;
-            // Done adding the last reports
-            if (itemsProcessed === $event.length) {
-              this.updateReportList(wantedResults);
-              this.cdr.detectChanges();
-            }
-          });
-      } else {
-        itemsProcessed++;
-        if (itemsProcessed === $event.length) {
-          this.updateReportList(wantedResults);
-          this.cdr.detectChanges();
-        }
-      }
-    });
+    console.log($event);
+    this.filterList = $event.type;
+    this.reportFilter = $event.group[0];
+    this.adFilter = $event.group[1];
+
+    if (!this.reportFilter) {
+      this.reportMarkers = [];
+    } else {
+      this.assignReportMarkersProto();
+    }
+
+    if (!this.adFilter) {
+      this.adMarkers = [];
+    } else {
+      this.assignAdMarkers(this.tright, this.bleft);
+    }
   }
 
   swap() {
@@ -410,9 +403,9 @@ export class LivemapComponent implements OnInit {
       if (this.zoom > 15) {
         this.tright = `${$event.na.l},${$event.ga.l}`;
         this.bleft = `${$event.na.j},${$event.ga.j}`;
-        this.onFilterSubmit(this.filterList);
+        if (this.reportFilter) this.assignReportMarkersProto();
         // this.assignReportMarkers(this.tright, this.bleft);
-        this.assignAdMarkers(this.tright, this.bleft);
+        if (this.adFilter) this.assignAdMarkers(this.tright, this.bleft);
       }
     },
     100,
@@ -442,6 +435,34 @@ export class LivemapComponent implements OnInit {
     var updateReportId = this.reportMarkers.slice(index, index + 1)[0].id;
 
     this.reportMarkers[index].autoOpen = true;
+  }
+
+  assignReportMarkersProto() {
+    var wantedResults = [];
+    var itemsProcessed = 0;
+    this.filterList.forEach(type => {
+      if (type.active) {
+        this.reportService
+          .getAllReportsByTypeBounds(type.apiName, this.tright, this.bleft)
+          .subscribe(res => {
+            res.reports.forEach(report => {
+              wantedResults.push(report);
+            });
+            itemsProcessed++;
+            // Done adding the last reports
+            if (itemsProcessed === this.filterList.length) {
+              this.updateReportList(wantedResults);
+              this.cdr.detectChanges();
+            }
+          });
+      } else {
+        itemsProcessed++;
+        if (itemsProcessed === this.filterList.length) {
+          this.updateReportList(wantedResults);
+          this.cdr.detectChanges();
+        }
+      }
+    });
   }
 
   private assignReportMarkers(tright, bleft) {

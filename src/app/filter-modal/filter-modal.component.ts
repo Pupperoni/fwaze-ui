@@ -19,6 +19,8 @@ export class FilterModalComponent implements OnInit {
     { name: "Others", apiName: "others", active: true }
   ];
 
+  groupBtnClicked = [true, true];
+
   constructor() {}
 
   ngOnInit() {}
@@ -28,12 +30,23 @@ export class FilterModalComponent implements OnInit {
     return this.btnClicked[btnIndex].active;
   }
 
+  isGroupActive(index: number) {
+    return this.groupBtnClicked[index];
+  }
+
   // toggle button state
   onBtnClicked(btnIndex: number) {
     this.btnClicked[btnIndex].active = !this.btnClicked[btnIndex].active;
   }
 
+  onGroupBtnClicked(index: number) {
+    this.groupBtnClicked[index] = !this.groupBtnClicked[index];
+  }
+
   filterSubmit() {
-    this.setFilters.emit(this.btnClicked);
+    this.setFilters.emit({
+      group: this.groupBtnClicked,
+      type: this.btnClicked
+    });
   }
 }
