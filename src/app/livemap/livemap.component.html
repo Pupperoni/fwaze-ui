@@ -81,6 +81,17 @@
     </div>
   </form>
 
+  <div class="row">
+    <button
+      type="button"
+      class="btn btn-info"
+      data-toggle="modal"
+      data-target="#filterModal"
+    >
+      Filter
+    </button>
+  </div>
+
   <!-- Main map component -->
   <agm-map
     [latitude]="lat"
@@ -176,4 +187,6 @@
   <app-report-modal></app-report-modal>
 
   <app-ad-modal></app-ad-modal>
+
+  <app-filter-modal (setFilters)="onFilterSubmit($event)"></app-filter-modal>
 </div>

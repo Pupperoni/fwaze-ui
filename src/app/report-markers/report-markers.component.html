@@ -18,6 +18,7 @@
           <h6 *ngIf="markerInfo.type == 6">Minor Accident</h6>
           <h6 *ngIf="markerInfo.type == 7">Major Accident</h6>
           <h6 *ngIf="markerInfo.type == 8">Others</h6>
+          <h6>{{ markerInfo.id }}</h6>
         </div>
 
         <div *ngIf="imagePath" class="image-block row justify-content-center">
@@ -69,26 +70,17 @@
           </div>
 
           <ng-template #elseBlock>
-            <div class="upvote-button">
+            <button class="upvote-button btn disabled">
               <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
-              <label>{{ markerInfo.votes }}</label>
-            </div>
+            </button>
+            <label>{{ markerInfo.votes }}</label>
           </ng-template>
         </div>
       </div>
 
       <div *ngIf="commentUp" class="comments">
         <div *ngFor="let comment of commentList" class="commentList">
-          <div class="comment-data">
-            <div class="comment-text">
-              {{ comment.body }}
-            </div>
-            <strong>
-              <a routerLink="/detail/{{ comment.userId }}/">
-                {{ comment.userName }}
-              </a>
-            </strong>
-          </div>
+          <app-comment [comment]="comment"></app-comment>
         </div>
         <form
           *ngIf="currentUser"

@@ -1,0 +1,15 @@
+.choice-button {
+  width: 135px;
+  height: 60px;
+  margin: 1em;
+  background-color: white;
+  color: black;
+}
+
+.choice-name {
+  text-align: center;
+}
+
+.modal-dialog {
+  margin: auto;
+}

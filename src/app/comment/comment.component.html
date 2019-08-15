@@ -1,0 +1,10 @@
+<div class="comment-component">
+  <div class="comment-text">
+    {{ comment.body }}
+  </div>
+  <strong>
+    <a routerLink="/detail/{{ comment.userId }}/">
+      {{ comment.userName }}
+    </a>
+  </strong>
+</div>

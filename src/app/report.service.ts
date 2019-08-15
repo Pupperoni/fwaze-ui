@@ -51,6 +51,21 @@ export class ReportService {
     );
   }
 
+  getAllReportsByTypeBounds(
+    type,
+    tright,
+    bleft
+  ): Observable<ReportArrayResponse> {
+    console.log(
+      `Sending GET request to ${
+        this.url
+      }/type/${type}/range/?tright=${tright}&bleft=${bleft}`
+    );
+    return this.http.get<ReportArrayResponse>(
+      `${this.url}/type/${type}/range?tright=${tright}&bleft=${bleft}`
+    );
+  }
+
   getReportById(id: string): Observable<ReportResponse> {
     console.log(`Sending GET request to ${this.url}/${id}`);
     return this.http.get<ReportResponse>(`${this.url}/${id}`);

@@ -8,6 +8,7 @@ import { CookieService } from "ngx-cookie-service";
 import { ReportService } from "../report.service";
 import { AdvertisementService } from "../advertisement.service";
 import { CurrentMarkerService } from "../current-marker.service";
+import { Subscription } from "rxjs";
 @Component({
   selector: "app-livemap",
   templateUrl: "./livemap.component.html",
@@ -15,9 +16,22 @@ import { CurrentMarkerService } from "../current-marker.service";
 })
 export class LivemapComponent implements OnInit {
   currentUser: User = undefined;
-
+  tright = undefined;
+  bleft = undefined;
   distance = undefined;
   eta = undefined;
+
+  filterList = [
+    { name: "Traffic Jam", apiName: "traffic_jam", active: true },
+    { name: "Heavy Traffic Jam", apiName: "heavy_traffic_jam", active: true },
+    { name: "Police", apiName: "police", active: true },
+    { name: "Road Closed", apiName: "closed_road", active: true },
+    { name: "Car Stopped", apiName: "car_stopped", active: true },
+    { name: "Construction", apiName: "construction", active: true },
+    { name: "Minor Accident", apiName: "minor_accident", active: true },
+    { name: "Major Accident", apiName: "major_accident", active: true },
+    { name: "Others", apiName: "others", active: true }
+  ];
 
   directionForm: FormGroup = undefined;
   sourceString = "";
@@ -48,6 +62,8 @@ export class LivemapComponent implements OnInit {
 
   // marker when clicking map (for reporting/making ad)
   public currentMarker: marker = undefined;
+
+  // event seekers
   public reportSubmit;
   public adSubmit;
   public voteIncr;
@@ -115,6 +131,71 @@ export class LivemapComponent implements OnInit {
       lng: $event.coords.lng
     });
     this.currentMarker = this.currentMarkerService.getMarker();
+  }
+
+  // Removes elements from reportMarkers not in wantedList and push new elements from wantedList
+  updateReportList(wantedList) {
+    var indexToBeDeleted = [];
+    // Clean up current report list
+    for (var i = 0; i < this.reportMarkers.length; i++) {
+      var toDelete = true;
+      for (var j = 0; j < wantedList.length; j++) {
+        if (this.reportMarkers[i].id === wantedList[j].id) {
+          // element matched - don't delete as we will just render this again
+          toDelete = false;
+          break;
+        }
+      }
+      // no element matched so we will remove it from the list
+      if (toDelete) {
+        indexToBeDeleted.splice(0, 0, i);
+      }
+    }
+
+    indexToBeDeleted.forEach(index => {
+      this.reportMarkers.splice(index, 1);
+    });
+
+    wantedList.forEach(report => {
+      var toAdd = true;
+      for (var i = 0; i < this.reportMarkers.length; i++) {
+        // matched element - we don't add to avoid duplicates in the list
+        if (this.reportMarkers[i].id === report.id) {
+          toAdd = false;
+          break;
+        }
+      }
+      if (toAdd) this.addReportToMarkers(report);
+    });
+  }
+
+  onFilterSubmit($event) {
+    this.filterList = $event;
+    var wantedResults = [];
+    var itemsProcessed = 0;
+    $event.forEach(type => {
+      if (type.active) {
+        this.reportService
+          .getAllReportsByTypeBounds(type.apiName, this.tright, this.bleft)
+          .subscribe(res => {
+            res.reports.forEach(report => {
+              wantedResults.push(report);
+            });
+            itemsProcessed++;
+            // Done adding the last reports
+            if (itemsProcessed === $event.length) {
+              this.updateReportList(wantedResults);
+              this.cdr.detectChanges();
+            }
+          });
+      } else {
+        itemsProcessed++;
+        if (itemsProcessed === $event.length) {
+          this.updateReportList(wantedResults);
+          this.cdr.detectChanges();
+        }
+      }
+    });
   }
 
   swap() {
@@ -327,10 +408,11 @@ export class LivemapComponent implements OnInit {
   mapPositionChange = this.debounce(
     function($event) {
       if (this.zoom > 15) {
-        var tright = `${$event.na.l},${$event.ga.l}`;
-        var bleft = `${$event.na.j},${$event.ga.j}`;
-        this.assignReportMarkers(tright, bleft);
-        this.assignAdMarkers(tright, bleft);
+        this.tright = `${$event.na.l},${$event.ga.l}`;
+        this.bleft = `${$event.na.j},${$event.ga.j}`;
+        this.onFilterSubmit(this.filterList);
+        // this.assignReportMarkers(this.tright, this.bleft);
+        this.assignAdMarkers(this.tright, this.bleft);
       }
     },
     100,
@@ -360,46 +442,11 @@ export class LivemapComponent implements OnInit {
     var updateReportId = this.reportMarkers.slice(index, index + 1)[0].id;
 
     this.reportMarkers[index].autoOpen = true;
-
-    // this.reportService.getReportById(updateReportId).subscribe(res => {
-    //   this.reportMarkers[index] = {
-    //     id: res.report.id,
-    //     autoOpen: true,
-    //     lat: res.report.latitude,
-    //     lng: res.report.longitude,
-    //     type: res.report.type,
-    //     label: "R"
-    //   };
-    // });
   }
 
   private assignReportMarkers(tright, bleft) {
     this.reportService.getAllReportsByBounds(tright, bleft).subscribe(res => {
-      // Clean up current report list
-      for (var i = 0; i < this.reportMarkers.length; i++) {
-        var toDelete = true;
-        for (var j = 0; j < res.reports.length; j++) {
-          if (this.reportMarkers[i].id === res.reports[j].id) {
-            // element matched - don't delete as we will just render this again
-            toDelete = false;
-            break;
-          }
-        }
-        // no element matched so we will remove it from the list
-        if (toDelete) this.reportMarkers.splice(i, 1);
-      }
-
-      res.reports.forEach(report => {
-        var toAdd = true;
-        for (var i = 0; i < this.reportMarkers.length; i++) {
-          // matched element - we don't add to avoid duplicates in the list
-          if (this.reportMarkers[i].id === report.id) {
-            toAdd = false;
-            break;
-          }
-        }
-        if (toAdd) this.addReportToMarkers(report);
-      });
+      this.updateReportList(res.reports);
     });
   }
 
