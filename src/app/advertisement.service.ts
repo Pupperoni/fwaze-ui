@@ -26,28 +26,28 @@ export class AdvertisementService {
   constructor(private http: HttpClient) {}
 
   getAllAds(): Observable<AdvertisementArrayResponse> {
-    console.log(`Submit GET request to ${this.url}`);
+    // console.log(`Submit GET request to ${this.url}`);
     return this.http.get<AdvertisementArrayResponse>(`${this.url}`);
   }
 
   getAllAdsByBounds(tright, bleft): Observable<AdvertisementArrayResponse> {
-    console.log(
-      `Sending GET request to ${
-        this.url
-      }/range/?tright=${tright}&bleft=${bleft}`
-    );
+    // console.log(
+    //   `Sending GET request to ${
+    //     this.url
+    //   }/range/?tright=${tright}&bleft=${bleft}`
+    // );
     return this.http.get<AdvertisementArrayResponse>(
       `${this.url}/range?tright=${tright}&bleft=${bleft}`
     );
   }
 
   getAdById(id: string): Observable<AdvertisementResponse> {
-    console.log(`Submit GET request to ${this.url}/${id}`);
+    // console.log(`Submit GET request to ${this.url}/${id}`);
     return this.http.get<AdvertisementResponse>(`${this.url}/${id}`);
   }
 
   addAd(ad: any) {
-    console.log(`Sending POST request to ${this.url}/new`);
+    // console.log(`Sending POST request to ${this.url}/new`);
     return this.http.post(`${this.url}/new`, ad);
   }
 }

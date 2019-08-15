@@ -36,6 +36,12 @@
             >&nbsp;&nbsp;
           </button>
         </div>
+        <div class="row justify-content-center">
+          <button class="btn btn-secondary" (click)="setLocationNow()">
+            &nbsp;&nbsp;<fa-icon [icon]="['fa', 'location-arrow']"></fa-icon
+            >&nbsp;&nbsp;
+          </button>
+        </div>
 
         <div class="direction-data" *ngIf="distance && eta">
           <div class="row justify-content-center">
@@ -81,7 +87,7 @@
     </div>
   </form>
 
-  <div class="row">
+  <div class="row justify-content-center">
     <button
       type="button"
       class="btn btn-info"

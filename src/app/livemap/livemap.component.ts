@@ -321,6 +321,33 @@ export class LivemapComponent implements OnInit {
     }
   }
 
+  setLocationNow() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(location => {
+        this.source = {
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
+          label: "S"
+        };
+
+        this.sourceData = {
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
+          label: "S"
+        };
+        this.lat = this.source.lat;
+        this.lng = this.source.lng;
+        this.sourceString = "Your current location";
+        this.directionForm.setValue({
+          source: this.sourceString,
+          destination: this.destString
+        });
+      });
+    } else {
+      alert("Geolocation not supported by your browser! :(");
+    }
+  }
+
   sourceAddressChange($event) {
     this.source = {
       lat: $event.geometry.location.lat(),

@@ -18,7 +18,8 @@ import {
   faThumbsUp,
   faExchangeAlt,
   faComment,
-  faCommentAlt
+  faCommentAlt,
+  faLocationArrow
 } from "@fortawesome/free-solid-svg-icons";
 
 import { AgmCoreModule } from "@agm/core";
@@ -31,8 +32,8 @@ import { AdMarkersComponent } from "./ad-markers/ad-markers.component";
 import { ReportModalComponent } from "./report-modal/report-modal.component";
 import { AdModalComponent } from "./ad-modal/ad-modal.component";
 import { ReportInfoWindowComponent } from "./report-info-window/report-info-window.component";
-import { CommentComponent } from './comment/comment.component';
-import { FilterModalComponent } from './filter-modal/filter-modal.component';
+import { CommentComponent } from "./comment/comment.component";
+import { FilterModalComponent } from "./filter-modal/filter-modal.component";
 
 @NgModule({
   declarations: [
@@ -72,5 +73,6 @@ export class AppModule {
     library.add(faThumbsUp);
     library.add(faExchangeAlt);
     library.add(faComment);
+    library.add(faLocationArrow);
   }
 }

@@ -36,16 +36,16 @@ export class ReportService {
   constructor(private http: HttpClient) {}
 
   getAllReports(): Observable<ReportArrayResponse> {
-    console.log(`Sending GET request to ${this.url}`);
+    // console.log(`Sending GET request to ${this.url}`);
     return this.http.get<ReportArrayResponse>(this.url);
   }
 
   getAllReportsByBounds(tright, bleft): Observable<ReportArrayResponse> {
-    console.log(
-      `Sending GET request to ${
-        this.url
-      }/range/?tright=${tright}&bleft=${bleft}`
-    );
+    // console.log(
+    //   `Sending GET request to ${
+    //     this.url
+    //   }/range/?tright=${tright}&bleft=${bleft}`
+    // );
     return this.http.get<ReportArrayResponse>(
       `${this.url}/range?tright=${tright}&bleft=${bleft}`
     );
@@ -56,45 +56,45 @@ export class ReportService {
     tright,
     bleft
   ): Observable<ReportArrayResponse> {
-    console.log(
-      `Sending GET request to ${
-        this.url
-      }/type/${type}/range/?tright=${tright}&bleft=${bleft}`
-    );
+    // console.log(
+    //   `Sending GET request to ${
+    //     this.url
+    //   }/type/${type}/range/?tright=${tright}&bleft=${bleft}`
+    // );
     return this.http.get<ReportArrayResponse>(
       `${this.url}/type/${type}/range?tright=${tright}&bleft=${bleft}`
     );
   }
 
   getReportById(id: string): Observable<ReportResponse> {
-    console.log(`Sending GET request to ${this.url}/${id}`);
+    // console.log(`Sending GET request to ${this.url}/${id}`);
     return this.http.get<ReportResponse>(`${this.url}/${id}`);
   }
 
   addReport(report: any) {
-    console.log(`Sending POST request to ${this.url}/new`);
+    // console.log(`Sending POST request to ${this.url}/new`);
     return this.http.post(`${this.url}/new`, report);
   }
 
   addVote(data) {
-    console.log(`Sending PUT request to ${this.url}/up`);
+    // console.log(`Sending PUT request to ${this.url}/up`);
     return this.http.put(`${this.url}/up`, data, this.httpOptions);
   }
 
   deleteVote(data) {
-    console.log(`Sending PUT request to ${this.url}/down`);
+    // console.log(`Sending PUT request to ${this.url}/down`);
     return this.http.put(`${this.url}/down`, data, this.httpOptions);
   }
 
   getUserVotePair(reportId, userId): Observable<VoterPair> {
-    console.log(
-      `Sending GET request to ${this.url}/${reportId}/voted/${userId}`
-    );
+    // console.log(
+    //   `Sending GET request to ${this.url}/${reportId}/voted/${userId}`
+    // );
     return this.http.get<VoterPair>(`${this.url}/${reportId}/voted/${userId}`);
   }
 
   getVoteCount(id): Observable<VoteResponse> {
-    console.log(`Sending GET request to ${this.url}/${id}/votes`);
+    // console.log(`Sending GET request to ${this.url}/${id}/votes`);
     return this.http.get<VoteResponse>(`${this.url}/${id}/votes`);
   }
 }

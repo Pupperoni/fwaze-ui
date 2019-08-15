@@ -40,42 +40,42 @@ export class UserService {
   // HTTP methods here
 
   getAllUsers(): Observable<UserArrayResponse> {
-    console.log(`Submit GET request to ${this.url}`);
+    // console.log(`Submit GET request to ${this.url}`);
     return this.http.get<UserArrayResponse>(this.url);
   }
 
   registerUser(userData): Observable<any> {
-    console.log(`Submit POST request to ${this.url}/new`);
+    // console.log(`Submit POST request to ${this.url}/new`);
     return this.http.post(`${this.url}/new`, userData, this.httpOptions);
   }
 
   loginUser(userData): Observable<any> {
-    console.log(`Submit POST request to ${this.url}/login`);
+    // console.log(`Submit POST request to ${this.url}/login`);
     return this.http.post(`${this.url}/login`, userData, this.httpOptions);
   }
 
   getUser(id: string): Observable<UserResponse> {
-    console.log(`Submit GET request to ${this.url}/${id}`);
+    // console.log(`Submit GET request to ${this.url}/${id}`);
     return this.http.get<UserResponse>(`${this.url}/${id}`);
   }
 
   getImage(id: string): Observable<any> {
-    console.log(`Submit GET request to ${this.url}/${id}/image`);
+    // console.log(`Submit GET request to ${this.url}/${id}/image`);
     return this.http.get<any>(`${this.url}/${id}/image`);
   }
 
   updateUser(userData): Observable<any> {
-    console.log(`Submit PUT request to ${this.url}/edit`);
+    // console.log(`Submit PUT request to ${this.url}/edit`);
     return this.http.put(`${this.url}/edit`, userData);
   }
 
   addHomeAd(userData): Observable<any> {
-    console.log(`Submit PUT request to ${this.url}/home`);
+    // console.log(`Submit PUT request to ${this.url}/home`);
     return this.http.put(`${this.url}/home`, userData);
   }
 
   addWorkAd(userData): Observable<any> {
-    console.log(`Submit PUT request to ${this.url}/work`);
+    // console.log(`Submit PUT request to ${this.url}/work`);
     return this.http.put(`${this.url}/work`, userData);
   }
 }
