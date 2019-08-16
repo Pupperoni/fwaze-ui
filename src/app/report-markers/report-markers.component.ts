@@ -58,6 +58,7 @@ export class ReportMarkersComponent implements OnInit {
     var subscriptionVal = this.reportService
       .getReportById(id)
       .subscribe((res: any) => {
+        console.log(res);
         this.commentService
           .countCommentsbyReport(id)
           .subscribe((count: any) => {

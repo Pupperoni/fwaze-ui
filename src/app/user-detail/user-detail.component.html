@@ -28,7 +28,7 @@
           <td *ngIf="user.role === 0" class="user-info-field-value">
             Regular
           </td>
-          <td *ngIf="user.role === 1" class="user-info-field-value">
+          <td *ngIf="user.role >= 1" class="user-info-field-value">
             Advertiser
           </td>
         </tr>

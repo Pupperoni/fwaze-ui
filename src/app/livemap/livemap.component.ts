@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+declare var google: any;
 import { FormGroup, FormControl } from "@angular/forms";
 
 import { MouseEvent } from "@agm/core";
@@ -9,7 +10,7 @@ import { ReportService } from "../report.service";
 import { UserService } from "../user.service";
 import { AdvertisementService } from "../advertisement.service";
 import { CurrentMarkerService } from "../current-marker.service";
-import { Subscription } from "rxjs";
+
 @Component({
   selector: "app-livemap",
   templateUrl: "./livemap.component.html",
@@ -21,11 +22,12 @@ export class LivemapComponent implements OnInit {
   bleft = undefined;
   distance = undefined;
   eta = undefined;
-
+  geocoder = new google.maps.Geocoder();
   faveRoutes = [];
   selectedRoute: number = -1;
   reportFilter = true;
   adFilter = true;
+  location = "";
 
   filterList = [
     { name: "Traffic Jam", apiName: "traffic_jam", active: true },
@@ -154,6 +156,19 @@ export class LivemapComponent implements OnInit {
       lng: $event.coords.lng
     });
     this.currentMarker = this.currentMarkerService.getMarker();
+    var latlng = new google.maps.LatLng(
+      this.currentMarker.lat,
+      this.currentMarker.lng
+    );
+    var request = {
+      location: latlng
+    };
+    this.geocoder.geocode(request, res => {
+      if (res != null) {
+        this.currentMarkerService.setMarkerAddress(res[0].formatted_address);
+        this.location = this.currentMarkerService.getMarkerAddress();
+      }
+    });
   }
 
   // Removes elements from reportMarkers not in wantedList and push new elements from wantedList
@@ -352,13 +367,23 @@ export class LivemapComponent implements OnInit {
           lng: location.coords.longitude,
           label: "S"
         };
+        var latlng = new google.maps.LatLng(
+          location.coords.latitude,
+          location.coords.longitude
+        );
+        var request = {
+          location: latlng
+        };
+        this.geocoder.geocode(request, res => {
+          if (res != null) this.sourceString = res[0].formatted_address;
+          else this.sourceString = "Your current location";
+          this.directionForm.setValue({
+            source: this.sourceString,
+            destination: this.destString
+          });
+        });
         this.lat = this.source.lat;
         this.lng = this.source.lng;
-        this.sourceString = "Your current location";
-        this.directionForm.setValue({
-          source: this.sourceString,
-          destination: this.destString
-        });
       });
     } else {
       alert("Geolocation not supported by your browser! :(");

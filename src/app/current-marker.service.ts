@@ -6,6 +6,7 @@ import { Observable, Subject } from "rxjs";
 })
 export class CurrentMarkerService {
   currentMarker: marker;
+  location: string;
   reportSubmit$: Observable<any>;
   adSubmit$: Observable<any>;
   voteIncr$: Observable<any>;
@@ -25,8 +26,16 @@ export class CurrentMarkerService {
     this.voteDecr$ = this.voteDecrSubject.asObservable();
   }
 
+  getMarkerAddress() {
+    return this.location;
+  }
+
   getMarker() {
     return this.currentMarker;
+  }
+
+  setMarkerAddress(address) {
+    this.location = address;
   }
 
   setMarker(marker) {

@@ -51,14 +51,15 @@ export class AdModalComponent implements OnInit {
       console.log("Empty field found");
     } else {
       // All good!
-
       this.currentMarker = this.currentMarkerService.getMarker();
+      var location = this.currentMarkerService.getMarkerAddress();
       var uploadData = new FormData();
 
       uploadData.append("userId", this.currentUser.id);
       uploadData.append("caption", formData.caption);
       uploadData.append("latitude", this.currentMarker.lat.toString());
       uploadData.append("longitude", this.currentMarker.lng.toString());
+      uploadData.append("address", location);
 
       if (this.photoUpload)
         uploadData.append("photo", this.photoUpload, this.photoUpload.name);
