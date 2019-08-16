@@ -95,7 +95,11 @@ export class LivemapComponent implements OnInit {
     });
     this.currentMarkerService.reportSubmit$.subscribe(data => {
       this.reportSubmit = data;
-      if (this.reportFilter && this.filterList[data.type].active) {
+      if (
+        this.reportFilter &&
+        this.filterList[data.type].active &&
+        this.zoom > 15
+      ) {
         this.reportMarkers.push({
           id: data.id,
           autoOpen: false,
@@ -109,7 +113,7 @@ export class LivemapComponent implements OnInit {
     });
     this.currentMarkerService.adSubmit$.subscribe(data => {
       this.adSubmit = data;
-      if (this.adFilter) {
+      if (this.adFilter && this.zoom > 15) {
         this.adMarkers.push({
           id: data.id,
           lat: data.latitude,
@@ -134,12 +138,14 @@ export class LivemapComponent implements OnInit {
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     else this.currentUser = undefined;
 
-    this.userService.getfaveRoutes(this.currentUser.id).subscribe(res => {
-      console.log(res);
-      res.routes.forEach(route => {
-        this.faveRoutes.push(route);
+    if (this.currentUser) {
+      this.userService.getfaveRoutes(this.currentUser.id).subscribe(res => {
+        console.log(res);
+        res.routes.forEach(route => {
+          this.faveRoutes.push(route);
+        });
       });
-    });
+    }
   }
 
   onMapClick($event: MouseEvent) {
