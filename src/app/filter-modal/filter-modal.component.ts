@@ -30,13 +30,18 @@ export class FilterModalComponent implements OnInit {
     return this.btnClicked[btnIndex].active;
   }
 
+  isDisabled() {
+    return !this.groupBtnClicked[0];
+  }
+
   isGroupActive(index: number) {
     return this.groupBtnClicked[index];
   }
 
   // toggle button state
   onBtnClicked(btnIndex: number) {
-    this.btnClicked[btnIndex].active = !this.btnClicked[btnIndex].active;
+    if (this.groupBtnClicked[0])
+      this.btnClicked[btnIndex].active = !this.btnClicked[btnIndex].active;
   }
 
   onGroupBtnClicked(index: number) {

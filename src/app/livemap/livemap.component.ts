@@ -142,7 +142,6 @@ export class LivemapComponent implements OnInit {
 
     if (this.currentUser) {
       this.userService.getfaveRoutes(this.currentUser.id).subscribe(res => {
-        console.log(res);
         res.routes.forEach(route => {
           this.faveRoutes.push(route);
         });
@@ -321,7 +320,6 @@ export class LivemapComponent implements OnInit {
 
   addWork(pos: string) {
     this.directionForm.get(pos).setValue(this.currentUser.work.address);
-    console.log(this.currentUser.work);
     if (pos == "source") {
       this.sourceString = this.currentUser.work.address;
       this.source = {

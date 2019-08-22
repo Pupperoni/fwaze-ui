@@ -44,7 +44,6 @@ export class EditProfileComponent implements OnInit {
   }
 
   setUser() {
-    console.log(this.currentUser.role);
     this.profileForm = new FormGroup({
       name: new FormControl(this.currentUser.name, [Validators.required]),
       email: new FormControl(this.currentUser.email, [
@@ -58,7 +57,6 @@ export class EditProfileComponent implements OnInit {
   }
 
   handleFileInput($event) {
-    console.log($event.target.files[0]);
     if ($event.target.files.length > 0) {
       if (
         $event.target.files[0].type == "image/png" ||
@@ -67,6 +65,7 @@ export class EditProfileComponent implements OnInit {
         this.avatarUpload = $event.target.files[0];
       else {
         console.log("File uploaded is not an image");
+        alert("File uploaded is not an image");
       }
     }
   }

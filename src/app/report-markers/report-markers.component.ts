@@ -59,7 +59,6 @@ export class ReportMarkersComponent implements OnInit {
     let subscriptionVal = this.reportService
       .getReportById(id)
       .subscribe((res: any) => {
-        console.log(res);
         this.commentService
           .countCommentsbyReport(id)
           .subscribe((count: any) => {
@@ -98,7 +97,6 @@ export class ReportMarkersComponent implements OnInit {
       this.commentService
         .getCommentsbyReport(this.marker.id, this.pageNum)
         .subscribe((res: any) => {
-          console.log(res);
           res.data.forEach(comment => {
             comment.userId = comment.user_id;
             this.commentList.push(comment);
@@ -130,9 +128,11 @@ export class ReportMarkersComponent implements OnInit {
     // format date >:(
     data.timestamp = `${dateNow.getFullYear()}-${dateNow.getMonth() +
       1}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}.${dateNow.getMilliseconds()}`;
-    console.log(data.timestamp);
-    if (data.body == "") console.log("Missing comment text");
-    else {
+
+    if (data.body == "") {
+      console.log("Missing comment text");
+      alert("Missing comment text");
+    } else {
       this.commentService.createComment(data).subscribe((res: any) => {
         this.commentService
           .countCommentsbyReport(data.reportId)

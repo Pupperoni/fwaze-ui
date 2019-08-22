@@ -47,7 +47,6 @@ export class LoginComponent implements OnInit {
     } else {
       // All looks good
       this.userService.loginUser(userData).subscribe(res => {
-        console.log(res);
         if (this.cookieService.get("currentUser")) {
           this.cookieService.delete("currentUser");
         }

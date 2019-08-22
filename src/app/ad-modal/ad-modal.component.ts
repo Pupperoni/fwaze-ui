@@ -41,6 +41,7 @@ export class AdModalComponent implements OnInit {
         this.photoUpload = $event.target.files[0];
       else {
         console.log("File uploaded is not an image");
+        alert("File uploaded is not an image");
       }
     }
   }
@@ -49,6 +50,7 @@ export class AdModalComponent implements OnInit {
     if (formData.caption == "") {
       // Can't have empty fields
       console.log("Empty field found");
+      alert("Empty field found");
     } else {
       // All good!
       this.currentMarker = this.currentMarkerService.getMarker();

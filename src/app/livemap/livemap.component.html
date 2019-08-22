@@ -19,14 +19,14 @@
           class="btn btn-primary"
           (click)="addHome('source')"
         >
-          Home
+          Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
         </button>
         <button
           *ngIf="currentUser && currentUser.work.address != ''"
           class="btn btn-primary"
           (click)="addWork('source')"
         >
-          Work
+          Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
         </button>
       </div>
       <div class="col-sm-12 col-md-12 col-lg-1">
@@ -74,14 +74,14 @@
           class="btn btn-primary"
           (click)="addHome('destination')"
         >
-          Home
+          Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
         </button>
         <button
           *ngIf="currentUser && currentUser.work.address != ''"
           class="btn btn-primary"
           (click)="addWork('destination')"
         >
-          Work
+          Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
         </button>
       </div>
     </div>
