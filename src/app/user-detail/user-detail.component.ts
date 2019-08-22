@@ -49,7 +49,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     const id = this.route.snapshot.paramMap.get("id");
     this.userService.getUser(id).subscribe(res => {
       this.user = res.user;
-      console.log(this.user);
       this.userImage = `http://localhost:3000/users/${this.user.id}/image`;
       this.imageTimeStamp = new Date().getTime();
     });

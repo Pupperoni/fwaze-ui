@@ -72,6 +72,7 @@ export class AdModalComponent implements OnInit {
       // };
       this.advertisementService.addAd(uploadData).subscribe((res: any) => {
         this.currentMarkerService.adSubmit(res.data);
+        this.photoUpload = null;
       });
     }
   }

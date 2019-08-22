@@ -22,7 +22,10 @@
 /* .user-name-large {
   margin-bottom: 1em;
 } */
-
+.adstar {
+  height: 25px;
+  width: 25px;
+}
 .user-info-field-name {
   font-weight: bold;
 }

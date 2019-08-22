@@ -16,7 +16,12 @@
   <div class="user-info col col-md-9 col-sm-12 col-12 col-lg-3 col-xl-3">
     <div *ngIf="user">
       <div class="user-name-large">
-        <h2>{{ user.name }}</h2>
+        <h2>
+          {{ user.name }}
+          <span *ngIf="user.role != 0"
+            ><img class="adstar" src="../../assets/goldstar.png"
+          /></span>
+        </h2>
       </div>
       <table class="table">
         <tr>

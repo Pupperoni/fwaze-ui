@@ -67,6 +67,7 @@ export class ReportModalComponent implements OnInit {
     this.reportService.addReport(uploadData).subscribe((res: any) => {
       this.selectedOption = 0;
       this.currentMarkerService.reportSubmit(res.data);
+      this.photoUpload = null;
     });
   }
 }
