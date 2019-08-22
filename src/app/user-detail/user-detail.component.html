@@ -38,13 +38,17 @@
           </td>
         </tr>
         <tr>
-          <td class="user-info-field-name">Home</td>
+          <td class="user-info-field-name">
+            Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
+          </td>
           <td class="user-info-field-value">
             {{ user.home.address }}
           </td>
         </tr>
         <tr>
-          <td class="user-info-field-name">Work</td>
+          <td class="user-info-field-name">
+            Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
+          </td>
           <td class="user-info-field-value">
             {{ user.work.address }}
           </td>
