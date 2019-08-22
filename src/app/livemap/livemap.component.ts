@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
-declare var google: any;
+declare let google: any;
 import { FormGroup, FormControl } from "@angular/forms";
 
 import { MouseEvent } from "@agm/core";
@@ -156,11 +156,11 @@ export class LivemapComponent implements OnInit {
       lng: $event.coords.lng
     });
     this.currentMarker = this.currentMarkerService.getMarker();
-    var latlng = new google.maps.LatLng(
+    let latlng = new google.maps.LatLng(
       this.currentMarker.lat,
       this.currentMarker.lng
     );
-    var request = {
+    let request = {
       location: latlng
     };
     this.geocoder.geocode(request, res => {
@@ -173,11 +173,11 @@ export class LivemapComponent implements OnInit {
 
   // Removes elements from reportMarkers not in wantedList and push new elements from wantedList
   updateReportList(wantedList) {
-    var indexToBeDeleted = [];
+    let indexToBeDeleted = [];
     // Clean up current report list
-    for (var i = 0; i < this.reportMarkers.length; i++) {
-      var toDelete = true;
-      for (var j = 0; j < wantedList.length; j++) {
+    for (let i = 0; i < this.reportMarkers.length; i++) {
+      let toDelete = true;
+      for (let j = 0; j < wantedList.length; j++) {
         if (this.reportMarkers[i].id === wantedList[j].id) {
           // element matched - don't delete as we will just render this again
           toDelete = false;
@@ -195,8 +195,8 @@ export class LivemapComponent implements OnInit {
     });
 
     wantedList.forEach(report => {
-      var toAdd = true;
-      for (var i = 0; i < this.reportMarkers.length; i++) {
+      let toAdd = true;
+      for (let i = 0; i < this.reportMarkers.length; i++) {
         // matched element - we don't add to avoid duplicates in the list
         if (this.reportMarkers[i].id === report.id) {
           toAdd = false;
@@ -221,19 +221,19 @@ export class LivemapComponent implements OnInit {
     if (!this.adFilter) {
       this.adMarkers = [];
     } else {
-      this.assignAdMarkers(this.tright, this.bleft);
+      this.assignAdMarkers();
     }
   }
 
   swap() {
-    var sourceCopy = JSON.parse(JSON.stringify(this.sourceData));
-    var destCopy = JSON.parse(JSON.stringify(this.destData));
+    let sourceCopy = JSON.parse(JSON.stringify(this.sourceData));
+    let destCopy = JSON.parse(JSON.stringify(this.destData));
     if (this.sourceData.lat && this.destData.lat) {
       this.source = JSON.parse(JSON.stringify(destCopy));
       this.sourceData = JSON.parse(JSON.stringify(destCopy));
       this.destination = JSON.parse(JSON.stringify(sourceCopy));
       this.destData = JSON.parse(JSON.stringify(sourceCopy));
-      var bridge2 = this.sourceString.slice(0);
+      let bridge2 = this.sourceString.slice(0);
       this.sourceString = this.destString.slice(0);
       this.destString = bridge2.slice(0);
     } else if (this.sourceData.lat) {
@@ -367,11 +367,11 @@ export class LivemapComponent implements OnInit {
           lng: location.coords.longitude,
           label: "S"
         };
-        var latlng = new google.maps.LatLng(
+        let latlng = new google.maps.LatLng(
           location.coords.latitude,
           location.coords.longitude
         );
-        var request = {
+        let request = {
           location: latlng
         };
         this.geocoder.geocode(request, res => {
@@ -432,7 +432,7 @@ export class LivemapComponent implements OnInit {
   saveRoute() {
     if (this.sourceData.lat && this.destData.lat) {
       // create json of route details
-      var routeData = {
+      let routeData = {
         sourceLatitude: this.sourceData.lat,
         sourceLongitude: this.sourceData.lng,
         destinationLatitude: this.destData.lat,
@@ -470,7 +470,7 @@ export class LivemapComponent implements OnInit {
       label: "S"
     };
     this.sourceString = "";
-    for (var i = 0; i < $event.address_components.length; i++) {
+    for (let i = 0; i < $event.address_components.length; i++) {
       this.sourceString = this.sourceString.concat(
         $event.address_components[i].long_name
       );
@@ -493,7 +493,7 @@ export class LivemapComponent implements OnInit {
       label: "D"
     };
     this.destString = "";
-    for (var i = 0; i < $event.address_components.length; i++) {
+    for (let i = 0; i < $event.address_components.length; i++) {
       this.destString = this.destString.concat(
         $event.address_components[i].long_name
       );
@@ -522,15 +522,15 @@ export class LivemapComponent implements OnInit {
 
   // source: https://davidwalsh.name/javascript-debounce-function
   debounce(func, wait, immediate) {
-    var timeout;
+    let timeout;
     return function() {
-      var context = this,
+      let context = this,
         args = arguments;
-      var later = function() {
+      let later = function() {
         timeout = null;
         if (!immediate) func.apply(context, args);
       };
-      var callNow = immediate && !timeout;
+      let callNow = immediate && !timeout;
       clearTimeout(timeout);
       timeout = setTimeout(later, wait);
       if (callNow) func.apply(context, args);
@@ -540,11 +540,12 @@ export class LivemapComponent implements OnInit {
   mapPositionChange = this.debounce(
     function($event) {
       if (this.zoom > 15) {
-        this.tright = `${$event.na.l},${$event.ga.l}`;
-        this.bleft = `${$event.na.j},${$event.ga.j}`;
+        let NE = $event.getNorthEast();
+        let SW = $event.getSouthWest();
+        this.tright = `${NE.lat()},${NE.lng()}`;
+        this.bleft = `${SW.lat()},${SW.lng()}`;
         if (this.reportFilter) this.assignReportMarkersProto();
-        // this.assignReportMarkers(this.tright, this.bleft);
-        if (this.adFilter) this.assignAdMarkers(this.tright, this.bleft);
+        if (this.adFilter) this.assignAdMarkers();
       }
     },
     100,
@@ -571,14 +572,14 @@ export class LivemapComponent implements OnInit {
   }
 
   private updateReportMarker(index: number) {
-    var updateReportId = this.reportMarkers.slice(index, index + 1)[0].id;
+    // let updateReportId = this.reportMarkers.slice(index, index + 1)[0].id;
 
     this.reportMarkers[index].autoOpen = true;
   }
 
   assignReportMarkersProto() {
-    var wantedResults = [];
-    var itemsProcessed = 0;
+    let wantedResults = [];
+    let itemsProcessed = 0;
     this.filterList.forEach(type => {
       if (type.active) {
         this.reportService
@@ -611,14 +612,14 @@ export class LivemapComponent implements OnInit {
   }
 
   // Retrieve all ads and display on the map
-  private assignAdMarkers(tright, bleft) {
+  private assignAdMarkers() {
     this.advertisementService
-      .getAllAdsByBounds(tright, bleft)
+      .getAllAdsByBounds(this.tright, this.bleft)
       .subscribe(res => {
         // Clean up current ads list
-        for (var i = 0; i < this.adMarkers.length; i++) {
-          var toDelete = true;
-          for (var j = 0; j < res.ads.length; j++) {
+        for (let i = 0; i < this.adMarkers.length; i++) {
+          let toDelete = true;
+          for (let j = 0; j < res.ads.length; j++) {
             if (this.adMarkers[i].id === res.ads[j].id) {
               // element matched - don't delete as we will just render this again
               toDelete = false;
@@ -630,8 +631,8 @@ export class LivemapComponent implements OnInit {
         }
 
         res.ads.forEach(ad => {
-          var toAdd = true;
-          for (var i = 0; i < this.adMarkers.length; i++) {
+          let toAdd = true;
+          for (let i = 0; i < this.adMarkers.length; i++) {
             // matched element - we don't add to avoid duplicates in the list
             if (this.adMarkers[i].id === ad.id) {
               toAdd = false;

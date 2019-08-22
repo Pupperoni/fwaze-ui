@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
     if (userData.name == "" || userData.password == "") {
       // Can't have empty fields
       console.log("Empty field found");
+      alert("Can't have empty fields");
     } else {
       // All looks good
       this.userService.loginUser(userData).subscribe(res => {

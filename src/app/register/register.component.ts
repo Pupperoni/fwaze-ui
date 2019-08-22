@@ -42,9 +42,11 @@ export class RegisterComponent implements OnInit {
     ) {
       // Can't have empty fields
       console.log("Empty field found");
+      alert("Can't have empty fields");
     } else if (userData.password != userData.confirm_password) {
       // Check password and confirm_password; must match
       console.log("Passwords don't match");
+      alert("Passwords don't match");
     } else {
       // All looks good
       this.userService.registerUser(userData).subscribe(res => {

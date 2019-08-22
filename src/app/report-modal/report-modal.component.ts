@@ -45,8 +45,8 @@ export class ReportModalComponent implements OnInit {
 
   reportSubmit() {
     this.currentMarker = this.currentMarkerService.getMarker();
-    var location = this.currentMarkerService.getMarkerAddress();
-    var uploadData = new FormData();
+    let location = this.currentMarkerService.getMarkerAddress();
+    let uploadData = new FormData();
 
     uploadData.append("type", this.selectedOption.toString());
     uploadData.append("userId", this.currentUser.id);
@@ -57,7 +57,7 @@ export class ReportModalComponent implements OnInit {
     if (this.photoUpload)
       uploadData.append("photo", this.photoUpload, this.photoUpload.name);
 
-    // var reportSubmission = {
+    // let reportSubmission = {
     //   type: this.selectedOption,
     //   userId: this.currentUser.id,
     //   latitude: this.currentMarker.lat,

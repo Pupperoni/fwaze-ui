@@ -52,8 +52,8 @@ export class AdModalComponent implements OnInit {
     } else {
       // All good!
       this.currentMarker = this.currentMarkerService.getMarker();
-      var location = this.currentMarkerService.getMarkerAddress();
-      var uploadData = new FormData();
+      let location = this.currentMarkerService.getMarkerAddress();
+      let uploadData = new FormData();
 
       uploadData.append("userId", this.currentUser.id);
       uploadData.append("caption", formData.caption);
@@ -64,7 +64,7 @@ export class AdModalComponent implements OnInit {
       if (this.photoUpload)
         uploadData.append("photo", this.photoUpload, this.photoUpload.name);
 
-      // var adSubmission = {
+      // let adSubmission = {
       //   userId: this.currentUser.id,
       //   caption: formData.caption,
       //   latitude: this.currentMarker.lat,

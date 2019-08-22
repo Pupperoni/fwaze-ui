@@ -75,7 +75,7 @@ export class EditProfileComponent implements OnInit {
     this.home.address = "";
     this.home.latitude = $event.geometry.location.lat();
     this.home.longitude = $event.geometry.location.lng();
-    for (var i = 0; i < $event.address_components.length; i++) {
+    for (let i = 0; i < $event.address_components.length; i++) {
       this.home.address = this.home.address.concat(
         $event.address_components[i].long_name
       );
@@ -83,14 +83,13 @@ export class EditProfileComponent implements OnInit {
         this.home.address = this.home.address.concat(", ");
     }
     this.homeSubmit = true;
-    console.log(this.home);
   }
 
   setWorkAddress($event) {
     this.work.address = "";
     this.work.latitude = $event.geometry.location.lat();
     this.work.longitude = $event.geometry.location.lng();
-    for (var i = 0; i < $event.address_components.length; i++) {
+    for (let i = 0; i < $event.address_components.length; i++) {
       this.work.address = this.work.address.concat(
         $event.address_components[i].long_name
       );
@@ -98,12 +97,11 @@ export class EditProfileComponent implements OnInit {
         this.work.address = this.work.address.concat(", ");
     }
     this.workSubmit = true;
-    console.log(this.work);
   }
 
   onSubmit(formData) {
     formData.role = parseInt(formData.role);
-    var uploadData = new FormData();
+    let uploadData = new FormData();
 
     uploadData.append("name", formData.name);
     uploadData.append("email", formData.email);
@@ -115,8 +113,8 @@ export class EditProfileComponent implements OnInit {
       uploadData.append("avatar", this.avatarUpload, this.avatarUpload.name);
 
     this.userService.updateUser(uploadData).subscribe(res => {
-      var arr = [];
-      var homeForm = {
+      let arr = [];
+      let homeForm = {
         latitude: this.home.latitude,
         longitude: this.home.longitude,
         address: this.home.address,
@@ -126,22 +124,15 @@ export class EditProfileComponent implements OnInit {
       this.userService.addHomeAd(homeForm).subscribe(res => {
         arr.push(res);
         if (arr.length == 2) {
-          this.currentUser = {
-            name: formData.name,
-            email: formData.email,
-            role: formData.role,
-            id: this.currentUser.id,
-            home: this.currentUser.home,
-            work: this.currentUser.work
-          };
-          this.currentUser.home =
-            this.home.address === ""
-              ? this.currentUser.home
-              : this.home.address;
-          this.currentUser.work =
-            this.work.address === ""
-              ? this.currentUser.work
-              : this.work.address;
+          this.currentUser.name = formData.name;
+          this.currentUser.email = formData.email;
+          this.currentUser.role = formData.role;
+          this.currentUser.home = this.homeSubmit
+            ? this.home
+            : this.currentUser.home;
+          this.currentUser.work = this.workSubmit
+            ? this.work
+            : this.currentUser.work;
           this.cookieService.set(
             "currentUser",
             JSON.stringify(this.currentUser)
@@ -150,7 +141,7 @@ export class EditProfileComponent implements OnInit {
           this.router.navigate([`/detail/${this.currentUser.id}`]);
         }
       });
-      var workForm = {
+      let workForm = {
         latitude: this.work.latitude,
         longitude: this.work.longitude,
         address: this.work.address,

@@ -6,6 +6,7 @@ import { CurrentMarkerService } from "../current-marker.service";
 import { ReportService } from "../report.service";
 import { CommentService } from "../comment.service";
 import { Subscription } from "rxjs";
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: "app-report-markers",
@@ -55,7 +56,7 @@ export class ReportMarkersComponent implements OnInit {
   }
 
   toggleInfoWindow(id: string): Promise<Subscription> {
-    var subscriptionVal = this.reportService
+    let subscriptionVal = this.reportService
       .getReportById(id)
       .subscribe((res: any) => {
         console.log(res);
@@ -97,6 +98,7 @@ export class ReportMarkersComponent implements OnInit {
       this.commentService
         .getCommentsbyReport(this.marker.id, this.pageNum)
         .subscribe((res: any) => {
+          console.log(res);
           res.data.forEach(comment => {
             comment.userId = comment.user_id;
             this.commentList.push(comment);
@@ -124,16 +126,24 @@ export class ReportMarkersComponent implements OnInit {
     data.reportId = this.marker.id;
     data.userId = this.currentUser.id;
     data.userName = this.currentUser.name;
+    let dateNow = new Date();
+    // format date >:(
+    data.timestamp = `${dateNow.getFullYear()}-${dateNow.getMonth() +
+      1}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}.${dateNow.getMilliseconds()}`;
 
     if (data.body == "") console.log("Missing comment text");
     else {
       this.commentService.createComment(data).subscribe((res: any) => {
-        this.maxPages = Math.ceil(res.count / 5);
-        this.commentForm.setValue({
-          body: ""
-        });
-        // After adding comment, go to the first page again
-        this.changePage(0);
+        this.commentService
+          .countCommentsbyReport(data.reportId)
+          .subscribe((count: any) => {
+            this.maxPages = Math.ceil(count.data / 5);
+            this.commentForm.setValue({
+              body: ""
+            });
+            // After adding comment, go to the first page again
+            this.changePage(0);
+          });
       });
     }
   }
