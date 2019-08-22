@@ -1,5 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { registerLocaleData } from "@angular/common";
+import localeFil from "@angular/common/locales/fil";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -22,6 +24,8 @@ import {
   faHeart,
   faArrowRight
 } from "@fortawesome/free-solid-svg-icons";
+
+registerLocaleData(localeFil);
 
 import { AgmCoreModule } from "@agm/core";
 import { AgmDirectionModule } from "agm-direction";

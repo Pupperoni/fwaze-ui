@@ -6,6 +6,6 @@
     <a routerLink="/detail/{{ comment.userId }}/">
       {{ comment.userName }}
     </a>
-    <span>{{ comment.timestamp }}</span>
+    <span class="date">{{ comment.created_at | date: "medium":"+0000" }}</span>
   </strong>
 </div>

@@ -130,7 +130,7 @@ export class ReportMarkersComponent implements OnInit {
     // format date >:(
     data.timestamp = `${dateNow.getFullYear()}-${dateNow.getMonth() +
       1}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}.${dateNow.getMilliseconds()}`;
-
+    console.log(data.timestamp);
     if (data.body == "") console.log("Missing comment text");
     else {
       this.commentService.createComment(data).subscribe((res: any) => {
