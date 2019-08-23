@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { UserService } from "../user.service";
 import { User } from "../user";
-
+import { catchError } from "rxjs/operators";
 import { CookieService } from "ngx-cookie-service";
+import { throwError } from "rxjs";
 
 @Component({
   selector: "app-edit-profile",
@@ -111,63 +112,76 @@ export class EditProfileComponent implements OnInit {
     if (this.avatarUpload)
       uploadData.append("avatar", this.avatarUpload, this.avatarUpload.name);
 
-    this.userService.updateUser(uploadData).subscribe(res => {
-      let arr = [];
-      let homeForm = {
-        latitude: this.home.latitude,
-        longitude: this.home.longitude,
-        address: this.home.address,
-        submit: this.homeSubmit,
-        id: this.currentUser.id
-      };
-      this.userService.addHomeAd(homeForm).subscribe(res => {
-        arr.push(res);
-        if (arr.length == 2) {
-          this.currentUser.name = formData.name;
-          this.currentUser.email = formData.email;
-          this.currentUser.role = formData.role;
-          this.currentUser.home = this.homeSubmit
-            ? this.home
-            : this.currentUser.home;
-          this.currentUser.work = this.workSubmit
-            ? this.work
-            : this.currentUser.work;
-          this.cookieService.set(
-            "currentUser",
-            JSON.stringify(this.currentUser)
-          );
-          this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-          this.router.navigate([`/detail/${this.currentUser.id}`]);
-        }
+    this.userService
+      .updateUser(uploadData)
+      .pipe(
+        catchError(err => {
+          alert(err.error.err);
+          console.log(err);
+          return throwError(err);
+        })
+      )
+      .subscribe(res => {
+        let arr = [];
+        let homeForm = {
+          latitude: this.home.latitude,
+          longitude: this.home.longitude,
+          address: this.home.address,
+          submit: this.homeSubmit,
+          id: this.currentUser.id
+        };
+        this.userService.addHomeAd(homeForm).subscribe(res => {
+          arr.push(res);
+          if (arr.length == 2) {
+            this.currentUser.name = formData.name;
+            this.currentUser.email = formData.email;
+            this.currentUser.role = formData.role;
+            this.currentUser.home = this.homeSubmit
+              ? this.home
+              : this.currentUser.home;
+            this.currentUser.work = this.workSubmit
+              ? this.work
+              : this.currentUser.work;
+            this.cookieService.set(
+              "currentUser",
+              JSON.stringify(this.currentUser)
+            );
+            this.currentUser = JSON.parse(
+              this.cookieService.get("currentUser")
+            );
+            this.router.navigate([`/detail/${this.currentUser.id}`]);
+          }
+        });
+        let workForm = {
+          latitude: this.work.latitude,
+          longitude: this.work.longitude,
+          address: this.work.address,
+          submit: this.workSubmit,
+          id: this.currentUser.id
+        };
+        this.userService.addWorkAd(workForm).subscribe(res => {
+          arr.push(res);
+          if (arr.length == 2) {
+            this.currentUser.name = formData.name;
+            this.currentUser.email = formData.email;
+            this.currentUser.role = formData.role;
+            this.currentUser.home = this.homeSubmit
+              ? this.home
+              : this.currentUser.home;
+            this.currentUser.work = this.workSubmit
+              ? this.work
+              : this.currentUser.work;
+            this.cookieService.set(
+              "currentUser",
+              JSON.stringify(this.currentUser)
+            );
+            this.currentUser = JSON.parse(
+              this.cookieService.get("currentUser")
+            );
+            this.router.navigate([`/detail/${this.currentUser.id}`]);
+          }
+        });
       });
-      let workForm = {
-        latitude: this.work.latitude,
-        longitude: this.work.longitude,
-        address: this.work.address,
-        submit: this.workSubmit,
-        id: this.currentUser.id
-      };
-      this.userService.addWorkAd(workForm).subscribe(res => {
-        arr.push(res);
-        if (arr.length == 2) {
-          this.currentUser.name = formData.name;
-          this.currentUser.email = formData.email;
-          this.currentUser.role = formData.role;
-          this.currentUser.home = this.homeSubmit
-            ? this.home
-            : this.currentUser.home;
-          this.currentUser.work = this.workSubmit
-            ? this.work
-            : this.currentUser.work;
-          this.cookieService.set(
-            "currentUser",
-            JSON.stringify(this.currentUser)
-          );
-          this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-          this.router.navigate([`/detail/${this.currentUser.id}`]);
-        }
-      });
-    });
   }
 
   get name() {

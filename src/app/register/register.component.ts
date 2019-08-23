@@ -3,6 +3,8 @@ import { FormGroup, Validators, FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { UserService } from "../user.service";
 import { CookieService } from "ngx-cookie-service";
+import { catchError } from "rxjs/operators";
+import { throwError } from "rxjs";
 @Component({
   selector: "app-register",
   templateUrl: "./register.component.html",
@@ -29,6 +31,11 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {}
 
+  validateEmail(email) {
+    var re = /\S+@\S+/;
+    return re.test(email);
+  }
+
   onSubmit(userData) {
     // Process form here
     console.log("Register form submitted");
@@ -47,11 +54,24 @@ export class RegisterComponent implements OnInit {
       // Check password and confirm_password; must match
       console.log("Passwords don't match");
       alert("Passwords don't match");
+    } else if (!this.validateEmail(userData.email)) {
+      // Check if email is valid
+      console.log("Format is not a valid email address.");
+      alert("Format is not a valid email address.");
     } else {
       // All looks good
-      this.userService.registerUser(userData).subscribe(res => {
-        this.router.navigate(["/login"]);
-      });
+      this.userService
+        .registerUser(userData)
+        .pipe(
+          catchError(err => {
+            alert(err.error.err);
+            console.log(err.error.err);
+            return throwError(err);
+          })
+        )
+        .subscribe(() => {
+          this.router.navigate(["/login"]);
+        });
     }
   }
 
