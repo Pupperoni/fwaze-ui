@@ -18,14 +18,34 @@ agm-map {
   margin: 1em;
 }
 
-.btn {
+.fxn-button {
+  border-radius: 2cm 2cm 2cm 2cm;
   margin: 1em;
 }
 
+.save-button {
+  margin: 1em;
+}
+
+.filter-button {
+  margin: 1em;
+}
+
+.activated {
+  background-color: #5cb85c;
+  border-color: #5cb85c;
+  color: white;
+}
+
 .direction-data {
+  padding: 0.5em;
   border: springgreen;
   border-radius: 0.25cm 0.25cm 0.25cm 0.25cm;
   background-color: #b3ffff;
+}
+.direction-data-container {
+  text-align: center;
+  margin: 1em;
 }
 
 select {

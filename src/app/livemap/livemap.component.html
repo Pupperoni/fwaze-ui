@@ -29,33 +29,22 @@
           Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
         </button>
       </div>
+
       <div class="col-sm-12 col-md-12 col-lg-1">
         <div class="row justify-content-center">
-          <button class="btn btn-secondary" (click)="swap()">
+          <button class="btn btn-secondary fxn-button" (click)="swap()">
             &nbsp;&nbsp;<fa-icon [icon]="['fa', 'exchange-alt']"></fa-icon
             >&nbsp;&nbsp;
           </button>
         </div>
         <div class="row justify-content-center">
-          <button class="btn btn-secondary" (click)="setLocationNow()">
-            &nbsp;&nbsp;<fa-icon [icon]="['fa', 'location-arrow']"></fa-icon
-            >&nbsp;&nbsp;
+          <button
+            class="btn btn-secondary fxn-button"
+            (click)="setLocationNow()"
+          >
+            &nbsp;&nbsp;
+            <fa-icon [icon]="['fa', 'location-arrow']"></fa-icon> &nbsp;&nbsp;
           </button>
-        </div>
-
-        <div class="direction-data" *ngIf="distance && eta">
-          <div class="row justify-content-center">
-            Distance
-          </div>
-          <div class="row justify-content-center">
-            <strong>{{ distance }}</strong>
-          </div>
-          <div class="row justify-content-center">
-            ETA
-          </div>
-          <div class="row justify-content-center">
-            <strong>{{ eta }}</strong>
-          </div>
         </div>
       </div>
 
@@ -87,6 +76,60 @@
     </div>
   </form>
 
+  <div class="row justify-content-center">
+    <div>
+      <h3>Travel Modes</h3>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="direction-buttons btn-group">
+      <button
+        [class.activated]="isActive('DRIVING')"
+        class="btn btn-primary"
+        (click)="changeTravel('DRIVING')"
+      >
+        <fa-icon [icon]="['fa', 'car']"></fa-icon>
+      </button>
+      <button
+        [class.activated]="isActive('WALKING')"
+        class="btn btn-primary"
+        (click)="changeTravel('WALKING')"
+      >
+        <fa-icon [icon]="['fa', 'walking']"></fa-icon>
+      </button>
+      <button
+        [class.activated]="isActive('TRANSIT')"
+        class="btn btn-primary"
+        (click)="changeTravel('TRANSIT')"
+      >
+        <fa-icon [icon]="['fa', 'train']"></fa-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="direction-data-container row justify-content-center">
+    <div class="direction-data" *ngIf="distance && eta">
+      <div class="col-12">
+        Travel Mode
+      </div>
+      <div class="col-12">
+        <strong>{{ transitOptions }}</strong>
+      </div>
+      <div class="col-12">
+        Distance
+      </div>
+      <div class="col-12">
+        <strong>{{ distance }}</strong>
+      </div>
+      <div class="col-12">
+        ETA
+      </div>
+      <div class="col-12">
+        <strong>{{ eta }}</strong>
+      </div>
+    </div>
+  </div>
+
   <div *ngIf="currentUser" class="row justify-content-center">
     <select
       class="form-control"
@@ -102,7 +145,11 @@
   </div>
 
   <div *ngIf="currentUser" class="row justify-content-center">
-    <button type="button" class="btn btn-success" (click)="saveRoute()">
+    <button
+      type="button"
+      class="btn btn-success save-button"
+      (click)="saveRoute()"
+    >
       Save Route <fa-icon [icon]="['fa', 'heart']"></fa-icon>
     </button>
   </div>
@@ -110,7 +157,7 @@
   <div class="row justify-content-center">
     <button
       type="button"
-      class="btn btn-info"
+      class="btn btn-info filter-button"
       data-toggle="modal"
       data-target="#filterModal"
     >
@@ -165,6 +212,7 @@
       *ngIf="sourceData.lat && destData.lat"
       [origin]="sourceData"
       [destination]="destData"
+      [travelMode]="transitOptions"
       (onChange)="deleteMarkers($event)"
     ></agm-direction>
 

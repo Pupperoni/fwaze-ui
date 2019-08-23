@@ -28,6 +28,7 @@ export class LivemapComponent implements OnInit {
   reportFilter = true;
   adFilter = true;
   location = "";
+  transitOptions: string = "DRIVING";
 
   filterList = [
     { name: "Traffic Jam", apiName: "traffic_jam", active: true },
@@ -149,6 +150,10 @@ export class LivemapComponent implements OnInit {
     }
   }
 
+  isActive(mode: string) {
+    return this.transitOptions === mode;
+  }
+
   onMapClick($event: MouseEvent) {
     this.currentMarkerService.setMarker({
       lat: $event.coords.lat,
@@ -222,6 +227,11 @@ export class LivemapComponent implements OnInit {
     } else {
       this.assignAdMarkers();
     }
+  }
+
+  changeTravel(mode: string) {
+    this.transitOptions = mode;
+    this.cdr.detectChanges();
   }
 
   swap() {
@@ -503,6 +513,7 @@ export class LivemapComponent implements OnInit {
   }
 
   deleteMarkers($event) {
+    console.log($event);
     this.distance = $event.routes[0].legs[0].distance.text;
     this.eta = $event.routes[0].legs[0].duration.text;
     this.source = {
