@@ -100,7 +100,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   validateEmail(email) {
-    var re = /\S+@\S+/;
+    let re = /\S+@\S+/;
     return re.test(email);
   }
 

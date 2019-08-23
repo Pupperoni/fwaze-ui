@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {}
 
   validateEmail(email) {
-    var re = /\S+@\S+/;
+    let re = /\S+@\S+/;
     return re.test(email);
   }
 
