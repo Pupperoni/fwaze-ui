@@ -25,11 +25,15 @@
       </div>
       <table class="table">
         <tr>
-          <td class="user-info-field-name">Email</td>
+          <td class="user-info-field-name">
+            Email <fa-icon [icon]="['fa', 'envelope']"></fa-icon>
+          </td>
           <td class="user-info-field-value">{{ user.email }}</td>
         </tr>
         <tr>
-          <td class="user-info-field-name">Role</td>
+          <td class="user-info-field-name">
+            Role <fa-icon [icon]="['fa', 'user-tag']"></fa-icon>
+          </td>
           <td *ngIf="user.role === 0" class="user-info-field-value">
             Regular
           </td>

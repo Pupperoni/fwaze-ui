@@ -69,17 +69,17 @@
             type="password"
             class="form-control"
             id="confirm-password"
-            formControlName="confirm_password"
+            formControlName="confirmPassword"
           />
         </div>
         <div
           *ngIf="
-            confirm_password.invalid &&
-            (confirm_password.dirty || confirm_password.touched)
+            confirmPassword.invalid &&
+            (confirmPassword.dirty || confirmPassword.touched)
           "
           class="alert alert-danger"
         >
-          <div *ngIf="confirm_password.errors.required">
+          <div *ngIf="confirmPassword.errors.required">
             Password confirmation is required.
           </div>
         </div>

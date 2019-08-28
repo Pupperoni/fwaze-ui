@@ -50,9 +50,10 @@ export class ReportModalComponent implements OnInit {
 
     uploadData.append("type", this.selectedOption.toString());
     uploadData.append("userId", this.currentUser.id);
+    uploadData.append("userName", this.currentUser.name);
     uploadData.append("latitude", this.currentMarker.lat.toString());
     uploadData.append("longitude", this.currentMarker.lng.toString());
-    uploadData.append("address", location);
+    uploadData.append("location", location);
 
     if (this.photoUpload)
       uploadData.append("photo", this.photoUpload, this.photoUpload.name);

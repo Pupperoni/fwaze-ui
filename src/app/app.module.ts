@@ -27,7 +27,9 @@ import {
   faBriefcase,
   faWalking,
   faCar,
-  faTrain
+  faTrain,
+  faEnvelope,
+  faUserTag
 } from "@fortawesome/free-solid-svg-icons";
 
 registerLocaleData(localeFil);
@@ -91,5 +93,7 @@ export class AppModule {
     library.add(faWalking);
     library.add(faCar);
     library.add(faTrain);
+    library.add(faEnvelope);
+    library.add(faUserTag);
   }
 }

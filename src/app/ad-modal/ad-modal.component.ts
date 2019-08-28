@@ -58,10 +58,11 @@ export class AdModalComponent implements OnInit {
       let uploadData = new FormData();
 
       uploadData.append("userId", this.currentUser.id);
+      uploadData.append("userName", this.currentUser.name);
       uploadData.append("caption", formData.caption);
       uploadData.append("latitude", this.currentMarker.lat.toString());
       uploadData.append("longitude", this.currentMarker.lng.toString());
-      uploadData.append("address", location);
+      uploadData.append("location", location);
 
       if (this.photoUpload)
         uploadData.append("photo", this.photoUpload, this.photoUpload.name);

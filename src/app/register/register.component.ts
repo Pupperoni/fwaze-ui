@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
       name: new FormControl("", [Validators.required]),
       email: new FormControl("", [Validators.required, Validators.email]),
       password: new FormControl("", [Validators.required]),
-      confirm_password: new FormControl("", [Validators.required])
+      confirmPassword: new FormControl("", [Validators.required])
     });
   }
 
@@ -45,13 +45,13 @@ export class RegisterComponent implements OnInit {
       userData.name == "" ||
       userData.email == "" ||
       userData.password == "" ||
-      userData.confirm_password == ""
+      userData.confirmPassword == ""
     ) {
       // Can't have empty fields
       console.log("Empty field found");
       alert("Can't have empty fields");
-    } else if (userData.password != userData.confirm_password) {
-      // Check password and confirm_password; must match
+    } else if (userData.password != userData.confirmPassword) {
+      // Check password and confirmPassword; must match
       console.log("Passwords don't match");
       alert("Passwords don't match");
     } else if (!this.validateEmail(userData.email)) {
@@ -84,7 +84,7 @@ export class RegisterComponent implements OnInit {
   get password() {
     return this.registerForm.get("password");
   }
-  get confirm_password() {
-    return this.registerForm.get("confirm_password");
+  get confirmPassword() {
+    return this.registerForm.get("confirmPassword");
   }
 }

@@ -115,8 +115,13 @@ export class EditProfileComponent implements OnInit {
       uploadData.append("name", formData.name);
       uploadData.append("email", formData.email);
       uploadData.append("role", formData.role);
-      uploadData.append("work", formData.work);
       uploadData.append("id", this.currentUser.id);
+      uploadData.append("homeLatitude", this.home.latitude);
+      uploadData.append("homeLongitude", this.home.longitude);
+      uploadData.append("homeAddress", this.home.address);
+      uploadData.append("workLatitude", this.work.latitude);
+      uploadData.append("workLongitude", this.work.longitude);
+      uploadData.append("workAddress", this.work.address);
 
       if (this.avatarUpload)
         uploadData.append("avatar", this.avatarUpload, this.avatarUpload.name);
@@ -131,65 +136,64 @@ export class EditProfileComponent implements OnInit {
           })
         )
         .subscribe(res => {
-          let arr = [];
-          let homeForm = {
-            latitude: this.home.latitude,
-            longitude: this.home.longitude,
-            address: this.home.address,
-            submit: this.homeSubmit,
-            id: this.currentUser.id
-          };
-          this.userService.addHomeAd(homeForm).subscribe(res => {
-            arr.push(res);
-            if (arr.length == 2) {
-              this.currentUser.name = formData.name;
-              this.currentUser.email = formData.email;
-              this.currentUser.role = formData.role;
-              this.currentUser.home = this.homeSubmit
-                ? this.home
-                : this.currentUser.home;
-              this.currentUser.work = this.workSubmit
-                ? this.work
-                : this.currentUser.work;
-              this.cookieService.set(
-                "currentUser",
-                JSON.stringify(this.currentUser)
-              );
-              this.currentUser = JSON.parse(
-                this.cookieService.get("currentUser")
-              );
-              this.router.navigate([`/detail/${this.currentUser.id}`]);
-            }
-          });
-          let workForm = {
-            latitude: this.work.latitude,
-            longitude: this.work.longitude,
-            address: this.work.address,
-            submit: this.workSubmit,
-            id: this.currentUser.id
-          };
-          this.userService.addWorkAd(workForm).subscribe(res => {
-            arr.push(res);
-            if (arr.length == 2) {
-              this.currentUser.name = formData.name;
-              this.currentUser.email = formData.email;
-              this.currentUser.role = formData.role;
-              this.currentUser.home = this.homeSubmit
-                ? this.home
-                : this.currentUser.home;
-              this.currentUser.work = this.workSubmit
-                ? this.work
-                : this.currentUser.work;
-              this.cookieService.set(
-                "currentUser",
-                JSON.stringify(this.currentUser)
-              );
-              this.currentUser = JSON.parse(
-                this.cookieService.get("currentUser")
-              );
-              this.router.navigate([`/detail/${this.currentUser.id}`]);
-            }
-          });
+          this.currentUser.name = formData.name;
+          this.currentUser.email = formData.email;
+          this.currentUser.role = formData.role;
+          this.currentUser.home = this.homeSubmit
+            ? this.home
+            : this.currentUser.home;
+          this.currentUser.work = this.workSubmit
+            ? this.work
+            : this.currentUser.work;
+          this.cookieService.set(
+            "currentUser",
+            JSON.stringify(this.currentUser)
+          );
+          this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+          this.router.navigate([`/detail/${this.currentUser.id}`]);
+          // let arr = [];
+          // let homeForm = {
+          //   latitude: this.home.latitude,
+          //   longitude: this.home.longitude,
+          //   address: this.home.address,
+          //   submit: this.homeSubmit,
+          //   id: this.currentUser.id
+          // };
+          // this.userService.addHomeAd(homeForm).subscribe(res => {
+          //   arr.push(res);
+          //   if (arr.length == 2) {
+          //     this.currentUser.name = formData.name;
+          //     this.currentUser.email = formData.email;
+          //     this.currentUser.role = formData.role;
+          //     this.currentUser.home = this.homeSubmit
+          //       ? this.home
+          //       : this.currentUser.home;
+          //     this.currentUser.work = this.workSubmit
+          //       ? this.work
+          //       : this.currentUser.work;
+          //     this.cookieService.set(
+          //       "currentUser",
+          //       JSON.stringify(this.currentUser)
+          //     );
+          //     this.currentUser = JSON.parse(
+          //       this.cookieService.get("currentUser")
+          //     );
+          //     this.router.navigate([`/detail/${this.currentUser.id}`]);
+          //   }
+          // });
+          // let workForm = {
+          //   latitude: this.work.latitude,
+          //   longitude: this.work.longitude,
+          //   address: this.work.address,
+          //   submit: this.workSubmit,
+          //   id: this.currentUser.id
+          // };
+          // this.userService.addWorkAd(workForm).subscribe(res => {
+          //   arr.push(res);
+          //   if (arr.length == 2) {
+
+          //   }
+          // });
         });
     }
   }
