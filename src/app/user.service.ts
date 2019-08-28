@@ -23,9 +23,7 @@ interface UserResponse {
   providedIn: "root"
 })
 export class UserService {
-  private url = `http://${environment.APIUrl.HOST}:${
-    environment.APIUrl.PORT
-  }/users`;
+  private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users`;
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -85,6 +83,18 @@ export class UserService {
       routeData,
       this.httpOptions
     );
+  }
+
+  sendApplication(userData): Observable<any> {
+    return this.http.post<any>(
+      `${this.url}/apply/new`,
+      userData,
+      this.httpOptions
+    );
+  }
+
+  getApplicationByUserId(userId): Observable<any> {
+    return this.http.get<any>(`${this.url}/apply/${userId}`);
   }
 
   getfaveRoutes(userId): Observable<any> {

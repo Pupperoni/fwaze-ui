@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { UserService } from "../user.service";
 import { CookieService } from "ngx-cookie-service";
-
+import { catchError } from "rxjs/operators";
+import { throwError } from "rxjs";
 import { User } from "../user";
 import { Subscription } from "rxjs";
 
@@ -17,6 +18,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   userImage = undefined;
   currentUser: User = undefined;
   subscription: Subscription;
+  canApply = false;
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
@@ -31,7 +33,17 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.cookieService.get("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-    // this.getUser();
+
+    // check if already advertised
+    this.userService
+      .getApplicationByUserId(this.currentUser.id)
+      .subscribe(res => {
+        if (!res.data) this.canApply = true;
+      });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   getImagePath() {
@@ -41,8 +53,29 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     return this.userImage;
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  applyAdvertiser() {
+    let dateNow = new Date();
+    let userData = {
+      userId: this.currentUser.id,
+      userName: this.currentUser.name,
+      timestamp: `${dateNow.getFullYear()}-${dateNow.getMonth() +
+        1}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}.${dateNow.getMilliseconds()}`
+    };
+
+    this.userService
+      .sendApplication(userData)
+      .pipe(
+        catchError(err => {
+          alert(err.error.err);
+          console.log(err);
+          return throwError(err);
+        })
+      )
+      .subscribe(res => {
+        console.log("Your application is now being processed");
+        alert("Your application is now being processed");
+        this.canApply = false;
+      });
   }
 
   getUser() {
