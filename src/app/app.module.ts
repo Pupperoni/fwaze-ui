@@ -46,6 +46,7 @@ import { AdModalComponent } from "./ad-modal/ad-modal.component";
 import { ReportInfoWindowComponent } from "./report-info-window/report-info-window.component";
 import { CommentComponent } from "./comment/comment.component";
 import { FilterModalComponent } from "./filter-modal/filter-modal.component";
+import { ApplicationListComponent } from './application-list/application-list.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { FilterModalComponent } from "./filter-modal/filter-modal.component";
     AdModalComponent,
     ReportInfoWindowComponent,
     CommentComponent,
-    FilterModalComponent
+    FilterModalComponent,
+    ApplicationListComponent
   ],
   imports: [
     GooglePlaceModule,

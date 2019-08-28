@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { environment } from "./../environments/environment";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Observable } from "rxjs";
 
 import { User } from "./user";
 
@@ -83,18 +83,6 @@ export class UserService {
       routeData,
       this.httpOptions
     );
-  }
-
-  sendApplication(userData): Observable<any> {
-    return this.http.post<any>(
-      `${this.url}/apply/new`,
-      userData,
-      this.httpOptions
-    );
-  }
-
-  getApplicationByUserId(userId): Observable<any> {
-    return this.http.get<any>(`${this.url}/apply/${userId}`);
   }
 
   getfaveRoutes(userId): Observable<any> {

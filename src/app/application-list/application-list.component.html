@@ -1,0 +1,56 @@
+<div class="application-list-component">
+  <div class="row justify-content-center application-main-header">
+    <div class="col-10">
+      <h2>Applications</h2>
+    </div>
+  </div>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Status</th>
+        <th scope="col">Approve</th>
+        <th scope="col">Reject</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let application of applications; let i = index">
+        <td>
+          <a routerLink="/detail/{{ application.userId }}">
+            <h5>{{ application.userName }}</h5>
+          </a>
+        </td>
+        <td>
+          <h5>
+            <span *ngIf="application.status == 0" class="badge badge-warning">
+              Pending
+            </span>
+            <span *ngIf="application.status == 1" class="badge badge-success">
+              Approved
+            </span>
+            <span *ngIf="application.status == -1" class="badge badge-danger">
+              Rejected
+            </span>
+          </h5>
+        </td>
+        <td>
+          <button
+            class="btn btn-primary"
+            (click)="approve(application.userId, i)"
+          >
+            Approve
+          </button>
+        </td>
+        <td>
+          <button
+            class="btn btn-danger"
+            (click)="reject(application.userId, i)"
+          >
+            Reject
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

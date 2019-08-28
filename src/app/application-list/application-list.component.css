@@ -1,0 +1,17 @@
+.application-list-component {
+  margin-top: 6em;
+}
+
+.application-main-header {
+  margin-bottom: 1em;
+}
+
+.application-info {
+  padding: 1em;
+}
+
+.application-border {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.15cm 0.15cm 0.15cm 0.15cm;
+}

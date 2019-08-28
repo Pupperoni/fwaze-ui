@@ -2,3 +2,7 @@
   position: absolute;
   z-index: 1000;
 }
+
+.btn {
+  margin-right: 1em;
+}

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { UserService } from "../user.service";
+import { ApplicationService } from "../application.service";
 import { CookieService } from "ngx-cookie-service";
 import { catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
@@ -21,6 +22,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   canApply = false;
   constructor(
     private userService: UserService,
+    private applicationService: ApplicationService,
     private route: ActivatedRoute,
     private cookieService: CookieService,
     private router: Router
@@ -35,7 +37,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
 
     // check if already advertised
-    this.userService
+    this.applicationService
       .getApplicationByUserId(this.currentUser.id)
       .subscribe(res => {
         if (!res.data) this.canApply = true;
@@ -62,7 +64,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         1}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}.${dateNow.getMilliseconds()}`
     };
 
-    this.userService
+    this.applicationService
       .sendApplication(userData)
       .pipe(
         catchError(err => {
