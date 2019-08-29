@@ -24,6 +24,10 @@ export class ApplicationService {
   }
 
   getPendingApplications(): Observable<any> {
+    return this.http.get<any>(`${this.url}/pending`);
+  }
+
+  getAllApplications(): Observable<any> {
     return this.http.get<any>(`${this.url}`);
   }
 

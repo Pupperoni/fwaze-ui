@@ -12,37 +12,49 @@ import { throwError } from "rxjs";
 export class ApplicationListComponent implements OnInit {
   pendingApplications = [];
   doneApplications = [];
-  pendingPage = 0;
-  donePage = 0;
+  pendingIsActive = true;
+  oldIsActive = false;
   currentUser;
   constructor(
     private applicationService: ApplicationService,
     private cookieService: CookieService
-  ) {}
+  ) {
+    this.applicationService.getPendingApplications().subscribe(res => {
+      res.data.forEach(application => {
+        this.pendingApplications.push({
+          userId: application.user_id,
+          userName: application.user_name,
+          timestamp: application.timestamp,
+          status: application.status
+        });
+      });
+    });
+    this.applicationService.getAllApplications().subscribe(res => {
+      res.data.forEach(application => {
+        this.doneApplications.push({
+          userId: application.user_id,
+          userName: application.user_name,
+          timestamp: application.timestamp,
+          status: application.status
+        });
+      });
+    });
+  }
 
   ngOnInit() {
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+  }
 
-    this.applicationService.getPendingApplications().subscribe(res => {
-      res.data.forEach(application => {
-        if (application.status != 0) {
-          this.doneApplications.push({
-            userId: application.user_id,
-            userName: application.user_name,
-            timestamp: application.timestamp,
-            status: application.status
-          });
-        } else {
-          this.pendingApplications.push({
-            userId: application.user_id,
-            userName: application.user_name,
-            timestamp: application.timestamp,
-            status: application.status
-          });
-        }
-      });
-    });
+  toggle(type: string) {
+    if (type === "pending") {
+      this.oldIsActive = false;
+      this.pendingIsActive = true;
+    }
+    if (type === "old") {
+      this.oldIsActive = true;
+      this.pendingIsActive = false;
+    }
   }
 
   approve(id, index) {

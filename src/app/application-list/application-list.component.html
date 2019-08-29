@@ -1,135 +1,179 @@
 <div class="application-list-component">
-  <div class="row justify-content-center application-main-header">
-    <div class="col-10">
-      <h2>Pending Applications</h2>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <button
+        class="nav-link active"
+        data-toggle="collapse"
+        aria-expanded="true"
+        [class.active]="pendingIsActive"
+        (click)="toggle('pending')"
+      >
+        Pending
+      </button>
+    </li>
+    <li class="nav-item">
+      <button
+        class="nav-link"
+        data-toggle="collapse"
+        aria-expanded="false"
+        [class.active]="oldIsActive"
+        (click)="toggle('old')"
+      >
+        Old
+      </button>
+    </li>
+  </ul>
+
+  <div class="collapse" [class.show]="pendingIsActive" id="pendingTable">
+    <div class="card card-body">
+      <div class="row justify-content-center application-main-header">
+        <div class="col-10">
+          <h2>Pending Applications</h2>
+        </div>
+      </div>
+      <!-- paginate -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Approve</th>
+            <th scope="col">Reject</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="pendingApplications.length != 0; else empty">
+          <tr
+            *ngFor="
+              let application of pendingApplications
+                | paginate
+                  : {
+                      itemsPerPage: 10,
+                      currentPage: pendingPage,
+                      id: 'pending'
+                    };
+              let i = index
+            "
+          >
+            <td>
+              <a routerLink="/detail/{{ application.userId }}">
+                <h5>{{ application.userName }}</h5>
+              </a>
+            </td>
+            <td>
+              <h5>
+                <span class="badge badge-warning">
+                  Pending
+                </span>
+              </h5>
+            </td>
+            <td>
+              <button
+                class="btn btn-primary"
+                (click)="approve(application.userId, i)"
+              >
+                Approve
+              </button>
+            </td>
+            <td>
+              <button
+                class="btn btn-danger"
+                (click)="reject(application.userId, i)"
+              >
+                Reject
+              </button>
+            </td>
+          </tr>
+        </tbody>
+
+        <ng-template #empty>
+          <tbody>
+            <tr>
+              <th class="text-center font-italic empty-list" colspan="4">
+                No applications to show.
+              </th>
+            </tr>
+          </tbody>
+        </ng-template>
+      </table>
+      <div *ngIf="pendingApplications.length > 0" class="col-10">
+        <pagination-controls
+          class="my-pagination"
+          id="pending"
+          previousLabel=""
+          nextLabel=""
+          (pageChange)="pendingPage = $event"
+        >
+        </pagination-controls>
+      </div>
     </div>
   </div>
-  <!-- paginate -->
-  <table class="table table-bordered table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Status</th>
-        <th scope="col">Approve</th>
-        <th scope="col">Reject</th>
-      </tr>
-    </thead>
-    <tbody *ngIf="pendingApplications.length != 0; else empty">
-      <tr
-        *ngFor="
-          let application of pendingApplications
-            | paginate: { itemsPerPage: 10, currentPage: p, id: 'pending' };
-          let i = index
-        "
-      >
-        <td>
-          <a routerLink="/detail/{{ application.userId }}">
-            <h5>{{ application.userName }}</h5>
-          </a>
-        </td>
-        <td>
-          <h5>
-            <span class="badge badge-warning">
-              Pending
-            </span>
-          </h5>
-        </td>
-        <td>
-          <button
-            class="btn btn-primary"
-            (click)="approve(application.userId, i)"
-          >
-            Approve
-          </button>
-        </td>
-        <td>
-          <button
-            class="btn btn-danger"
-            (click)="reject(application.userId, i)"
-          >
-            Reject
-          </button>
-        </td>
-      </tr>
-    </tbody>
+  <div class="collapse" [class.show]="oldIsActive" id="oldTable">
+    <div class="card card-body">
+      <div class="row justify-content-center application-main-header">
+        <div class="col-10">
+          <h2>Old Applications</h2>
+        </div>
+      </div>
 
-    <ng-template #empty>
-      <tbody>
-        <tr>
-          <th class="text-center font-italic empty-list" colspan="4">
-            No applications to show.
-          </th>
-        </tr>
-      </tbody>
-    </ng-template>
-  </table>
-  <div class="col-10">
-    <pagination-controls
-      class="my-pagination"
-      id="pending"
-      previousLabel=""
-      nextLabel=""
-      (pageChange)="p = $event"
-    >
-    </pagination-controls>
-  </div>
-
-  <div class="row justify-content-center application-main-header">
-    <div class="col-10">
-      <h2>Old Applications</h2>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="doneApplications.length != 0; else empty">
+          <tr
+            *ngFor="
+              let application of doneApplications
+                | paginate
+                  : { itemsPerPage: 10, currentPage: oldPage, id: 'old' };
+              let i = index
+            "
+          >
+            <td>
+              <a routerLink="/detail/{{ application.userId }}">
+                <h5>{{ application.userName }}</h5>
+              </a>
+            </td>
+            <td>
+              <h5>
+                <span
+                  *ngIf="application.status == 1"
+                  class="badge badge-success"
+                >
+                  Approved
+                </span>
+                <span
+                  *ngIf="application.status == -1"
+                  class="badge badge-danger"
+                >
+                  Rejected
+                </span>
+              </h5>
+            </td>
+          </tr>
+        </tbody>
+        <ng-template #empty>
+          <tbody>
+            <tr>
+              <th class="text-center font-italic empty-list" colspan="4">
+                No applications to show.
+              </th>
+            </tr>
+          </tbody>
+        </ng-template>
+      </table>
+      <div *ngIf="doneApplications.length > 0" class="col-10">
+        <pagination-controls
+          class="my-pagination"
+          id="old"
+          previousLabel=""
+          nextLabel=""
+          (pageChange)="oldPage = $event"
+        >
+        </pagination-controls>
+      </div>
     </div>
-  </div>
-
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Status</th>
-      </tr>
-    </thead>
-    <tbody *ngIf="doneApplications.length != 0; else empty">
-      <tr
-        *ngFor="
-          let application of doneApplications
-            | paginate: { itemsPerPage: 10, currentPage: p, id: 'old' };
-          let i = index
-        "
-      >
-        <td>
-          <a routerLink="/detail/{{ application.userId }}">
-            <h5>{{ application.userName }}</h5>
-          </a>
-        </td>
-        <td>
-          <h5>
-            <span *ngIf="application.status == 1" class="badge badge-success">
-              Approved
-            </span>
-            <span *ngIf="application.status == -1" class="badge badge-danger">
-              Rejected
-            </span>
-          </h5>
-        </td>
-      </tr>
-    </tbody>
-    <ng-template #empty>
-      <tbody>
-        <tr>
-          <th class="text-center font-italic empty-list" colspan="4">
-            No applications to show.
-          </th>
-        </tr>
-      </tbody>
-    </ng-template>
-  </table>
-  <div class="col-10">
-    <pagination-controls
-      class="my-pagination"
-      id="old"
-      previousLabel=""
-      nextLabel=""
-      (pageChange)="p = $event"
-    >
-    </pagination-controls>
   </div>
 </div>
