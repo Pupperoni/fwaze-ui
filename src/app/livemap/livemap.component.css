@@ -23,7 +23,8 @@ agm-map {
   margin: 1em;
 }
 
-.save-button {
+.route-button {
+  width: 140px;
   margin: 1em;
 }
 

@@ -85,6 +85,14 @@ export class UserService {
     );
   }
 
+  deleteFaveRoute(routeData): Observable<any> {
+    return this.http.post<any>(
+      `${this.url}/faves/delete`,
+      routeData,
+      this.httpOptions
+    );
+  }
+
   getfaveRoutes(userId): Observable<any> {
     return this.http.get<any>(`${this.url}/faves/${userId}`);
   }

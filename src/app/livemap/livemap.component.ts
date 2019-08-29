@@ -466,6 +466,26 @@ export class LivemapComponent implements OnInit {
     }
   }
 
+  deleteRoute() {
+    if (this.selectedRoute != -1) {
+      // create json of route details
+      let routeData = {
+        userId: this.currentUser.id,
+        routeId: this.faveRoutes[this.selectedRoute].id
+      };
+
+      this.userService.deleteFaveRoute(routeData).subscribe(res => {
+        alert("Route has been deleted");
+        this.faveRoutes.splice(this.selectedRoute, 1);
+        this.selectedRoute = -1;
+      });
+    } else if (!this.currentUser) {
+      alert("Please login");
+    } else {
+      alert("Select a saved route");
+    }
+  }
+
   sourceAddressChange($event) {
     this.source = {
       lat: $event.geometry.location.lat(),
@@ -513,7 +533,6 @@ export class LivemapComponent implements OnInit {
   }
 
   deleteMarkers($event) {
-    console.log($event);
     this.distance = $event.routes[0].legs[0].distance.text;
     this.eta = $event.routes[0].legs[0].duration.text;
     this.source = {

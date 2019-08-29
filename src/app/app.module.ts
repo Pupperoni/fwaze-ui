@@ -29,7 +29,8 @@ import {
   faCar,
   faTrain,
   faEnvelope,
-  faUserTag
+  faUserTag,
+  faTimes
 } from "@fortawesome/free-solid-svg-icons";
 
 registerLocaleData(localeFil);
@@ -46,7 +47,7 @@ import { AdModalComponent } from "./ad-modal/ad-modal.component";
 import { ReportInfoWindowComponent } from "./report-info-window/report-info-window.component";
 import { CommentComponent } from "./comment/comment.component";
 import { FilterModalComponent } from "./filter-modal/filter-modal.component";
-import { ApplicationListComponent } from './application-list/application-list.component';
+import { ApplicationListComponent } from "./application-list/application-list.component";
 
 @NgModule({
   declarations: [
@@ -97,5 +98,6 @@ export class AppModule {
     library.add(faTrain);
     library.add(faEnvelope);
     library.add(faUserTag);
+    library.add(faTimes);
   }
 }
