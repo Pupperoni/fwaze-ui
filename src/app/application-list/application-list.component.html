@@ -2,7 +2,7 @@
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <button
-        class="nav-link active"
+        class="nav-link"
         data-toggle="collapse"
         aria-expanded="true"
         [class.active]="pendingIsActive"
@@ -27,7 +27,7 @@
   <div class="collapse" [class.show]="pendingIsActive" id="pendingTable">
     <div class="card card-body">
       <div class="row justify-content-center application-main-header">
-        <div class="col-10">
+        <div class="col">
           <h2>Pending Applications</h2>
         </div>
       </div>
@@ -110,7 +110,7 @@
   <div class="collapse" [class.show]="oldIsActive" id="oldTable">
     <div class="card card-body">
       <div class="row justify-content-center application-main-header">
-        <div class="col-10">
+        <div class="col">
           <h2>Old Applications</h2>
         </div>
       </div>

@@ -26,6 +26,7 @@
 
   <div>
     <button
+      [class.disabled]="selectedRoute == -1"
       class="col align-self-start"
       type="button"
       class="btn btn-danger route-button"

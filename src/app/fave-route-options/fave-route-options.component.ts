@@ -81,12 +81,13 @@ export class FaveRouteOptionsComponent implements OnInit {
       };
 
       this.userService.addFaveRoute(routeData).subscribe(res => {
-        alert("Route saved successfully");
         this.userService.getfaveRoutes(this.currentUser.id).subscribe(res => {
           this.faveRoutes = [];
           res.routes.forEach(route => {
             this.faveRoutes.push(route);
           });
+          // oof
+          this.selectedRoute = -1;
         });
       });
     } else if (!this.currentUser) {
