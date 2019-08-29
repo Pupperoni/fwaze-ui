@@ -1,11 +1,11 @@
 <div class="application-list-component">
   <div class="row justify-content-center application-main-header">
     <div class="col-10">
-      <h2>Applications</h2>
+      <h2>Pending Applications</h2>
     </div>
   </div>
 
-  <table class="table table-bordered">
+  <table class="table table-bordered table-striped">
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -14,8 +14,8 @@
         <th scope="col">Reject</th>
       </tr>
     </thead>
-    <tbody *ngIf="applications.length != 0; else empty">
-      <tr *ngFor="let application of applications; let i = index">
+    <tbody *ngIf="pendingApplications.length != 0; else empty">
+      <tr *ngFor="let application of pendingApplications; let i = index">
         <td>
           <a routerLink="/detail/{{ application.userId }}">
             <h5>{{ application.userName }}</h5>
@@ -23,14 +23,8 @@
         </td>
         <td>
           <h5>
-            <span *ngIf="application.status == 0" class="badge badge-warning">
+            <span class="badge badge-warning">
               Pending
-            </span>
-            <span *ngIf="application.status == 1" class="badge badge-success">
-              Approved
-            </span>
-            <span *ngIf="application.status == -1" class="badge badge-danger">
-              Rejected
             </span>
           </h5>
         </td>
@@ -49,6 +43,49 @@
           >
             Reject
           </button>
+        </td>
+      </tr>
+    </tbody>
+    <ng-template #empty>
+      <tbody>
+        <tr>
+          <th class="text-center font-italic empty-list" colspan="4">
+            No applications to show.
+          </th>
+        </tr>
+      </tbody>
+    </ng-template>
+  </table>
+
+  <div class="row justify-content-center application-main-header">
+    <div class="col-10">
+      <h2>Old Applications</h2>
+    </div>
+  </div>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="doneApplications.length != 0; else empty">
+      <tr *ngFor="let application of doneApplications; let i = index">
+        <td>
+          <a routerLink="/detail/{{ application.userId }}">
+            <h5>{{ application.userName }}</h5>
+          </a>
+        </td>
+        <td>
+          <h5>
+            <span *ngIf="application.status == 1" class="badge badge-success">
+              Approved
+            </span>
+            <span *ngIf="application.status == -1" class="badge badge-danger">
+              Rejected
+            </span>
+          </h5>
         </td>
       </tr>
     </tbody>

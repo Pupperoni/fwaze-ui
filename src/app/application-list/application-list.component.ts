@@ -10,7 +10,8 @@ import { throwError } from "rxjs";
   styleUrls: ["./application-list.component.css"]
 })
 export class ApplicationListComponent implements OnInit {
-  applications = [];
+  pendingApplications = [];
+  doneApplications = [];
   currentUser;
   constructor(
     private applicationService: ApplicationService,
@@ -23,12 +24,21 @@ export class ApplicationListComponent implements OnInit {
 
     this.applicationService.getPendingApplications().subscribe(res => {
       res.data.forEach(application => {
-        this.applications.push({
-          userId: application.user_id,
-          userName: application.user_name,
-          timestamp: application.timestamp,
-          status: application.status
-        });
+        if (application.status != 0) {
+          this.doneApplications.push({
+            userId: application.user_id,
+            userName: application.user_name,
+            timestamp: application.timestamp,
+            status: application.status
+          });
+        } else {
+          this.pendingApplications.push({
+            userId: application.user_id,
+            userName: application.user_name,
+            timestamp: application.timestamp,
+            status: application.status
+          });
+        }
       });
     });
   }
@@ -48,8 +58,9 @@ export class ApplicationListComponent implements OnInit {
         })
       )
       .subscribe(res => {
-        console.log(res);
-        this.applications.splice(index, 1);
+        let applications = this.pendingApplications.splice(index, 1);
+        applications[0].status = 1;
+        this.doneApplications.push(applications[0]);
       });
   }
 
@@ -68,8 +79,9 @@ export class ApplicationListComponent implements OnInit {
         })
       )
       .subscribe(res => {
-        console.log(res);
-        this.applications.splice(index, 1);
+        let applications = this.pendingApplications.splice(index, 1);
+        applications[0].status = -1;
+        this.doneApplications.push(applications[0]);
       });
   }
 }
