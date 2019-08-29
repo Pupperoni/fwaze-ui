@@ -15,7 +15,13 @@
       </tr>
     </thead>
     <tbody *ngIf="pendingApplications.length != 0; else empty">
-      <tr *ngFor="let application of pendingApplications; let i = index">
+      <tr
+        *ngFor="
+          let application of pendingApplications
+            | paginate: { itemsPerPage: 10, currentPage: p, id: 'pending' };
+          let i = index
+        "
+      >
         <td>
           <a routerLink="/detail/{{ application.userId }}">
             <h5>{{ application.userName }}</h5>
@@ -46,6 +52,7 @@
         </td>
       </tr>
     </tbody>
+
     <ng-template #empty>
       <tbody>
         <tr>
@@ -56,6 +63,16 @@
       </tbody>
     </ng-template>
   </table>
+  <div class="col-10">
+    <pagination-controls
+      class="my-pagination"
+      id="pending"
+      previousLabel=""
+      nextLabel=""
+      (pageChange)="p = $event"
+    >
+    </pagination-controls>
+  </div>
 
   <div class="row justify-content-center application-main-header">
     <div class="col-10">
@@ -71,7 +88,13 @@
       </tr>
     </thead>
     <tbody *ngIf="doneApplications.length != 0; else empty">
-      <tr *ngFor="let application of doneApplications; let i = index">
+      <tr
+        *ngFor="
+          let application of doneApplications
+            | paginate: { itemsPerPage: 10, currentPage: p, id: 'old' };
+          let i = index
+        "
+      >
         <td>
           <a routerLink="/detail/{{ application.userId }}">
             <h5>{{ application.userName }}</h5>
@@ -99,4 +122,14 @@
       </tbody>
     </ng-template>
   </table>
+  <div class="col-10">
+    <pagination-controls
+      class="my-pagination"
+      id="old"
+      previousLabel=""
+      nextLabel=""
+      (pageChange)="p = $event"
+    >
+    </pagination-controls>
+  </div>
 </div>
