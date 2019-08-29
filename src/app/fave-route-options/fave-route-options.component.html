@@ -7,7 +7,7 @@
   >
     <option value="-1">-- Select Routes --</option>
     <option *ngFor="let route of faveRoutes; let i = index" [value]="i">
-      {{ route.source_string }} --> {{ route.destination_string }}
+      {{ route.name }}
     </option>
   </select>
 </div>
@@ -17,7 +17,8 @@
       class="col align-self-end"
       type="button"
       class="btn btn-success route-button"
-      (click)="saveRoute()"
+      data-toggle="modal"
+      data-target="#saveRouteModal"
     >
       Save Route <fa-icon [icon]="['fa', 'heart']"></fa-icon>
     </button>
@@ -34,3 +35,9 @@
     </button>
   </div>
 </div>
+
+<app-save-route-modal
+  [sourceString]="sourceString"
+  [destString]="destString"
+  (labelSubmit)="saveRoute($event)"
+></app-save-route-modal>

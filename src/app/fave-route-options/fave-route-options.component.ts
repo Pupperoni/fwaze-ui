@@ -15,8 +15,6 @@ import { UserService } from "../user.service";
   styleUrls: ["./fave-route-options.component.css"]
 })
 export class FaveRouteOptionsComponent implements OnInit {
-  @Input() source;
-  @Input() destination;
   @Input() sourceData;
   @Input() destData;
   @Input() sourceString;
@@ -29,8 +27,7 @@ export class FaveRouteOptionsComponent implements OnInit {
   currentUser;
   constructor(
     private cookieService: CookieService,
-    private userService: UserService,
-    private cdr: ChangeDetectorRef
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -48,27 +45,28 @@ export class FaveRouteOptionsComponent implements OnInit {
   }
 
   useRoute() {
-    console.log(this.faveRoutes);
-    const destination = {
-      lat: this.faveRoutes[this.selectedRoute].destination_coords.y,
-      lng: this.faveRoutes[this.selectedRoute].destination_coords.x
-    };
-    const source = {
-      lat: this.faveRoutes[this.selectedRoute].source_coords.y,
-      lng: this.faveRoutes[this.selectedRoute].source_coords.x
-    };
-    this.sourceString = this.faveRoutes[this.selectedRoute].source_string;
-    this.destString = this.faveRoutes[this.selectedRoute].destination_string;
+    if (this.selectedRoute != -1) {
+      const destination = {
+        lat: this.faveRoutes[this.selectedRoute].destination_coords.y,
+        lng: this.faveRoutes[this.selectedRoute].destination_coords.x
+      };
+      const source = {
+        lat: this.faveRoutes[this.selectedRoute].source_coords.y,
+        lng: this.faveRoutes[this.selectedRoute].source_coords.x
+      };
+      this.sourceString = this.faveRoutes[this.selectedRoute].source_string;
+      this.destString = this.faveRoutes[this.selectedRoute].destination_string;
 
-    this.routeUsed.emit({
-      source: source,
-      destination: destination,
-      sourceString: this.sourceString,
-      destString: this.destString
-    });
+      this.routeUsed.emit({
+        source: source,
+        destination: destination,
+        sourceString: this.sourceString,
+        destString: this.destString
+      });
+    }
   }
 
-  saveRoute() {
+  saveRoute($event) {
     if (this.sourceData.lat && this.destData.lat) {
       // create json of route details
       let routeData = {
@@ -78,6 +76,7 @@ export class FaveRouteOptionsComponent implements OnInit {
         destinationLongitude: this.destData.lng,
         sourceString: this.sourceString,
         destinationString: this.destString,
+        routeName: $event.label,
         userId: this.currentUser.id
       };
 
