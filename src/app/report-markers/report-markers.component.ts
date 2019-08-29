@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
 import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
 import { CurrentMarkerService } from "../current-marker.service";
 import { ReportService } from "../report.service";
 import { CommentService } from "../comment.service";
 import { Subscription } from "rxjs";
-import { formatDate } from "@angular/common";
 
 @Component({
   selector: "app-report-markers",

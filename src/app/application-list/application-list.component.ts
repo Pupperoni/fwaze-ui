@@ -12,6 +12,8 @@ import { throwError } from "rxjs";
 export class ApplicationListComponent implements OnInit {
   pendingApplications = [];
   doneApplications = [];
+  pendingPage = 0;
+  donePage = 0;
   currentUser;
   constructor(
     private applicationService: ApplicationService,

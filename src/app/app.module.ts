@@ -1,6 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { registerLocaleData } from "@angular/common";
+import { NgxPaginationModule } from "ngx-pagination";
 import localeFil from "@angular/common/locales/fil";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -75,8 +76,9 @@ import { ApplicationListComponent } from "./application-list/application-list.co
     FormsModule,
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyCvwX5W1Lv3Ozj5RYl06w3PbaBH8_8XSjA"
+      apiKey: "some_api_key"
     }),
+    NgxPaginationModule,
     AgmDirectionModule,
     FontAwesomeModule
   ],
