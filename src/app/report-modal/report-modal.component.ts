@@ -25,7 +25,7 @@ export class ReportModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.cookieService.get("currentUser"))
+    if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     else this.currentUser = undefined;
   }
@@ -46,7 +46,7 @@ export class ReportModalComponent implements OnInit {
 
   reportSubmit() {
     this.currentMarker = this.currentMarkerService.getMarker();
-    let location = this.currentMarkerService.getMarkerAddress();
+    let location = this.currentMarkerService.getMarkerLocation();
     let uploadData = new FormData();
 
     uploadData.append("type", this.selectedOption.toString());

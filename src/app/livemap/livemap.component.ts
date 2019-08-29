@@ -137,7 +137,7 @@ export class LivemapComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.cookieService.get("currentUser"))
+    if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     else this.currentUser = undefined;
 
@@ -169,8 +169,8 @@ export class LivemapComponent implements OnInit {
     };
     this.geocoder.geocode(request, res => {
       if (res != null) {
-        this.currentMarkerService.setMarkerAddress(res[0].formatted_address);
-        this.location = this.currentMarkerService.getMarkerAddress();
+        this.currentMarkerService.setMarkerLocation(res[0].formatted_address);
+        this.location = this.currentMarkerService.getMarkerLocation();
       }
     });
   }
@@ -582,7 +582,6 @@ export class LivemapComponent implements OnInit {
 
   private updateReportMarker(index: number) {
     // let updateReportId = this.reportMarkers.slice(index, index + 1)[0].id;
-
     this.reportMarkers[index].autoOpen = true;
   }
 

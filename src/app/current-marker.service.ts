@@ -26,7 +26,7 @@ export class CurrentMarkerService {
     this.voteDecr$ = this.voteDecrSubject.asObservable();
   }
 
-  getMarkerAddress() {
+  getMarkerLocation() {
     return this.location;
   }
 
@@ -34,8 +34,8 @@ export class CurrentMarkerService {
     return this.currentMarker;
   }
 
-  setMarkerAddress(address) {
-    this.location = address;
+  setMarkerLocation(location) {
+    this.location = location;
   }
 
   setMarker(marker) {

@@ -22,12 +22,12 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (this.cookieService.get("currentUser"))
+    if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
   }
 
   ngAfterViewChecked() {
-    if (this.cookieService.get("currentUser"))
+    if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     this.cdr.detectChanges();
   }
@@ -43,7 +43,7 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   onLogout() {
     this.cookieService.delete("currentUser");
-    this.currentUser = undefined;
+    this.currentUser = null;
     this.cdr.detectChanges();
 
     // this.router.navigate(["/"]);

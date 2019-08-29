@@ -18,7 +18,7 @@ export class ApplicationListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.cookieService.get("currentUser"))
+    if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
 
     this.applicationService.getPendingApplications().subscribe(res => {

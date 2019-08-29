@@ -24,7 +24,7 @@ export class AdModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.cookieService.get("currentUser"))
+    if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     else this.currentUser = undefined;
     this.adForm = new FormGroup({
@@ -54,7 +54,7 @@ export class AdModalComponent implements OnInit {
     } else {
       // All good!
       this.currentMarker = this.currentMarkerService.getMarker();
-      let location = this.currentMarkerService.getMarkerAddress();
+      let location = this.currentMarkerService.getMarkerLocation();
       let uploadData = new FormData();
 
       uploadData.append("userId", this.currentUser.id);
@@ -67,12 +67,6 @@ export class AdModalComponent implements OnInit {
       if (this.photoUpload)
         uploadData.append("photo", this.photoUpload, this.photoUpload.name);
 
-      // let adSubmission = {
-      //   userId: this.currentUser.id,
-      //   caption: formData.caption,
-      //   latitude: this.currentMarker.lat,
-      //   longitude: this.currentMarker.lng
-      // };
       this.advertisementService.addAd(uploadData).subscribe((res: any) => {
         this.currentMarkerService.adSubmit(res.data);
         this.photoUpload = null;

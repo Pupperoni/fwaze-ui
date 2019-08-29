@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
     private cookieService: CookieService,
     private router: Router
   ) {
-    if (this.cookieService.get("currentUser")) {
+    if (this.cookieService.check("currentUser")) {
       this.router.navigate(["/"]);
     }
 

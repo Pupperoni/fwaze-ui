@@ -21,7 +21,7 @@ export class AdMarkersComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.cookieService.get("currentUser"))
+    if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
 
     this.icon = {
@@ -37,9 +37,7 @@ export class AdMarkersComponent implements OnInit {
     this.advertisementService.getAdById(id).subscribe((res: any) => {
       this.markerInfo = res.ad;
       if (this.markerInfo.photoPath)
-        this.imagePath = `http://localhost:3000/map/ads/${
-          this.marker.id
-        }/image`;
+        this.imagePath = `http://localhost:3000/map/ads/${this.marker.id}/image`;
     });
   }
 }

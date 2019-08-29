@@ -33,7 +33,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.cookieService.get("currentUser"))
+    if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
 
     // check if already advertised
@@ -86,6 +86,29 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       this.user = res.user;
       this.userImage = `http://localhost:3000/users/${this.user.id}/image`;
       this.imageTimeStamp = new Date().getTime();
+
+      // update current user if there are any changes
+      if (this.currentUser.id === this.user.id) {
+        if (this.user.home.address !== "") {
+          // convert latlng to float
+          this.user.home.latitude = parseFloat(this.user.home.latitude);
+          this.user.home.longitude = parseFloat(this.user.home.longitude);
+        }
+        if (this.user.work.address !== "") {
+          // convert latlng to float
+          this.user.work.latitude = parseFloat(this.user.work.latitude);
+          this.user.work.longitude = parseFloat(this.user.work.longitude);
+        }
+        this.cookieService.delete("currentUser");
+        this.cookieService.set(
+          "currentUser",
+          JSON.stringify(this.user),
+          null,
+          "/"
+        );
+        this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+        console.log(this.currentUser);
+      }
     });
   }
 }

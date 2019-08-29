@@ -43,7 +43,7 @@ export class ReportMarkersComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.cookieService.get("currentUser"))
+    if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
 
     this.icon = {
@@ -72,18 +72,14 @@ export class ReportMarkersComponent implements OnInit {
               res.report.curUserVoted = res2 ? true : false;
               this.markerInfo = res.report;
               if (this.markerInfo.photoPath)
-                this.imagePath = `http://localhost:3000/map/reports/${
-                  this.markerInfo.id
-                }/image`;
+                this.imagePath = `http://localhost:3000/map/reports/${this.markerInfo.id}/image`;
               return true;
             });
         } else {
           res.report.curUserVoted = false;
           this.markerInfo = res.report;
           if (this.markerInfo.photoPath)
-            this.imagePath = `http://localhost:3000/map/reports/${
-              this.markerInfo.id
-            }/image`;
+            this.imagePath = `http://localhost:3000/map/reports/${this.markerInfo.id}/image`;
           return true;
         }
       });

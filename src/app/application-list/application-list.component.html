@@ -5,7 +5,7 @@
     </div>
   </div>
 
-  <table class="table table-bordered table-hover">
+  <table class="table table-bordered">
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -14,7 +14,7 @@
         <th scope="col">Reject</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="applications.length != 0; else empty">
       <tr *ngFor="let application of applications; let i = index">
         <td>
           <a routerLink="/detail/{{ application.userId }}">
@@ -52,5 +52,14 @@
         </td>
       </tr>
     </tbody>
+    <ng-template #empty>
+      <tbody>
+        <tr>
+          <th class="text-center font-italic empty-list" colspan="4">
+            No applications to show.
+          </th>
+        </tr>
+      </tbody>
+    </ng-template>
   </table>
 </div>
