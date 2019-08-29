@@ -132,43 +132,17 @@
       </div>
     </div>
   </div>
-  <div *ngIf="currentUser">
-    <div class="row justify-content-center">
-      <select
-        class="form-control"
-        id="selectedRoute"
-        [(ngModel)]="selectedRoute"
-        (change)="useRoute()"
-      >
-        <option value="-1">-- Select Routes --</option>
-        <option *ngFor="let route of faveRoutes; let i = index" [value]="i">
-          {{ route.source_string }} --> {{ route.destination_string }}
-        </option>
-      </select>
-    </div>
-    <div class="row justify-content-center">
-      <div>
-        <button
-          class="col align-self-end"
-          type="button"
-          class="btn btn-success route-button"
-          (click)="saveRoute()"
-        >
-          Save Route <fa-icon [icon]="['fa', 'heart']"></fa-icon>
-        </button>
-      </div>
 
-      <div>
-        <button
-          class="col align-self-start"
-          type="button"
-          class="btn btn-danger route-button"
-          (click)="deleteRoute()"
-        >
-          Delete Route <fa-icon [icon]="['fa', 'times']"></fa-icon>
-        </button>
-      </div>
-    </div>
+  <div *ngIf="currentUser">
+    <app-fave-route-options
+      [source]="source"
+      [destination]="destination"
+      [sourceData]="sourceData"
+      [destData]="destData"
+      [sourceString]="sourceString"
+      [destString]="destString"
+      (routeUsed)="onRouteUsed($event)"
+    ></app-fave-route-options>
   </div>
 
   <div class="row justify-content-center">

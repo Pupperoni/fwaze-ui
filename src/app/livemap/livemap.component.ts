@@ -17,14 +17,13 @@ import { CurrentMarkerService } from "../current-marker.service";
   styleUrls: ["./livemap.component.css"]
 })
 export class LivemapComponent implements OnInit {
+  selectedRoute;
   currentUser: User = undefined;
   tright = undefined;
   bleft = undefined;
   distance = undefined;
   eta = undefined;
   geocoder = new google.maps.Geocoder();
-  faveRoutes = [];
-  selectedRoute: number = -1;
   reportFilter = true;
   adFilter = true;
   location = "";
@@ -140,14 +139,6 @@ export class LivemapComponent implements OnInit {
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     else this.currentUser = undefined;
-
-    if (this.currentUser) {
-      this.userService.getfaveRoutes(this.currentUser.id).subscribe(res => {
-        res.routes.forEach(route => {
-          this.faveRoutes.push(route);
-        });
-      });
-    }
   }
 
   isActive(mode: string) {
@@ -398,92 +389,39 @@ export class LivemapComponent implements OnInit {
     }
   }
 
-  useRoute() {
-    if (this.selectedRoute == -1) {
-      // do nothing
-    } else {
-      // use em
-      this.destination = {
-        lat: this.faveRoutes[this.selectedRoute].destination_coords.y,
-        lng: this.faveRoutes[this.selectedRoute].destination_coords.x,
-        label: "D"
-      };
-      this.destData = {
-        lat: this.faveRoutes[this.selectedRoute].destination_coords.y,
-        lng: this.faveRoutes[this.selectedRoute].destination_coords.x,
-        label: "D"
-      };
+  onRouteUsed($event) {
+    // use em
+    this.destination = {
+      lat: $event.destination.lat,
+      lng: $event.destination.lng,
+      label: "D"
+    };
+    this.destData = {
+      lat: $event.destination.lat,
+      lng: $event.destination.lng,
+      label: "D"
+    };
 
-      this.source = {
-        lat: this.faveRoutes[this.selectedRoute].source_coords.y,
-        lng: this.faveRoutes[this.selectedRoute].source_coords.x,
-        label: "S"
-      };
-      this.sourceData = {
-        lat: this.faveRoutes[this.selectedRoute].source_coords.y,
-        lng: this.faveRoutes[this.selectedRoute].source_coords.x,
-        label: "S"
-      };
+    this.source = {
+      lat: $event.source.lat,
+      lng: $event.source.lng,
+      label: "S"
+    };
+    this.sourceData = {
+      lat: $event.source.lat,
+      lng: $event.source.lng,
+      label: "S"
+    };
 
-      this.destString = this.faveRoutes[this.selectedRoute].destination_string;
-      this.sourceString = this.faveRoutes[this.selectedRoute].source_string;
+    this.destString = $event.destString;
+    this.sourceString = $event.sourceString;
 
-      this.directionForm.setValue({
-        source: this.sourceString,
-        destination: this.destString
-      });
+    this.directionForm.setValue({
+      source: this.sourceString,
+      destination: this.destString
+    });
 
-      this.cdr.detectChanges();
-    }
-  }
-
-  saveRoute() {
-    if (this.sourceData.lat && this.destData.lat) {
-      // create json of route details
-      let routeData = {
-        sourceLatitude: this.sourceData.lat,
-        sourceLongitude: this.sourceData.lng,
-        destinationLatitude: this.destData.lat,
-        destinationLongitude: this.destData.lng,
-        sourceString: this.sourceString,
-        destinationString: this.destString,
-        userId: this.currentUser.id
-      };
-
-      this.userService.addFaveRoute(routeData).subscribe(res => {
-        alert("Route saved successfully");
-        this.userService.getfaveRoutes(this.currentUser.id).subscribe(res => {
-          this.faveRoutes = [];
-          res.routes.forEach(route => {
-            this.faveRoutes.push(route);
-          });
-        });
-      });
-    } else if (!this.currentUser) {
-      alert("Please login");
-    } else {
-      alert("Please add both source and destination");
-    }
-  }
-
-  deleteRoute() {
-    if (this.selectedRoute != -1) {
-      // create json of route details
-      let routeData = {
-        userId: this.currentUser.id,
-        routeId: this.faveRoutes[this.selectedRoute].id
-      };
-
-      this.userService.deleteFaveRoute(routeData).subscribe(res => {
-        alert("Route has been deleted");
-        this.faveRoutes.splice(this.selectedRoute, 1);
-        this.selectedRoute = -1;
-      });
-    } else if (!this.currentUser) {
-      alert("Please login");
-    } else {
-      alert("Select a saved route");
-    }
+    this.cdr.detectChanges();
   }
 
   sourceAddressChange($event) {

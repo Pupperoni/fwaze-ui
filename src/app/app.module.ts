@@ -49,6 +49,7 @@ import { ReportInfoWindowComponent } from "./report-info-window/report-info-wind
 import { CommentComponent } from "./comment/comment.component";
 import { FilterModalComponent } from "./filter-modal/filter-modal.component";
 import { ApplicationListComponent } from "./application-list/application-list.component";
+import { FaveRouteOptionsComponent } from "./fave-route-options/fave-route-options.component";
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { ApplicationListComponent } from "./application-list/application-list.co
     ReportInfoWindowComponent,
     CommentComponent,
     FilterModalComponent,
-    ApplicationListComponent
+    ApplicationListComponent,
+    FaveRouteOptionsComponent
   ],
   imports: [
     GooglePlaceModule,
