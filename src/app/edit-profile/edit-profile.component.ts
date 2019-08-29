@@ -50,9 +50,6 @@ export class EditProfileComponent implements OnInit {
       email: new FormControl(this.currentUser.email, [
         Validators.required,
         Validators.email
-      ]),
-      role: new FormControl(this.currentUser.role.toString(), [
-        Validators.required
       ])
     });
   }
@@ -109,12 +106,10 @@ export class EditProfileComponent implements OnInit {
       console.log("Format is not a valid email address.");
       alert("Format is not a valid email address.");
     } else {
-      formData.role = parseInt(formData.role);
       let uploadData = new FormData();
 
       uploadData.append("name", formData.name);
       uploadData.append("email", formData.email);
-      uploadData.append("role", formData.role);
       uploadData.append("id", this.currentUser.id);
       uploadData.append("homeLatitude", this.home.latitude);
       uploadData.append("homeLongitude", this.home.longitude);
@@ -138,7 +133,6 @@ export class EditProfileComponent implements OnInit {
         .subscribe(res => {
           this.currentUser.name = formData.name;
           this.currentUser.email = formData.email;
-          this.currentUser.role = formData.role;
           this.currentUser.home = this.homeSubmit
             ? this.home
             : this.currentUser.home;
@@ -152,7 +146,6 @@ export class EditProfileComponent implements OnInit {
             null,
             "/"
           );
-          this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
           this.router.navigate([`/detail/${this.currentUser.id}`]);
         });
     }
@@ -163,8 +156,5 @@ export class EditProfileComponent implements OnInit {
   }
   get email() {
     return this.profileForm.get("email");
-  }
-  get role() {
-    return this.profileForm.get("role");
   }
 }

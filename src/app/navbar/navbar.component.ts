@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   onLogout() {
-    this.cookieService.delete("currentUser");
+    this.cookieService.delete("currentUser", "/");
     this.currentUser = null;
     this.cdr.detectChanges();
 
