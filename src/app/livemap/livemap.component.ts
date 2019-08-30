@@ -215,7 +215,7 @@ export class LivemapComponent implements OnInit {
     if (!this.reportFilter) {
       this.reportMarkers = [];
     } else {
-      this.assignReportMarkersProto();
+      this.assignReportMarkers();
     }
 
     if (!this.adFilter) {
@@ -281,10 +281,9 @@ export class LivemapComponent implements OnInit {
       this.lat = $event.source.lat;
       this.lng = $event.source.lng;
     }
+    this.cdr.detectChanges();
 
     this.updateChildren();
-
-    this.cdr.detectChanges();
   }
 
   addHome($event) {
@@ -369,6 +368,7 @@ export class LivemapComponent implements OnInit {
     this.lng = $event.source.lng;
 
     this.updateChildren();
+    this.cdr.detectChanges();
   }
 
   onRouteUsed($event) {
@@ -480,7 +480,7 @@ export class LivemapComponent implements OnInit {
         let SW = $event.getSouthWest();
         this.tright = `${NE.lat()},${NE.lng()}`;
         this.bleft = `${SW.lat()},${SW.lng()}`;
-        if (this.reportFilter) this.assignReportMarkersProto();
+        if (this.reportFilter) this.assignReportMarkers();
         if (this.adFilter) this.assignAdMarkers();
       }
     },
@@ -512,7 +512,7 @@ export class LivemapComponent implements OnInit {
     this.reportMarkers[index].autoOpen = true;
   }
 
-  assignReportMarkersProto() {
+  private assignReportMarkers() {
     let wantedResults = [];
     let itemsProcessed = 0;
     this.filterList.forEach(type => {
@@ -537,12 +537,6 @@ export class LivemapComponent implements OnInit {
           this.cdr.detectChanges();
         }
       }
-    });
-  }
-
-  private assignReportMarkers(tright, bleft) {
-    this.reportService.getAllReportsByBounds(tright, bleft).subscribe(res => {
-      this.updateReportList(res.reports);
     });
   }
 
