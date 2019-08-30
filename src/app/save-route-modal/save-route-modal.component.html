@@ -1,0 +1,69 @@
+<div class="save-route-modal-component">
+  <div
+    class="modal fade"
+    id="saveRouteModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="saveRouteModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="saveRouteModalLabel">
+            Save Route
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="sourceString != '' && destString != ''; else noString">
+            <form [formGroup]="routeForm">
+              <label>Enter your custom route label:</label>
+              <input
+                placeholder="My Fave Route"
+                class="form-control"
+                rows="5"
+                name="label"
+                formControlName="label"
+              />
+            </form>
+            &nbsp;
+            <div>From</div>
+            <div>
+              <strong>{{ sourceString }}</strong>
+            </div>
+            <div>To</div>
+            <div>
+              <strong>{{ destString }}</strong>
+            </div>
+          </div>
+          <ng-template #noString>
+            <div>Please add both source and destination</div>
+          </ng-template>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            *ngIf="sourceString != '' && destString != ''"
+            type="button"
+            class="btn btn-primary"
+            data-dismiss="modal"
+            (click)="onSubmit(routeForm.value)"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

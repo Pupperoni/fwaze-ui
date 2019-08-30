@@ -1,0 +1,76 @@
+<form [formGroup]="directionForm">
+  <div class="map-form form-row d-flex justify-content-center">
+    <div class="src form-group col-sm-12 col-md-12 col-lg-5">
+      <label>Enter source:</label>
+      <input
+        ngx-google-places-autocomplete
+        class="form-control"
+        type="text"
+        id="src"
+        formControlName="source"
+        (onAddressChange)="sourceAddressChange($event)"
+      />
+      <button
+        *ngIf="currentUser && currentUser.home.address != ''"
+        class="btn btn-primary"
+        (click)="homeButtonClicked('source')"
+      >
+        Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
+      </button>
+      <button
+        *ngIf="currentUser && currentUser.work.address != ''"
+        class="btn btn-primary"
+        (click)="workButtonClicked('source')"
+      >
+        Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
+      </button>
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-lg-1">
+      <div class="row justify-content-center">
+        <button
+          class="btn btn-secondary fxn-button text-center"
+          (click)="swapButtonClicked()"
+        >
+          &nbsp;<fa-icon [icon]="['fa', 'exchange-alt']"> </fa-icon>
+          &nbsp;
+        </button>
+      </div>
+      <div class="row justify-content-center">
+        <button
+          class="btn btn-secondary fxn-button text-center"
+          (click)="currentLocationButtonClicked()"
+        >
+          &nbsp;<fa-icon [icon]="['fa', 'location-arrow']"> </fa-icon>
+          &nbsp;
+        </button>
+      </div>
+    </div>
+
+    <div class="dest form-group col-sm-12 col-md-12 col-lg-5">
+      <label>Enter destination:</label>
+      <input
+        ngx-google-places-autocomplete
+        class="form-control"
+        type="text"
+        id="dest"
+        formControlName="destination"
+        (onAddressChange)="destinationAddressChange($event)"
+      />
+      <button
+        *ngIf="currentUser && currentUser.home.address != ''"
+        class="btn btn-primary"
+        (click)="homeButtonClicked('destination')"
+      >
+        Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
+      </button>
+      <button
+        *ngIf="currentUser && currentUser.work.address != ''"
+        class="btn btn-primary"
+        (click)="workButtonClicked('destination')"
+      >
+        Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
+      </button>
+    </div>
+  </div>
+</form>

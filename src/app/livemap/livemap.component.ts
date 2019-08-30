@@ -1,13 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { Subject } from "rxjs";
 declare let google: any;
-import { FormGroup, FormControl } from "@angular/forms";
 
 import { MouseEvent } from "@agm/core";
 import { User } from "../user";
-
 import { CookieService } from "ngx-cookie-service";
 import { ReportService } from "../report.service";
-import { UserService } from "../user.service";
 import { AdvertisementService } from "../advertisement.service";
 import { CurrentMarkerService } from "../current-marker.service";
 
@@ -28,6 +26,7 @@ export class LivemapComponent implements OnInit {
   adFilter = true;
   location = "";
   transitOptions: string = "DRIVING";
+  private routeUsedSubject: Subject<any> = new Subject<any>();
 
   filterList = [
     { name: "Traffic Jam", apiName: "traffic_jam", active: true },
@@ -41,7 +40,6 @@ export class LivemapComponent implements OnInit {
     { name: "Others", apiName: "others", active: true }
   ];
 
-  directionForm: FormGroup = undefined;
   sourceString = "";
   destString = "";
   // center of BGC
@@ -86,15 +84,10 @@ export class LivemapComponent implements OnInit {
   constructor(
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
-    private userService: UserService,
     private reportService: ReportService,
     private advertisementService: AdvertisementService,
     private cdr: ChangeDetectorRef
   ) {
-    this.directionForm = new FormGroup({
-      source: new FormControl(""),
-      destination: new FormControl("")
-    });
     this.currentMarkerService.reportSubmit$.subscribe(data => {
       this.reportSubmit = data;
       if (
@@ -139,6 +132,18 @@ export class LivemapComponent implements OnInit {
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     else this.currentUser = undefined;
+  }
+
+  updateChildren() {
+    // source and dest string updated here so we send this data to route form
+    let data = {
+      source: this.sourceData,
+      destination: this.destData,
+      sourceString: this.sourceString,
+      destString: this.destString
+    };
+
+    this.routeUsedSubject.next(data);
   }
 
   isActive(mode: string) {
@@ -225,23 +230,23 @@ export class LivemapComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  swap() {
-    let sourceCopy = JSON.parse(JSON.stringify(this.sourceData));
-    let destCopy = JSON.parse(JSON.stringify(this.destData));
-    if (this.sourceData.lat && this.destData.lat) {
-      this.source = JSON.parse(JSON.stringify(destCopy));
-      this.sourceData = JSON.parse(JSON.stringify(destCopy));
-      this.destination = JSON.parse(JSON.stringify(sourceCopy));
-      this.destData = JSON.parse(JSON.stringify(sourceCopy));
-      let bridge2 = this.sourceString.slice(0);
-      this.sourceString = this.destString.slice(0);
-      this.destString = bridge2.slice(0);
-    } else if (this.sourceData.lat) {
-      this.destination = JSON.parse(JSON.stringify(sourceCopy));
-      this.destData = JSON.parse(JSON.stringify(sourceCopy));
+  swap($event) {
+    if ($event.source.lat && $event.destination.lat) {
+      this.source = JSON.parse(JSON.stringify($event.source));
+      this.sourceData = JSON.parse(JSON.stringify($event.source));
+      this.destination = JSON.parse(JSON.stringify($event.destination));
+      this.destData = JSON.parse(JSON.stringify($event.destination));
+      this.source.label = "S";
+      this.sourceData.label = "S";
       this.destination.label = "D";
       this.destData.label = "D";
-
+      this.sourceString = $event.sourceString;
+      this.destString = $event.destString;
+    } else if ($event.destination.lat) {
+      this.destination = JSON.parse(JSON.stringify($event.destination));
+      this.destData = JSON.parse(JSON.stringify($event.destination));
+      this.destination.label = "D";
+      this.destData.label = "D";
       this.source = {
         lat: undefined,
         lng: undefined,
@@ -252,13 +257,13 @@ export class LivemapComponent implements OnInit {
         lng: undefined,
         label: "S"
       };
-      this.destString = this.sourceString.slice(0);
+      this.destString = $event.destString;
       this.sourceString = "";
-      this.lat = sourceCopy.lat;
-      this.lng = sourceCopy.lng;
-    } else if (this.destData.lat) {
-      this.source = JSON.parse(JSON.stringify(destCopy));
-      this.sourceData = JSON.parse(JSON.stringify(destCopy));
+      this.lat = $event.destination.lat;
+      this.lng = $event.destination.lng;
+    } else if ($event.source.lat) {
+      this.source = JSON.parse(JSON.stringify($event.source));
+      this.sourceData = JSON.parse(JSON.stringify($event.source));
       this.source.label = "S";
       this.sourceData.label = "S";
       this.destination = {
@@ -271,122 +276,99 @@ export class LivemapComponent implements OnInit {
         lng: undefined,
         label: "D"
       };
-      this.sourceString = this.destString.slice(0);
+      this.sourceString = $event.sourceString;
       this.destString = "";
-      this.lat = destCopy.lat;
-      this.lng = destCopy.lng;
+      this.lat = $event.source.lat;
+      this.lng = $event.source.lng;
     }
 
-    this.directionForm.setValue({
-      source: this.sourceString,
-      destination: this.destString
-    });
+    this.updateChildren();
 
     this.cdr.detectChanges();
   }
 
-  addHome(pos: string) {
-    this.directionForm.get(pos).setValue(this.currentUser.home.address);
-
-    if (pos == "source") {
-      this.sourceString = this.currentUser.home.address;
+  addHome($event) {
+    if ($event.pos == "source") {
+      this.sourceString = $event.home.address;
       this.source = {
-        lat: this.currentUser.home.latitude,
-        lng: this.currentUser.home.longitude,
+        lat: $event.home.latitude,
+        lng: $event.home.longitude,
         label: "S"
       };
       this.sourceData = {
-        lat: this.currentUser.home.latitude,
-        lng: this.currentUser.home.longitude,
+        lat: $event.home.latitude,
+        lng: $event.home.longitude,
         label: "S"
       };
       this.lat = this.source.lat;
       this.lng = this.source.lng;
-    } else if (pos == "destination") {
-      this.destString = this.currentUser.home.address;
+    } else if ($event.pos == "destination") {
+      this.destString = $event.home.address;
       this.destination = {
-        lat: this.currentUser.home.latitude,
-        lng: this.currentUser.home.longitude,
+        lat: $event.home.latitude,
+        lng: $event.home.longitude,
         label: "D"
       };
       this.destData = {
-        lat: this.currentUser.home.latitude,
-        lng: this.currentUser.home.longitude,
+        lat: $event.home.latitude,
+        lng: $event.home.longitude,
         label: "D"
       };
       this.lat = this.destination.lat;
       this.lng = this.destination.lng;
     }
+    this.updateChildren();
   }
 
-  addWork(pos: string) {
-    this.directionForm.get(pos).setValue(this.currentUser.work.address);
-    if (pos == "source") {
-      this.sourceString = this.currentUser.work.address;
+  addWork($event) {
+    if ($event.pos == "source") {
+      this.sourceString = $event.work.address;
       this.source = {
-        lat: this.currentUser.work.latitude,
-        lng: this.currentUser.work.longitude,
+        lat: $event.work.latitude,
+        lng: $event.work.longitude,
         label: "S"
       };
       this.sourceData = {
-        lat: this.currentUser.work.latitude,
-        lng: this.currentUser.work.longitude,
+        lat: $event.work.latitude,
+        lng: $event.work.longitude,
         label: "S"
       };
       this.lat = this.source.lat;
       this.lng = this.source.lng;
-    } else if (pos == "destination") {
-      this.destString = this.currentUser.work.address;
+    } else if ($event.pos == "destination") {
+      this.destString = $event.work.address;
       this.destination = {
-        lat: this.currentUser.work.latitude,
-        lng: this.currentUser.work.longitude,
+        lat: $event.work.latitude,
+        lng: $event.work.longitude,
         label: "D"
       };
       this.destData = {
-        lat: this.currentUser.work.latitude,
-        lng: this.currentUser.work.longitude,
+        lat: $event.work.latitude,
+        lng: $event.work.longitude,
         label: "D"
       };
       this.lat = this.destination.lat;
       this.lng = this.destination.lng;
     }
+    this.updateChildren();
   }
 
-  setLocationNow() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(location => {
-        this.source = {
-          lat: location.coords.latitude,
-          lng: location.coords.longitude,
-          label: "S"
-        };
+  setLocationNow($event) {
+    this.source = {
+      lat: $event.source.lat,
+      lng: $event.source.lng,
+      label: $event.source.label
+    };
+    this.sourceData = {
+      lat: $event.source.lat,
+      lng: $event.source.lng,
+      label: $event.source.label
+    };
+    this.sourceString = $event.sourceString;
+    this.lat = $event.source.lat;
+    this.lng = $event.source.lng;
 
-        this.sourceData = {
-          lat: location.coords.latitude,
-          lng: location.coords.longitude,
-          label: "S"
-        };
-        let latlng = new google.maps.LatLng(
-          location.coords.latitude,
-          location.coords.longitude
-        );
-        let request = {
-          location: latlng
-        };
-        this.geocoder.geocode(request, res => {
-          if (res != null) this.sourceString = res[0].formatted_address;
-          else this.sourceString = "Your current location";
-          this.directionForm.setValue({
-            source: this.sourceString,
-            destination: this.destString
-          });
-        });
-        this.lat = this.source.lat;
-        this.lng = this.source.lng;
-      });
-    } else {
-      alert("Geolocation not supported by your browser! :(");
-    }
+    this.updateChildren();
   }
 
   onRouteUsed($event) {
@@ -416,58 +398,45 @@ export class LivemapComponent implements OnInit {
     this.destString = $event.destString;
     this.sourceString = $event.sourceString;
 
-    this.directionForm.setValue({
-      source: this.sourceString,
-      destination: this.destString
-    });
+    this.updateChildren();
 
     this.cdr.detectChanges();
   }
 
   sourceAddressChange($event) {
     this.source = {
-      lat: $event.geometry.location.lat(),
-      lng: $event.geometry.location.lng(),
+      lat: $event.source.lat,
+      lng: $event.source.lng,
       label: "S"
     };
     this.sourceData = {
-      lat: $event.geometry.location.lat(),
-      lng: $event.geometry.location.lng(),
+      lat: $event.source.lat,
+      lng: $event.source.lng,
       label: "S"
     };
-    this.sourceString = "";
-    for (let i = 0; i < $event.address_components.length; i++) {
-      this.sourceString = this.sourceString.concat(
-        $event.address_components[i].long_name
-      );
-      if (i != $event.address_components.length - 1)
-        this.sourceString = this.sourceString.concat(", ");
-    }
+    this.sourceString = $event.sourceString;
+
     this.lat = this.source.lat;
     this.lng = this.source.lng;
+    this.updateChildren();
   }
 
   destinationAddressChange($event) {
     this.destination = {
-      lat: $event.geometry.location.lat(),
-      lng: $event.geometry.location.lng(),
-      label: "D"
+      lat: $event.destination.lat,
+      lng: $event.destination.lng,
+      label: $event.destination.label
     };
     this.destData = {
-      lat: $event.geometry.location.lat(),
-      lng: $event.geometry.location.lng(),
-      label: "D"
+      lat: $event.destination.lat,
+      lng: $event.destination.lng,
+      label: $event.destination.label
     };
-    this.destString = "";
-    for (let i = 0; i < $event.address_components.length; i++) {
-      this.destString = this.destString.concat(
-        $event.address_components[i].long_name
-      );
-      if (i != $event.address_components.length - 1)
-        this.destString = this.destString.concat(", ");
-    }
+    this.destString = $event.destString;
+
     this.lat = this.destination.lat;
     this.lng = this.destination.lng;
+    this.updateChildren();
   }
 
   deleteMarkers($event) {
@@ -483,6 +452,7 @@ export class LivemapComponent implements OnInit {
       lng: undefined,
       label: "D"
     };
+
     this.cdr.detectChanges();
   }
 

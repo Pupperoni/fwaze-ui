@@ -4,8 +4,10 @@ import {
   OnInit,
   Input,
   Output,
-  ChangeDetectorRef
+  OnDestroy
 } from "@angular/core";
+import { Observable } from "rxjs";
+
 import { CookieService } from "ngx-cookie-service";
 import { UserService } from "../user.service";
 
@@ -14,13 +16,17 @@ import { UserService } from "../user.service";
   templateUrl: "./fave-route-options.component.html",
   styleUrls: ["./fave-route-options.component.css"]
 })
-export class FaveRouteOptionsComponent implements OnInit {
+export class FaveRouteOptionsComponent implements OnInit, OnDestroy {
   @Input() sourceData;
   @Input() destData;
   @Input() sourceString;
   @Input() destString;
 
   @Output() routeUsed = new EventEmitter();
+
+  // for checking if route used (have to update strings)
+  private routeUsedSubscription: any;
+  @Input() routeUsedEvent: Observable<any>;
 
   faveRoutes = [];
   selectedRoute: number = -1;
@@ -42,6 +48,18 @@ export class FaveRouteOptionsComponent implements OnInit {
         });
       });
     }
+
+    this.routeUsedSubscription = this.routeUsedEvent.subscribe(data => {
+      // update data
+      this.sourceData = data.source;
+      this.destData = data.destination;
+      this.sourceString = data.sourceString;
+      this.destString = data.destString;
+    });
+  }
+
+  ngOnDestroy() {
+    this.routeUsedSubscription.unsubscribe();
   }
 
   useRoute() {
@@ -67,6 +85,8 @@ export class FaveRouteOptionsComponent implements OnInit {
   }
 
   saveRoute($event) {
+    // if ($event.label == "My Fave Route")
+    //   $event.label = `My Fave Route (${this.faveRoutes.length + 1})`;
     if (this.sourceData.lat && this.destData.lat) {
       // create json of route details
       let routeData = {
@@ -92,8 +112,6 @@ export class FaveRouteOptionsComponent implements OnInit {
       });
     } else if (!this.currentUser) {
       alert("Please login");
-    } else {
-      alert("Please add both source and destination");
     }
   }
 
@@ -112,8 +130,6 @@ export class FaveRouteOptionsComponent implements OnInit {
       });
     } else if (!this.currentUser) {
       alert("Please login");
-    } else {
-      alert("Select a saved route");
     }
   }
 }

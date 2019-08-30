@@ -2,82 +2,19 @@
   <!-- <img src="../../assets/GoogleMapTA.jpg" /> -->
 
   <!-- Form for source and destination: Move to another component -->
-  <form [formGroup]="directionForm">
-    <div class="map-form form-row d-flex justify-content-center">
-      <div class="src form-group col-sm-12 col-md-12 col-lg-5">
-        <label>Enter source:</label>
-        <input
-          ngx-google-places-autocomplete
-          class="form-control"
-          type="text"
-          id="src"
-          formControlName="source"
-          (onAddressChange)="sourceAddressChange($event)"
-        />
-        <button
-          *ngIf="currentUser && currentUser.home.address != ''"
-          class="btn btn-primary"
-          (click)="addHome('source')"
-        >
-          Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
-        </button>
-        <button
-          *ngIf="currentUser && currentUser.work.address != ''"
-          class="btn btn-primary"
-          (click)="addWork('source')"
-        >
-          Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
-        </button>
-      </div>
-
-      <div class="col-sm-12 col-md-12 col-lg-1">
-        <div class="row justify-content-center">
-          <button
-            class="btn btn-secondary fxn-button text-center"
-            (click)="swap()"
-          >
-            &nbsp;<fa-icon [icon]="['fa', 'exchange-alt']"> </fa-icon>
-            &nbsp;
-          </button>
-        </div>
-        <div class="row justify-content-center">
-          <button
-            class="btn btn-secondary fxn-button text-center"
-            (click)="setLocationNow()"
-          >
-            &nbsp;<fa-icon [icon]="['fa', 'location-arrow']"> </fa-icon>
-            &nbsp;
-          </button>
-        </div>
-      </div>
-
-      <div class="dest form-group col-sm-12 col-md-12 col-lg-5">
-        <label>Enter destination:</label>
-        <input
-          ngx-google-places-autocomplete
-          class="form-control"
-          type="text"
-          id="dest"
-          formControlName="destination"
-          (onAddressChange)="destinationAddressChange($event)"
-        />
-        <button
-          *ngIf="currentUser && currentUser.home.address != ''"
-          class="btn btn-primary"
-          (click)="addHome('destination')"
-        >
-          Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
-        </button>
-        <button
-          *ngIf="currentUser && currentUser.work.address != ''"
-          class="btn btn-primary"
-          (click)="addWork('destination')"
-        >
-          Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
-        </button>
-      </div>
-    </div>
-  </form>
+  <app-route-form
+    [sourceData]="sourceData"
+    [destData]="destData"
+    [sourceString]="sourceString"
+    [destString]="destString"
+    [routeUsedEvent]="routeUsedSubject"
+    (onSourceChange)="sourceAddressChange($event)"
+    (onDestinationChange)="destinationAddressChange($event)"
+    (onSwapClick)="swap($event)"
+    (onCurrentLocationClick)="setLocationNow($event)"
+    (onHomeClick)="addHome($event)"
+    (onWorkClick)="addWork($event)"
+  ></app-route-form>
 
   <div class="row justify-content-center">
     <div>
@@ -112,22 +49,22 @@
 
   <div class="direction-data-container row justify-content-center">
     <div class="direction-data" *ngIf="distance && eta">
-      <div class="col-12">
+      <div class="col-12 align-self-center">
         Travel Mode
       </div>
-      <div class="col-12">
+      <div class="col-12 align-self-center">
         <strong>{{ transitOptions }}</strong>
       </div>
-      <div class="col-12">
+      <div class="col-12 align-self-center">
         Distance
       </div>
-      <div class="col-12">
+      <div class="col-12 align-self-center">
         <strong>{{ distance }}</strong>
       </div>
-      <div class="col-12">
+      <div class="col-12 align-self-center">
         ETA
       </div>
-      <div class="col-12">
+      <div class="col-12 align-self-center">
         <strong>{{ eta }}</strong>
       </div>
     </div>
@@ -139,6 +76,7 @@
       [destData]="destData"
       [sourceString]="sourceString"
       [destString]="destString"
+      [routeUsedEvent]="routeUsedSubject"
       (routeUsed)="onRouteUsed($event)"
     ></app-fave-route-options>
   </div>

@@ -107,7 +107,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
           "/"
         );
         this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-        console.log(this.currentUser);
       }
     });
   }
