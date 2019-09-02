@@ -5,6 +5,7 @@ declare let google: any;
 
 import { MouseEvent } from "@agm/core";
 import { User } from "../user";
+import { UserService } from "../user.service";
 import { CookieService } from "ngx-cookie-service";
 import { ReportService } from "../report.service";
 import { AdvertisementService } from "../advertisement.service";
@@ -88,6 +89,7 @@ export class LivemapComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
     private reportService: ReportService,
+    private userService: UserService,
     private advertisementService: AdvertisementService,
     private cdr: ChangeDetectorRef
   ) {
@@ -161,6 +163,20 @@ export class LivemapComponent implements OnInit, OnDestroy {
           id: ad.id,
           lat: ad.latitude,
           lng: ad.longitude
+        });
+      }
+    });
+
+    this.userService.currentUserChanged.subscribe(data => {
+      if (this.currentUser && data.data.userId === this.currentUser.id) {
+        this.userService.getUser(data.data.userId).subscribe(res => {
+          this.cookieService.set(
+            "currentUser",
+            JSON.stringify(res.user),
+            null,
+            "/"
+          );
+          this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
         });
       }
     });

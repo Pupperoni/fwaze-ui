@@ -46,7 +46,11 @@ export class ReportMarkersComponent implements OnInit {
   ngOnInit() {
     this.socket.on("voteIncr", report => {
       if (this.markerInfo) {
-        if (report.id === this.markerInfo.id) this.markerInfo.votes++;
+        if (report.id === this.markerInfo.id) {
+          this.reportService.getReportById(report.id).subscribe(res => {
+            this.markerInfo.votes = res.report.votes;
+          });
+        }
       }
     });
 

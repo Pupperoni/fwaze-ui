@@ -51,15 +51,17 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     });
 
     this.userService.currentUserChanged.subscribe(data => {
-      this.userService.getUser(data.data.userId).subscribe(res => {
-        this.cookieService.set(
-          "currentUser",
-          JSON.stringify(res.user),
-          null,
-          "/"
-        );
-        this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-      });
+      if (data.data.userId === this.currentUser.id) {
+        this.userService.getUser(data.data.userId).subscribe(res => {
+          this.cookieService.set(
+            "currentUser",
+            JSON.stringify(res.user),
+            null,
+            "/"
+          );
+          this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+        });
+      }
     });
     // check if already advertised
     this.applicationService
