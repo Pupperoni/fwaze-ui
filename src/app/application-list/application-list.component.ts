@@ -24,6 +24,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
     this.applicationService.getPendingApplications().subscribe(res => {
       res.data.forEach(application => {
         this.pendingApplications.push({
+          id: application.id,
           userId: application.user_id,
           userName: application.user_name,
           timestamp: application.timestamp,
@@ -34,6 +35,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
     this.applicationService.getAllApplications().subscribe(res => {
       res.data.forEach(application => {
         this.doneApplications.push({
+          id: application.id,
           userId: application.user_id,
           userName: application.user_name,
           timestamp: application.timestamp,
@@ -46,6 +48,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.socket.on("newApplication", application => {
       this.pendingApplications.push({
+        id: application.data.id,
         userId: application.data.userId,
         userName: application.data.userName,
         timestamp: application.data.timestamp,
@@ -71,10 +74,14 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   }
 
   approve(id, index) {
+    console.log(this.pendingApplications);
     const data = {
+      id: this.pendingApplications[index].id,
       adminId: this.currentUser.id,
       userId: id
     };
+    console.log(data);
+
     this.applicationService
       .approveApplication(data)
       .pipe(
@@ -88,15 +95,19 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
         this.socket.emit("acceptApplication", res);
         let applications = this.pendingApplications.splice(index, 1);
         applications[0].status = 1;
-        this.doneApplications.push(applications[0]);
+        this.doneApplications.unshift(applications[0]);
       });
   }
 
   reject(id, index) {
+    console.log(this.pendingApplications);
+
     const data = {
+      id: this.pendingApplications[index].id,
       adminId: this.currentUser.id,
       userId: id
     };
+    console.log(data);
     this.applicationService
       .rejectApplication(data)
       .pipe(
@@ -110,7 +121,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
         this.socket.emit("rejectApplication", res);
         let applications = this.pendingApplications.splice(index, 1);
         applications[0].status = -1;
-        this.doneApplications.push(applications[0]);
+        this.doneApplications.unshift(applications[0]);
       });
   }
 }
