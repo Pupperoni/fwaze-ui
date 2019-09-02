@@ -13,10 +13,10 @@ export class CurrentMarkerService {
   voteDecr$: Observable<any>;
 
   // private currentMarkerSubject = new Subject<marker>();
-  private reportSubmitSubject = new Subject<marker>();
-  private adSubmitSubject = new Subject<marker>();
-  private voteIncrSubject = new Subject<marker>();
-  private voteDecrSubject = new Subject<marker>();
+  private reportSubmitSubject = new Subject<any>();
+  private adSubmitSubject = new Subject<any>();
+  private voteIncrSubject = new Subject<any>();
+  private voteDecrSubject = new Subject<any>();
 
   constructor() {
     // this.currentMarker$ = this.currentMarkerSubject.asObservable();
@@ -50,12 +50,12 @@ export class CurrentMarkerService {
     this.adSubmitSubject.next(data);
   }
 
-  voteIncr(data) {
-    this.voteIncrSubject.next(data);
+  voteIncr(index, data) {
+    this.voteIncrSubject.next({ index: index, data: data });
   }
 
-  voteDecr(data) {
-    this.voteDecrSubject.next(data);
+  voteDecr(index, data) {
+    this.voteDecrSubject.next({ index: index, data: data });
   }
 }
 

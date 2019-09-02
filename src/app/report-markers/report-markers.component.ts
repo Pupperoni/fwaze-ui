@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
+import { Socket } from "ngx-socket-io";
 import { FormControl, FormGroup } from "@angular/forms";
 import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
@@ -34,7 +35,8 @@ export class ReportMarkersComponent implements OnInit {
     private commentService: CommentService,
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private socket: Socket
   ) {
     this.commentForm = new FormGroup({
       body: new FormControl("")
@@ -42,6 +44,14 @@ export class ReportMarkersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.socket.on("voteIncr", report => {
+      if (report.id === this.markerInfo.id) this.markerInfo.votes++;
+    });
+
+    this.socket.on("voteDecr", report => {
+      if (report.id === this.markerInfo.id) this.markerInfo.votes--;
+    });
+
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
 
@@ -158,8 +168,8 @@ export class ReportMarkersComponent implements OnInit {
       reportId: reportId,
       userId: userId
     };
-    this.reportService.addVote(data).subscribe(res => {
-      this.currentMarkerService.voteIncr(this.index);
+    this.reportService.addVote(data).subscribe((res: any) => {
+      this.currentMarkerService.voteIncr(this.index, res.data);
     });
   }
 
@@ -168,8 +178,8 @@ export class ReportMarkersComponent implements OnInit {
       reportId: reportId,
       userId: userId
     };
-    this.reportService.deleteVote(data).subscribe(res => {
-      this.currentMarkerService.voteDecr(this.index);
+    this.reportService.deleteVote(data).subscribe((res: any) => {
+      this.currentMarkerService.voteDecr(this.index, res.data);
     });
   }
 }

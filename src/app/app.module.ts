@@ -3,7 +3,8 @@ import { NgModule } from "@angular/core";
 import { registerLocaleData } from "@angular/common";
 import { NgxPaginationModule } from "ngx-pagination";
 import localeFil from "@angular/common/locales/fil";
-
+import { SocketIoConfig, SocketIoModule } from "ngx-socket-io";
+import { environment } from "./../environments/environment";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { NavbarComponent } from "./navbar/navbar.component";
@@ -50,6 +51,13 @@ import { CommentComponent } from "./comment/comment.component";
 import { FilterModalComponent } from "./filter-modal/filter-modal.component";
 import { ApplicationListComponent } from "./application-list/application-list.component";
 import { FaveRouteOptionsComponent } from "./fave-route-options/fave-route-options.component";
+import { SaveRouteModalComponent } from "./save-route-modal/save-route-modal.component";
+import { RouteFormComponent } from "./route-form/route-form.component";
+
+const config: SocketIoConfig = {
+  url: `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}`,
+  options: {}
+};
 
 @NgModule({
   declarations: [
@@ -68,7 +76,9 @@ import { FaveRouteOptionsComponent } from "./fave-route-options/fave-route-optio
     CommentComponent,
     FilterModalComponent,
     ApplicationListComponent,
-    FaveRouteOptionsComponent
+    FaveRouteOptionsComponent,
+    SaveRouteModalComponent,
+    RouteFormComponent
   ],
   imports: [
     GooglePlaceModule,
@@ -77,9 +87,7 @@ import { FaveRouteOptionsComponent } from "./fave-route-options/fave-route-optio
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AgmCoreModule.forRoot({
-      apiKey: "some_api_key"
-    }),
+    SocketIoModule.forRoot(config),
     NgxPaginationModule,
     AgmDirectionModule,
     FontAwesomeModule

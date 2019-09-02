@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
-import { Subject } from "rxjs";
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { Socket } from "ngx-socket-io";
+import { Subject, Observable } from "rxjs";
 declare let google: any;
 
 import { MouseEvent } from "@agm/core";
@@ -14,7 +15,7 @@ import { CurrentMarkerService } from "../current-marker.service";
   templateUrl: "./livemap.component.html",
   styleUrls: ["./livemap.component.css"]
 })
-export class LivemapComponent implements OnInit {
+export class LivemapComponent implements OnInit, OnDestroy {
   selectedRoute;
   currentUser: User = undefined;
   tright = undefined;
@@ -27,6 +28,7 @@ export class LivemapComponent implements OnInit {
   location = "";
   transitOptions: string = "DRIVING";
   private routeUsedSubject: Subject<any> = new Subject<any>();
+  reports: Observable<any[]>;
 
   filterList = [
     { name: "Traffic Jam", apiName: "traffic_jam", active: true },
@@ -82,6 +84,7 @@ export class LivemapComponent implements OnInit {
   adMarkers: AdMarker[] = [];
 
   constructor(
+    private socket: Socket,
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
     private reportService: ReportService,
@@ -90,19 +93,8 @@ export class LivemapComponent implements OnInit {
   ) {
     this.currentMarkerService.reportSubmit$.subscribe(data => {
       this.reportSubmit = data;
-      if (
-        this.reportFilter &&
-        this.filterList[data.type].active &&
-        this.zoom > 15
-      ) {
-        this.reportMarkers.push({
-          id: data.id,
-          autoOpen: false,
-          lat: data.latitude,
-          lng: data.longitude,
-          type: data.type
-        });
-      }
+      this.socket.emit("addReport", data);
+
       this.currentMarkerService.setMarker(undefined);
       this.currentMarker = this.currentMarkerService.getMarker();
     });
@@ -120,15 +112,53 @@ export class LivemapComponent implements OnInit {
     });
     this.currentMarkerService.voteIncr$.subscribe(data => {
       this.voteIncr = data;
-      this.updateReportMarker(data);
+
+      this.updateReportMarker(data.index);
+      this.socket.emit("addVote", data.data);
     });
     this.currentMarkerService.voteDecr$.subscribe(data => {
       this.voteDecr = data;
-      this.updateReportMarker(data);
+      this.updateReportMarker(data.index);
+      this.socket.emit("deleteVote", data.data);
     });
   }
 
+  ngOnDestroy() {}
+
+  private isInside(report) {
+    let right = this.tright.split(",")[1];
+    let left = this.bleft.split(",")[1];
+    let top = this.tright.split(",")[0];
+    let bottom = this.bleft.split(",")[0];
+
+    if (
+      report.latitude > bottom &&
+      report.latitude < top &&
+      report.longitude > left &&
+      report.longitude < right
+    )
+      return true;
+    return false;
+  }
+
   ngOnInit() {
+    this.socket.fromEvent<any>("newReport").subscribe(report => {
+      if (this.isInside(report)) {
+        if (
+          this.reportFilter &&
+          this.filterList[report.type].active &&
+          this.zoom > 15
+        ) {
+          this.reportMarkers.push({
+            id: report.id,
+            autoOpen: false,
+            lat: report.latitude,
+            lng: report.longitude,
+            type: report.type
+          });
+        }
+      }
+    });
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     else this.currentUser = undefined;

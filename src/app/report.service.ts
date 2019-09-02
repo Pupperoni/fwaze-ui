@@ -25,9 +25,7 @@ interface VoterPair {
   providedIn: "root"
 })
 export class ReportService {
-  private url = `http://${environment.APIUrl.HOST}:${
-    environment.APIUrl.PORT
-  }/map/reports`;
+  private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/reports`;
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -96,5 +94,14 @@ export class ReportService {
   getVoteCount(id): Observable<VoteResponse> {
     // console.log(`Sending GET request to ${this.url}/${id}/votes`);
     return this.http.get<VoteResponse>(`${this.url}/${id}/votes`);
+  }
+
+  private getValues(form: any) {
+    let data = {};
+    for (let pair of form.entries()) {
+      data[pair[0]] = pair[1];
+    }
+
+    return data;
   }
 }

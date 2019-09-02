@@ -1,6 +1,8 @@
 <div class="livemap-component">
   <!-- <img src="../../assets/GoogleMapTA.jpg" /> -->
 
+  <span *ngIf="reports | async"> {{ reports }}</span>
+
   <!-- Form for source and destination: Move to another component -->
   <app-route-form
     [sourceData]="sourceData"
