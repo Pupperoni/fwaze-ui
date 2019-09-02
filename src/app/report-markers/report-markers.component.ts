@@ -47,8 +47,13 @@ export class ReportMarkersComponent implements OnInit {
     this.socket.on("voteIncr", report => {
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
-          this.reportService.getReportById(report.id).subscribe(res => {
+          this.reportService.getReportById(report.id).subscribe((res: any) => {
             this.markerInfo.votes = res.report.votes;
+            this.reportService
+              .getUserVotePair(res.report.id, this.currentUser.id)
+              .subscribe(res2 => {
+                this.markerInfo.curUserVoted = res2 ? true : false;
+              });
           });
         }
       }
@@ -56,7 +61,16 @@ export class ReportMarkersComponent implements OnInit {
 
     this.socket.on("voteDecr", report => {
       if (this.markerInfo) {
-        if (report.id === this.markerInfo.id) this.markerInfo.votes--;
+        if (report.id === this.markerInfo.id) {
+          this.reportService.getReportById(report.id).subscribe((res: any) => {
+            this.markerInfo.votes = res.report.votes;
+            this.reportService
+              .getUserVotePair(res.report.id, this.currentUser.id)
+              .subscribe(res2 => {
+                this.markerInfo.curUserVoted = res2 ? true : false;
+              });
+          });
+        }
       }
     });
 
