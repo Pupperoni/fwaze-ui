@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Socket } from "ngx-socket-io";
 import { ApplicationService } from "../application.service";
 import { CookieService } from "ngx-cookie-service";
 import { catchError } from "rxjs/operators";
@@ -9,13 +10,14 @@ import { throwError } from "rxjs";
   templateUrl: "./application-list.component.html",
   styleUrls: ["./application-list.component.css"]
 })
-export class ApplicationListComponent implements OnInit {
+export class ApplicationListComponent implements OnInit, OnDestroy {
   pendingApplications = [];
   doneApplications = [];
   pendingIsActive = true;
   oldIsActive = false;
   currentUser;
   constructor(
+    private socket: Socket,
     private applicationService: ApplicationService,
     private cookieService: CookieService
   ) {
@@ -42,9 +44,20 @@ export class ApplicationListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.socket.on("newApplication", application => {
+      this.pendingApplications.push({
+        userId: application.data.userId,
+        userName: application.data.userName,
+        timestamp: application.data.timestamp,
+        status: 0
+      });
+    });
+
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
   }
+
+  ngOnDestroy() {}
 
   toggle(type: string) {
     if (type === "pending") {
@@ -72,6 +85,7 @@ export class ApplicationListComponent implements OnInit {
         })
       )
       .subscribe(res => {
+        this.socket.emit("acceptApplication", res);
         let applications = this.pendingApplications.splice(index, 1);
         applications[0].status = 1;
         this.doneApplications.push(applications[0]);
@@ -93,6 +107,7 @@ export class ApplicationListComponent implements OnInit {
         })
       )
       .subscribe(res => {
+        this.socket.emit("rejectApplication", res);
         let applications = this.pendingApplications.splice(index, 1);
         applications[0].status = -1;
         this.doneApplications.push(applications[0]);

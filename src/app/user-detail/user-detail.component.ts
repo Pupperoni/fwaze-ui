@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Socket } from "ngx-socket-io";
 import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { UserService } from "../user.service";
 import { ApplicationService } from "../application.service";
@@ -21,6 +22,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   canApply = false;
   constructor(
+    private socket: Socket,
     private userService: UserService,
     private applicationService: ApplicationService,
     private route: ActivatedRoute,
@@ -36,6 +38,29 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
 
+    this.socket.on("applicationRejected", data => {
+      if (data.data.userId === this.user.id) {
+        this.canApply = true;
+      }
+    });
+
+    this.socket.on("applicationAccepted", data => {
+      if (data.data.userId === this.user.id) {
+        this.user.role = 1;
+      }
+    });
+
+    this.userService.currentUserChanged.subscribe(data => {
+      this.userService.getUser(data.data.userId).subscribe(res => {
+        this.cookieService.set(
+          "currentUser",
+          JSON.stringify(res.user),
+          null,
+          "/"
+        );
+        this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+      });
+    });
     // check if already advertised
     this.applicationService
       .getApplicationByUserId(this.currentUser.id)
@@ -74,6 +99,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(res => {
+        this.socket.emit("addApplication", res);
         console.log("Your application is now being processed");
         alert("Your application is now being processed");
         this.canApply = false;

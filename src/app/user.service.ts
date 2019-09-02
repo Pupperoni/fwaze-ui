@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Socket } from "ngx-socket-io";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { environment } from "./../environments/environment";
@@ -23,6 +24,8 @@ interface UserResponse {
   providedIn: "root"
 })
 export class UserService {
+  currentUserChanged = this.socket.fromEvent<any>("currentUser");
+
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users`;
 
   httpOptions = {
@@ -33,7 +36,7 @@ export class UserService {
     headers: new HttpHeaders({ "Content-Type": "multipart/form-data" })
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private socket: Socket) {}
 
   // HTTP methods here
 

@@ -63,7 +63,6 @@ export class ReportMarkersComponent implements OnInit {
             .countCommentsbyReport(comment.reportId)
             .subscribe((count: any) => {
               this.maxPages = Math.ceil(count.data / 5);
-              // After adding comment, go to the first page again
               this.changePage(this.pageNum);
             });
         }
