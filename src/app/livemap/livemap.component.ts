@@ -100,13 +100,8 @@ export class LivemapComponent implements OnInit, OnDestroy {
     });
     this.currentMarkerService.adSubmit$.subscribe(data => {
       this.adSubmit = data;
-      if (this.adFilter && this.zoom > 15) {
-        this.adMarkers.push({
-          id: data.id,
-          lat: data.latitude,
-          lng: data.longitude
-        });
-      }
+      this.socket.emit("addAd", data);
+
       this.currentMarkerService.setMarker(undefined);
       this.currentMarker = this.currentMarkerService.getMarker();
     });
@@ -159,6 +154,17 @@ export class LivemapComponent implements OnInit, OnDestroy {
         }
       }
     });
+
+    this.socket.fromEvent<any>("newAd").subscribe(ad => {
+      if (this.adFilter && this.zoom > 15) {
+        this.adMarkers.push({
+          id: ad.id,
+          lat: ad.latitude,
+          lng: ad.longitude
+        });
+      }
+    });
+
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     else this.currentUser = undefined;
