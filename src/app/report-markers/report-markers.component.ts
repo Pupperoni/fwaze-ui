@@ -45,11 +45,29 @@ export class ReportMarkersComponent implements OnInit {
 
   ngOnInit() {
     this.socket.on("voteIncr", report => {
-      if (report.id === this.markerInfo.id) this.markerInfo.votes++;
+      if (this.markerInfo) {
+        if (report.id === this.markerInfo.id) this.markerInfo.votes++;
+      }
     });
 
     this.socket.on("voteDecr", report => {
-      if (report.id === this.markerInfo.id) this.markerInfo.votes--;
+      if (this.markerInfo) {
+        if (report.id === this.markerInfo.id) this.markerInfo.votes--;
+      }
+    });
+
+    this.socket.on("newComment", comment => {
+      if (this.markerInfo) {
+        if (comment.reportId === this.markerInfo.id && this.commentUp) {
+          this.commentService
+            .countCommentsbyReport(comment.reportId)
+            .subscribe((count: any) => {
+              this.maxPages = Math.ceil(count.data / 5);
+              // After adding comment, go to the first page again
+              this.changePage(this.pageNum);
+            });
+        }
+      }
     });
 
     if (this.cookieService.check("currentUser"))
@@ -139,6 +157,7 @@ export class ReportMarkersComponent implements OnInit {
       alert("Missing comment text");
     } else {
       this.commentService.createComment(data).subscribe((res: any) => {
+        this.socket.emit("addComment", data);
         this.commentService
           .countCommentsbyReport(data.reportId)
           .subscribe((count: any) => {
