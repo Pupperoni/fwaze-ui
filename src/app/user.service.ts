@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Socket } from "ngx-socket-io";
+import { ApplicationsSocket } from "./sockets";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { environment } from "./../environments/environment";
@@ -36,7 +36,7 @@ export class UserService {
     headers: new HttpHeaders({ "Content-Type": "multipart/form-data" })
   };
 
-  constructor(private http: HttpClient, private socket: Socket) {}
+  constructor(private http: HttpClient, private socket: ApplicationsSocket) {}
 
   // HTTP methods here
 

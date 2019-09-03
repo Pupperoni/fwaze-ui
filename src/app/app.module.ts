@@ -3,8 +3,7 @@ import { NgModule } from "@angular/core";
 import { registerLocaleData } from "@angular/common";
 import { NgxPaginationModule } from "ngx-pagination";
 import localeFil from "@angular/common/locales/fil";
-import { SocketIoConfig, SocketIoModule } from "ngx-socket-io";
-import { environment } from "./../environments/environment";
+import { SocketIoModule } from "ngx-socket-io";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { NavbarComponent } from "./navbar/navbar.component";
@@ -14,7 +13,13 @@ import { LivemapComponent } from "./livemap/livemap.component";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-
+import {
+  ReportsSocket,
+  CommentsSocket,
+  AdsSocket,
+  ApplicationsSocket
+} from "./sockets";
+import { Secret } from "./config";
 import { CookieService } from "ngx-cookie-service";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -54,10 +59,10 @@ import { FaveRouteOptionsComponent } from "./fave-route-options/fave-route-optio
 import { SaveRouteModalComponent } from "./save-route-modal/save-route-modal.component";
 import { RouteFormComponent } from "./route-form/route-form.component";
 
-const config: SocketIoConfig = {
-  url: `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}`,
-  options: {}
-};
+// const config: SocketIoConfig = {
+//   url: `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}`,
+//   options: {}
+// };
 
 @NgModule({
   declarations: [
@@ -87,12 +92,21 @@ const config: SocketIoConfig = {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    SocketIoModule.forRoot(config),
+    AgmCoreModule.forRoot({
+      apiKey: Secret.apiKey
+    }),
+    SocketIoModule,
     NgxPaginationModule,
     AgmDirectionModule,
     FontAwesomeModule
   ],
-  providers: [CookieService],
+  providers: [
+    CookieService,
+    ReportsSocket,
+    CommentsSocket,
+    AdsSocket,
+    ApplicationsSocket
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

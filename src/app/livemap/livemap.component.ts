@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
-import { Socket } from "ngx-socket-io";
+import { ReportsSocket, AdsSocket } from "../sockets";
 import { Subject, Observable } from "rxjs";
 declare let google: any;
 
@@ -85,7 +85,8 @@ export class LivemapComponent implements OnInit, OnDestroy {
   adMarkers: AdMarker[] = [];
 
   constructor(
-    private socket: Socket,
+    private reportsSocket: ReportsSocket,
+    private adsSocket: AdsSocket,
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
     private reportService: ReportService,
@@ -95,14 +96,14 @@ export class LivemapComponent implements OnInit, OnDestroy {
   ) {
     this.currentMarkerService.reportSubmit$.subscribe(data => {
       this.reportSubmit = data;
-      this.socket.emit("addReport", data);
+      this.reportService.addReportSocket(data);
 
       this.currentMarkerService.setMarker(undefined);
       this.currentMarker = this.currentMarkerService.getMarker();
     });
     this.currentMarkerService.adSubmit$.subscribe(data => {
       this.adSubmit = data;
-      this.socket.emit("addAd", data);
+      this.advertisementService.addAdSocket(data);
 
       this.currentMarkerService.setMarker(undefined);
       this.currentMarker = this.currentMarkerService.getMarker();
@@ -111,12 +112,12 @@ export class LivemapComponent implements OnInit, OnDestroy {
       this.voteIncr = data;
 
       this.updateReportMarker(data.index);
-      this.socket.emit("addVote", data.data);
+      this.reportService.addVoteSocket(data.data);
     });
     this.currentMarkerService.voteDecr$.subscribe(data => {
       this.voteDecr = data;
       this.updateReportMarker(data.index);
-      this.socket.emit("deleteVote", data.data);
+      this.reportService.deleteVoteSocket(data.data);
     });
   }
 
@@ -139,7 +140,7 @@ export class LivemapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.socket.fromEvent<any>("newReport").subscribe(report => {
+    this.reportsSocket.fromEvent<any>("reportCreated").subscribe(report => {
       if (this.isInside(report)) {
         if (
           this.reportFilter &&
@@ -157,7 +158,7 @@ export class LivemapComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.socket.fromEvent<any>("newAd").subscribe(ad => {
+    this.adsSocket.fromEvent<any>("adCreated").subscribe(ad => {
       if (this.adFilter && this.zoom > 15) {
         this.adMarkers.push({
           id: ad.id,

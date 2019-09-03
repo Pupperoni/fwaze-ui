@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
-import { Socket } from "ngx-socket-io";
+import { ReportsSocket, CommentsSocket } from "../sockets";
 import { FormControl, FormGroup } from "@angular/forms";
 import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
@@ -36,7 +36,8 @@ export class ReportMarkersComponent implements OnInit {
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
     private cdr: ChangeDetectorRef,
-    private socket: Socket
+    private commentsSocket: CommentsSocket,
+    private reportsSocket: ReportsSocket
   ) {
     this.commentForm = new FormGroup({
       body: new FormControl("")
@@ -44,7 +45,7 @@ export class ReportMarkersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.socket.on("voteIncr", report => {
+    this.reportsSocket.on("voteCreated", report => {
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
           this.reportService.getReportById(report.id).subscribe((res: any) => {
@@ -59,7 +60,7 @@ export class ReportMarkersComponent implements OnInit {
       }
     });
 
-    this.socket.on("voteDecr", report => {
+    this.reportsSocket.on("voteDeleted", report => {
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
           this.reportService.getReportById(report.id).subscribe((res: any) => {
@@ -74,7 +75,7 @@ export class ReportMarkersComponent implements OnInit {
       }
     });
 
-    this.socket.on("newComment", comment => {
+    this.commentsSocket.on("commentCreated", comment => {
       if (this.markerInfo) {
         if (comment.reportId === this.markerInfo.id && this.commentUp) {
           this.commentService
@@ -174,7 +175,7 @@ export class ReportMarkersComponent implements OnInit {
       alert("Missing comment text");
     } else {
       this.commentService.createComment(data).subscribe((res: any) => {
-        this.socket.emit("addComment", data);
+        this.commentService.createCommentSocket(data);
         this.commentService
           .countCommentsbyReport(data.reportId)
           .subscribe((count: any) => {

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Socket } from "ngx-socket-io";
+import { ApplicationsSocket } from "../sockets";
 import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { UserService } from "../user.service";
 import { ApplicationService } from "../application.service";
@@ -22,7 +22,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   canApply = false;
   constructor(
-    private socket: Socket,
+    private socket: ApplicationsSocket,
     private userService: UserService,
     private applicationService: ApplicationService,
     private route: ActivatedRoute,
@@ -101,7 +101,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(res => {
-        this.socket.emit("addApplication", res);
+        this.applicationService.sendApplicationSocket(res);
         console.log("Your application is now being processed");
         alert("Your application is now being processed");
         this.canApply = false;

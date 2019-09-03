@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Report } from "./report";
+import { ReportsSocket } from "./sockets";
 import { environment } from "./../environments/environment";
 
 interface ReportResponse {
@@ -31,7 +32,7 @@ export class ReportService {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private socket: ReportsSocket) {}
 
   getAllReports(): Observable<ReportArrayResponse> {
     // console.log(`Sending GET request to ${this.url}`);
@@ -94,6 +95,18 @@ export class ReportService {
   getVoteCount(id): Observable<VoteResponse> {
     // console.log(`Sending GET request to ${this.url}/${id}/votes`);
     return this.http.get<VoteResponse>(`${this.url}/${id}/votes`);
+  }
+
+  addReportSocket(data) {
+    this.socket.emit("onCreated", data);
+  }
+
+  addVoteSocket(data) {
+    this.socket.emit("onUpVoted", data);
+  }
+
+  deleteVoteSocket(data) {
+    this.socket.emit("onDownVoted", data);
   }
 
   private getValues(form: any) {

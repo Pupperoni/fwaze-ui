@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { Socket } from "ngx-socket-io";
 import { User } from "../user";
 
 import { CookieService } from "ngx-cookie-service";
@@ -18,8 +17,7 @@ export class AdMarkersComponent implements OnInit {
   currentUser: User = undefined;
   constructor(
     private cookieService: CookieService,
-    private advertisementService: AdvertisementService,
-    private socket: Socket
+    private advertisementService: AdvertisementService
   ) {}
 
   ngOnInit() {

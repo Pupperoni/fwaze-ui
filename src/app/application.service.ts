@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { ApplicationsSocket } from "./sockets";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { environment } from "./../environments/environment";
@@ -9,7 +10,7 @@ import { Observable } from "rxjs";
 })
 export class ApplicationService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users/apply`;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private socket: ApplicationsSocket) {}
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -37,5 +38,17 @@ export class ApplicationService {
 
   rejectApplication(data): Observable<any> {
     return this.http.put<any>(`${this.url}/reject`, data, this.httpOptions);
+  }
+
+  sendApplicationSocket(data) {
+    this.socket.emit("onCreated", data);
+  }
+
+  approveApplicationSocket(data) {
+    this.socket.emit("onAccepted", data);
+  }
+
+  rejectApplicationSocket(data) {
+    this.socket.emit("onRejected", data);
   }
 }

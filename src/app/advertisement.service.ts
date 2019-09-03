@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "./../environments/environment";
 import { Advertisement } from "./advertisement";
+import { AdsSocket } from "./sockets";
 import { Observable } from "rxjs";
 
 interface AdvertisementArrayResponse {
@@ -15,15 +16,13 @@ interface AdvertisementResponse {
   providedIn: "root"
 })
 export class AdvertisementService {
-  private url = `http://${environment.APIUrl.HOST}:${
-    environment.APIUrl.PORT
-  }/map/ads`;
+  private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/ads`;
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private socket: AdsSocket) {}
 
   getAllAds(): Observable<AdvertisementArrayResponse> {
     // console.log(`Submit GET request to ${this.url}`);
@@ -49,5 +48,9 @@ export class AdvertisementService {
   addAd(ad: any) {
     // console.log(`Sending POST request to ${this.url}/new`);
     return this.http.post(`${this.url}/new`, ad);
+  }
+
+  addAdSocket(data) {
+    this.socket.emit("onCreated", data);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Socket } from "ngx-socket-io";
+import { ApplicationsSocket } from "../sockets";
 import { ApplicationService } from "../application.service";
 import { CookieService } from "ngx-cookie-service";
 import { catchError } from "rxjs/operators";
@@ -17,7 +17,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   oldIsActive = false;
   currentUser;
   constructor(
-    private socket: Socket,
+    private socket: ApplicationsSocket,
     private applicationService: ApplicationService,
     private cookieService: CookieService
   ) {
@@ -46,7 +46,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.socket.on("newApplication", application => {
+    this.socket.on("applicationCreated", application => {
       this.pendingApplications.push({
         id: application.data.id,
         userId: application.data.userId,
@@ -74,13 +74,11 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   }
 
   approve(id, index) {
-    console.log(this.pendingApplications);
     const data = {
       id: this.pendingApplications[index].id,
       adminId: this.currentUser.id,
       userId: id
     };
-    console.log(data);
 
     this.applicationService
       .approveApplication(data)
@@ -92,7 +90,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(res => {
-        this.socket.emit("acceptApplication", res);
+        this.applicationService.approveApplicationSocket(res);
         let applications = this.pendingApplications.splice(index, 1);
         applications[0].status = 1;
         this.doneApplications.unshift(applications[0]);
@@ -100,14 +98,11 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   }
 
   reject(id, index) {
-    console.log(this.pendingApplications);
-
     const data = {
       id: this.pendingApplications[index].id,
       adminId: this.currentUser.id,
       userId: id
     };
-    console.log(data);
     this.applicationService
       .rejectApplication(data)
       .pipe(
@@ -118,7 +113,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(res => {
-        this.socket.emit("rejectApplication", res);
+        this.applicationService.rejectApplicationSocket(res);
         let applications = this.pendingApplications.splice(index, 1);
         applications[0].status = -1;
         this.doneApplications.unshift(applications[0]);
