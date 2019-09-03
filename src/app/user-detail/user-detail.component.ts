@@ -21,6 +21,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   currentUser: User = undefined;
   subscription: Subscription;
   canApply = false;
+  private currentUserSub: Subscription;
   constructor(
     private socket: ApplicationsSocket,
     private userService: UserService,
@@ -50,19 +51,23 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.userService.currentUserChanged.subscribe(data => {
-      if (data.data.userId === this.currentUser.id) {
-        this.userService.getUser(data.data.userId).subscribe(res => {
-          this.cookieService.set(
-            "currentUser",
-            JSON.stringify(res.user),
-            null,
-            "/"
-          );
-          this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-        });
+    this.currentUserSub = this.userService.currentUserChanged.subscribe(
+      data => {
+        if (data.data.userId === this.currentUser.id) {
+          this.userService.getUser(data.data.userId).subscribe(res => {
+            this.cookieService.set(
+              "currentUser",
+              JSON.stringify(res.user),
+              null,
+              "/"
+            );
+            this.currentUser = JSON.parse(
+              this.cookieService.get("currentUser")
+            );
+          });
+        }
       }
-    });
+    );
     // check if already advertised
     this.applicationService
       .getApplicationByUserId(this.currentUser.id)
@@ -73,6 +78,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.currentUserSub.unsubscribe();
   }
 
   getImagePath() {

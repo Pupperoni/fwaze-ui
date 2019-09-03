@@ -40,14 +40,10 @@ import {
   faTimes,
   faFilter
 } from "@fortawesome/free-solid-svg-icons";
-
-registerLocaleData(localeFil);
-
 import { AgmCoreModule } from "@agm/core";
 import { AgmDirectionModule } from "agm-direction";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
-
 import { ReportMarkersComponent } from "./report-markers/report-markers.component";
 import { AdMarkersComponent } from "./ad-markers/ad-markers.component";
 import { ReportModalComponent } from "./report-modal/report-modal.component";
@@ -59,6 +55,10 @@ import { ApplicationListComponent } from "./application-list/application-list.co
 import { FaveRouteOptionsComponent } from "./fave-route-options/fave-route-options.component";
 import { SaveRouteModalComponent } from "./save-route-modal/save-route-modal.component";
 import { RouteFormComponent } from "./route-form/route-form.component";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { ToastrModule } from "ngx-toastr";
+
+registerLocaleData(localeFil);
 
 // const config: SocketIoConfig = {
 //   url: `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}`,
@@ -99,7 +99,9 @@ import { RouteFormComponent } from "./route-form/route-form.component";
     SocketIoModule,
     NgxPaginationModule,
     AgmDirectionModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot() // ToastrModule added
   ],
   providers: [
     CookieService,
