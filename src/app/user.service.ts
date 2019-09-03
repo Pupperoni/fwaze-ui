@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ApplicationsSocket } from "./sockets";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-
+import { UsersSocket } from "./sockets";
 import { environment } from "./../environments/environment";
 import { Observable } from "rxjs";
 
@@ -24,7 +24,7 @@ interface UserResponse {
   providedIn: "root"
 })
 export class UserService {
-  currentUserChanged = this.socket.fromEvent<any>("currentUser");
+  currentUserChanged = this.socket.fromEvent<any>("applicationSent");
 
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users`;
 
@@ -36,7 +36,11 @@ export class UserService {
     headers: new HttpHeaders({ "Content-Type": "multipart/form-data" })
   };
 
-  constructor(private http: HttpClient, private socket: ApplicationsSocket) {}
+  constructor(
+    private http: HttpClient,
+    private socket: ApplicationsSocket,
+    private userSocket: UsersSocket
+  ) {}
 
   // HTTP methods here
 
@@ -98,5 +102,9 @@ export class UserService {
 
   getfaveRoutes(userId): Observable<any> {
     return this.http.get<any>(`${this.url}/faves/${userId}`);
+  }
+
+  loginUserSocket(data) {
+    this.userSocket.emit("login", data);
   }
 }

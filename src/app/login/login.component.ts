@@ -57,6 +57,7 @@ export class LoginComponent implements OnInit {
           })
         )
         .subscribe(res => {
+          this.userService.loginUserSocket(res.user);
           if (this.cookieService.check("currentUser")) {
             this.cookieService.delete("currentUser");
           }

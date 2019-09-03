@@ -14,6 +14,7 @@ import { UserDetailComponent } from "./user-detail/user-detail.component";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
+  UsersSocket,
   ReportsSocket,
   CommentsSocket,
   AdsSocket,
@@ -105,6 +106,7 @@ registerLocaleData(localeFil);
   ],
   providers: [
     CookieService,
+    UsersSocket,
     ReportsSocket,
     CommentsSocket,
     AdsSocket,

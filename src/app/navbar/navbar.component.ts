@@ -38,34 +38,33 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     this.applicationRejectedSub = this.applicationService.applicationRejected.subscribe(
       data => {
-        if (this.currentUser.id === data.data.userId) {
-          this.toastr.error(
-            "Sorry. Your application to become an advertiser was rejected!",
-            "Application Rejected!",
-            {
-              timeOut: 5000
-            }
-          );
-        }
+        console.log("reject");
+        this.toastr.error(
+          "Sorry. Your application to become an advertiser was rejected!",
+          "Application Rejected!",
+          {
+            timeOut: 5000
+          }
+        );
       }
     );
 
     this.applicationAcceptedSub = this.applicationService.applicationAccepted.subscribe(
       data => {
-        if (this.currentUser.id === data.data.userId) {
-          this.toastr.success(
-            "Congrats! You've been accepted as a premium Advertiser!",
-            "Application Accepted!",
-            {
-              timeOut: 5000
-            }
-          );
-        }
+        console.log("accept");
+        this.toastr.success(
+          "Congrats! You've been accepted as a premium Advertiser!",
+          "Application Accepted!",
+          {
+            timeOut: 5000
+          }
+        );
       }
     );
 
     this.applicationCreatedSub = this.applicationService.applicationCreated.subscribe(
       data => {
+        console.log("create");
         if (this.currentUser.role === 2) {
           this.toastr.success(
             "A new application was posted.",

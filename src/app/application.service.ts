@@ -10,10 +10,17 @@ import { Observable } from "rxjs";
 })
 export class ApplicationService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users/apply`;
-  constructor(private http: HttpClient, private socket: ApplicationsSocket) {}
+  constructor(private http: HttpClient, private socket: ApplicationsSocket) {
+    console.log("hello");
+    this.socket.on("event", data => {
+      console.log("Event received", data);
+    });
+  }
+
   applicationRejected = this.socket.fromEvent<any>("applicationRejected");
   applicationAccepted = this.socket.fromEvent<any>("applicationAccepted");
-  applicationCreated = this.socket.fromEvent<any>("applicationCreated");
+  applicationCreated = this.socket.fromEvent<any>("applicationSent");
+
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
@@ -43,7 +50,7 @@ export class ApplicationService {
   }
 
   sendApplicationSocket(data) {
-    this.socket.emit("onCreated", data);
+    this.socket.emit("applicationCreated", data);
   }
 
   approveApplicationSocket(data) {
