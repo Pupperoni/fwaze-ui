@@ -6,6 +6,7 @@ import {
   OnDestroy
 } from "@angular/core";
 import { ApplicationService } from "../application.service";
+import { UserService } from "../user.service";
 import { User } from "../user";
 import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
@@ -21,7 +22,9 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
   applicationRejectedSub: Subscription;
   applicationAcceptedSub: Subscription;
   applicationCreatedSub: Subscription;
+  currentUserSub: Subscription;
   constructor(
+    private userService: UserService,
     private cookieService: CookieService,
     private router: Router,
     private cdr: ChangeDetectorRef,
@@ -74,6 +77,20 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
         }
       }
     );
+
+    // this.currentUserSub = this.userService.currentUserChanged.subscribe(
+    //   data => {
+    //     this.userService.getUser(data.data.userId).subscribe(res => {
+    //       this.cookieService.set(
+    //         "currentUser",
+    //         JSON.stringify(res.user),
+    //         null,
+    //         "/"
+    //       );
+    //       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+    //     });
+    //   }
+    // );
   }
 
   ngAfterViewChecked() {

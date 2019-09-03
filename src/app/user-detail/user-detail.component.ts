@@ -47,13 +47,13 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.applicationRejectedSub = this.applicationService.applicationAccepted.subscribe(
-      data => {
-        if (data.data.userId === this.user.id) {
-          this.user.role = 1;
-        }
-      }
-    );
+    // this.applicationRejectedSub = this.applicationService.applicationAccepted.subscribe(
+    //   data => {
+    //     if (data.data.userId === this.user.id) {
+    //       this.user.role = 1;
+    //     }
+    //   }
+    // );
 
     this.currentUserSub = this.userService.currentUserChanged.subscribe(
       data => {
@@ -68,6 +68,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             this.currentUser = JSON.parse(
               this.cookieService.get("currentUser")
             );
+            // update current view
+            if (this.currentUser.id === this.user.id) {
+              this.user.role = this.currentUser.role;
+            }
           });
         }
       }
@@ -84,7 +88,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
     this.currentUserSub.unsubscribe();
     this.applicationRejectedSub.unsubscribe();
-    this.applicationAcceptedSub.unsubscribe();
+    // this.applicationAcceptedSub.unsubscribe();
   }
 
   getImagePath() {
