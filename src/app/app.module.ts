@@ -37,7 +37,8 @@ import {
   faTrain,
   faEnvelope,
   faUserTag,
-  faTimes
+  faTimes,
+  faFilter
 } from "@fortawesome/free-solid-svg-icons";
 
 registerLocaleData(localeFil);
@@ -125,5 +126,6 @@ export class AppModule {
     library.add(faEnvelope);
     library.add(faUserTag);
     library.add(faTimes);
+    library.add(faFilter);
   }
 }
