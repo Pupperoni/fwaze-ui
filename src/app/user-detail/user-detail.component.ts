@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ApplicationsSocket } from "../sockets";
 import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { UserService } from "../user.service";
 import { ApplicationService } from "../application.service";
@@ -22,8 +21,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   canApply = false;
   private currentUserSub: Subscription;
+  private applicationRejectedSub: Subscription;
+  private applicationAcceptedSub: Subscription;
   constructor(
-    private socket: ApplicationsSocket,
     private userService: UserService,
     private applicationService: ApplicationService,
     private route: ActivatedRoute,
@@ -39,17 +39,21 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
 
-    this.socket.on("applicationRejected", data => {
-      if (data.data.userId === this.user.id) {
-        this.canApply = true;
+    this.applicationRejectedSub = this.applicationService.applicationRejected.subscribe(
+      data => {
+        if (data.data.userId === this.user.id) {
+          this.canApply = true;
+        }
       }
-    });
+    );
 
-    this.socket.on("applicationAccepted", data => {
-      if (data.data.userId === this.user.id) {
-        this.user.role = 1;
+    this.applicationRejectedSub = this.applicationService.applicationAccepted.subscribe(
+      data => {
+        if (data.data.userId === this.user.id) {
+          this.user.role = 1;
+        }
       }
-    });
+    );
 
     this.currentUserSub = this.userService.currentUserChanged.subscribe(
       data => {
@@ -79,6 +83,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.currentUserSub.unsubscribe();
+    this.applicationRejectedSub.unsubscribe();
+    this.applicationAcceptedSub.unsubscribe();
   }
 
   getImagePath() {

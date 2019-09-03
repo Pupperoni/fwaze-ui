@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ApplicationsSocket } from "../sockets";
 import { ApplicationService } from "../application.service";
 import { CookieService } from "ngx-cookie-service";
 import { catchError } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { throwError, Subscription } from "rxjs";
 
 @Component({
   selector: "app-application-list",
@@ -16,8 +15,8 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   pendingIsActive = true;
   oldIsActive = false;
   currentUser;
+  applicationCreatedSub: Subscription;
   constructor(
-    private socket: ApplicationsSocket,
     private applicationService: ApplicationService,
     private cookieService: CookieService
   ) {
@@ -46,21 +45,25 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.socket.on("applicationCreated", application => {
-      this.pendingApplications.push({
-        id: application.data.id,
-        userId: application.data.userId,
-        userName: application.data.userName,
-        timestamp: application.data.timestamp,
-        status: 0
-      });
-    });
+    this.applicationCreatedSub = this.applicationService.applicationCreated.subscribe(
+      application => {
+        this.pendingApplications.push({
+          id: application.data.id,
+          userId: application.data.userId,
+          userName: application.data.userName,
+          timestamp: application.data.timestamp,
+          status: 0
+        });
+      }
+    );
 
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.applicationCreatedSub.unsubscribe();
+  }
 
   toggle(type: string) {
     if (type === "pending") {

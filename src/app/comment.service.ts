@@ -7,7 +7,7 @@ import { environment } from "./../environments/environment";
 })
 export class CommentService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/comments`;
-
+  commentCreated = this.socket.fromEvent<any>("commentCreated");
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };

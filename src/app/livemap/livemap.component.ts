@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
-import { ReportsSocket, AdsSocket } from "../sockets";
-import { Subject, Observable } from "rxjs";
+import { Subject, Observable, Subscription } from "rxjs";
 declare let google: any;
 
 import { MouseEvent } from "@agm/core";
@@ -30,6 +29,9 @@ export class LivemapComponent implements OnInit, OnDestroy {
   transitOptions: string = "DRIVING";
   private routeUsedSubject: Subject<any> = new Subject<any>();
   reports: Observable<any[]>;
+
+  adCreatedSub: Subscription;
+  reportCreatedSub: Subscription;
 
   filterList = [
     { name: "Traffic Jam", apiName: "traffic_jam", active: true },
@@ -85,8 +87,6 @@ export class LivemapComponent implements OnInit, OnDestroy {
   adMarkers: AdMarker[] = [];
 
   constructor(
-    private reportsSocket: ReportsSocket,
-    private adsSocket: AdsSocket,
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
     private reportService: ReportService,
@@ -121,7 +121,10 @@ export class LivemapComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.adCreatedSub.unsubscribe();
+    this.reportCreatedSub.unsubscribe();
+  }
 
   private isInside(report) {
     let right = this.tright.split(",")[1];
@@ -140,25 +143,27 @@ export class LivemapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.reportsSocket.fromEvent<any>("reportCreated").subscribe(report => {
-      if (this.isInside(report)) {
-        if (
-          this.reportFilter &&
-          this.filterList[report.type].active &&
-          this.zoom > 15
-        ) {
-          this.reportMarkers.push({
-            id: report.id,
-            autoOpen: false,
-            lat: report.latitude,
-            lng: report.longitude,
-            type: report.type
-          });
+    this.reportCreatedSub = this.reportService.reportCreated.subscribe(
+      report => {
+        if (this.isInside(report)) {
+          if (
+            this.reportFilter &&
+            this.filterList[report.type].active &&
+            this.zoom > 15
+          ) {
+            this.reportMarkers.push({
+              id: report.id,
+              autoOpen: false,
+              lat: report.latitude,
+              lng: report.longitude,
+              type: report.type
+            });
+          }
         }
       }
-    });
+    );
 
-    this.adsSocket.fromEvent<any>("adCreated").subscribe(ad => {
+    this.adCreatedSub = this.advertisementService.adCreated.subscribe(ad => {
       if (this.adFilter && this.zoom > 15) {
         this.adMarkers.push({
           id: ad.id,

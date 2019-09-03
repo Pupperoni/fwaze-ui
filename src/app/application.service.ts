@@ -11,7 +11,9 @@ import { Observable } from "rxjs";
 export class ApplicationService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users/apply`;
   constructor(private http: HttpClient, private socket: ApplicationsSocket) {}
-
+  applicationRejected = this.socket.fromEvent<any>("applicationRejected");
+  applicationAccepted = this.socket.fromEvent<any>("applicationAccepted");
+  applicationCreated = this.socket.fromEvent<any>("applicationCreated");
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };

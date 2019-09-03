@@ -1,5 +1,10 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
-import { ReportsSocket, CommentsSocket } from "../sockets";
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  ChangeDetectorRef
+} from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
@@ -13,7 +18,7 @@ import { Subscription } from "rxjs";
   templateUrl: "./report-markers.component.html",
   styleUrls: ["./report-markers.component.css"]
 })
-export class ReportMarkersComponent implements OnInit {
+export class ReportMarkersComponent implements OnInit, OnDestroy {
   @Input() marker;
   @Input() index;
   commentUp = false;
@@ -21,23 +26,22 @@ export class ReportMarkersComponent implements OnInit {
   imagePath = undefined;
   pageNum = 0;
   maxPages = undefined;
-
   markerInfo = undefined;
   infoWindowOpen = false;
   commentList = [];
-
   currentUser: User = undefined;
-
   icon = undefined;
+
+  voteCreatedSub: Subscription;
+  voteDeletedSub: Subscription;
+  commentCreatedSub: Subscription;
 
   constructor(
     private reportService: ReportService,
     private commentService: CommentService,
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
-    private cdr: ChangeDetectorRef,
-    private commentsSocket: CommentsSocket,
-    private reportsSocket: ReportsSocket
+    private cdr: ChangeDetectorRef
   ) {
     this.commentForm = new FormGroup({
       body: new FormControl("")
@@ -45,7 +49,7 @@ export class ReportMarkersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.reportsSocket.on("voteCreated", report => {
+    this.voteCreatedSub = this.reportService.voteCreated.subscribe(report => {
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
           this.reportService.getReportById(report.id).subscribe((res: any) => {
@@ -60,7 +64,7 @@ export class ReportMarkersComponent implements OnInit {
       }
     });
 
-    this.reportsSocket.on("voteDeleted", report => {
+    this.voteDeletedSub = this.reportService.voteDeleted.subscribe(report => {
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
           this.reportService.getReportById(report.id).subscribe((res: any) => {
@@ -75,18 +79,20 @@ export class ReportMarkersComponent implements OnInit {
       }
     });
 
-    this.commentsSocket.on("commentCreated", comment => {
-      if (this.markerInfo) {
-        if (comment.reportId === this.markerInfo.id && this.commentUp) {
-          this.commentService
-            .countCommentsbyReport(comment.reportId)
-            .subscribe((count: any) => {
-              this.maxPages = Math.ceil(count.data / 5);
-              this.changePage(this.pageNum);
-            });
+    this.commentCreatedSub = this.commentService.commentCreated.subscribe(
+      comment => {
+        if (this.markerInfo) {
+          if (comment.reportId === this.markerInfo.id && this.commentUp) {
+            this.commentService
+              .countCommentsbyReport(comment.reportId)
+              .subscribe((count: any) => {
+                this.maxPages = Math.ceil(count.data / 5);
+                this.changePage(this.pageNum);
+              });
+          }
         }
       }
-    });
+    );
 
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
@@ -100,6 +106,11 @@ export class ReportMarkersComponent implements OnInit {
     };
   }
 
+  ngOnDestroy() {
+    this.voteCreatedSub.unsubscribe();
+    this.voteDeletedSub.unsubscribe();
+    this.commentCreatedSub.unsubscribe();
+  }
   toggleInfoWindow(id: string): Promise<Subscription> {
     let subscriptionVal = this.reportService
       .getReportById(id)

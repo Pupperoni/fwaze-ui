@@ -27,7 +27,9 @@ interface VoterPair {
 })
 export class ReportService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/reports`;
-
+  reportCreated = this.socket.fromEvent<any>("reportCreated");
+  voteCreated = this.socket.fromEvent<any>("voteCreated");
+  voteDeleted = this.socket.fromEvent<any>("voteDeleted");
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
