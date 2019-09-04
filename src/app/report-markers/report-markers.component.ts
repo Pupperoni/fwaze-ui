@@ -50,7 +50,6 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.voteCreatedSub = this.reportService.voteCreated.subscribe(report => {
-      console.log("upvoted");
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
           this.reportService.getReportById(report.id).subscribe((res: any) => {
@@ -66,7 +65,6 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     });
 
     this.voteDeletedSub = this.reportService.voteDeleted.subscribe(report => {
-      console.log("downvoted");
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
           this.reportService.getReportById(report.id).subscribe((res: any) => {
@@ -83,8 +81,6 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
 
     this.commentCreatedSub = this.commentService.commentCreated.subscribe(
       comment => {
-        console.log("comment created");
-
         if (this.markerInfo) {
           if (comment.reportId === this.markerInfo.id && this.commentUp) {
             this.commentService
