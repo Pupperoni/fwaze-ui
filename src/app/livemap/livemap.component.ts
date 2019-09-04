@@ -122,6 +122,8 @@ export class LivemapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    // leave map room
+    this.reportService.exitMap();
     this.adCreatedSub.unsubscribe();
     this.reportCreatedSub.unsubscribe();
   }
@@ -143,6 +145,9 @@ export class LivemapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // join map room
+    this.reportService.visitMap();
+
     this.reportCreatedSub = this.reportService.reportCreated.subscribe(
       report => {
         if (this.isInside(report)) {

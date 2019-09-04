@@ -10,12 +10,7 @@ import { Observable } from "rxjs";
 })
 export class ApplicationService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users/apply`;
-  constructor(private http: HttpClient, private socket: EventsSocket) {
-    console.log("hello");
-    this.socket.on("event", data => {
-      console.log("Event received", data);
-    });
-  }
+  constructor(private http: HttpClient, private socket: EventsSocket) {}
 
   applicationRejected = this.socket.fromEvent<any>("applicationRejected");
   applicationAccepted = this.socket.fromEvent<any>("applicationAccepted");

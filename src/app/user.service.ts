@@ -103,6 +103,10 @@ export class UserService {
     return this.http.get<any>(`${this.url}/faves/${userId}`);
   }
 
+  initUserRooms(data) {
+    this.userSocket.emit("reconnect", data);
+  }
+
   loginUserSocket(data) {
     this.userSocket.emit("login", data);
   }

@@ -33,8 +33,12 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (this.cookieService.check("currentUser"))
+    if (this.cookieService.check("currentUser")) {
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+
+      // set up socket rooms of user
+      this.userService.initUserRooms(this.currentUser);
+    }
 
     this.applicationRejectedSub = this.applicationService.applicationRejected.subscribe(
       data => {
@@ -74,20 +78,6 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
         );
       }
     );
-
-    // this.currentUserSub = this.userService.currentUserChanged.subscribe(
-    //   data => {
-    //     this.userService.getUser(data.data.userId).subscribe(res => {
-    //       this.cookieService.set(
-    //         "currentUser",
-    //         JSON.stringify(res.user),
-    //         null,
-    //         "/"
-    //       );
-    //       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-    //     });
-    //   }
-    // );
   }
 
   ngAfterViewChecked() {

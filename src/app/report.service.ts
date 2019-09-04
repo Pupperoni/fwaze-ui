@@ -100,7 +100,7 @@ export class ReportService {
   }
 
   addReportSocket(data) {
-    this.socket.emit("onCreated", data);
+    this.socket.emit("reportSubmitted", data);
   }
 
   addVoteSocket(data) {
@@ -109,6 +109,14 @@ export class ReportService {
 
   deleteVoteSocket(data) {
     this.socket.emit("onDownVoted", data);
+  }
+
+  visitMap() {
+    this.socket.emit("mapVisited");
+  }
+
+  exitMap() {
+    this.socket.emit("mapExited");
   }
 
   private getValues(form: any) {

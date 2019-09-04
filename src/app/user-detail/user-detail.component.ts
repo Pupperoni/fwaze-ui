@@ -36,8 +36,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.cookieService.check("currentUser"))
+    if (this.cookieService.check("currentUser")) {
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+    }
 
     this.applicationRejectedSub = this.applicationService.applicationRejected.subscribe(
       data => {
