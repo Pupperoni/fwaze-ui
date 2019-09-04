@@ -35,11 +35,7 @@ export class UserService {
     headers: new HttpHeaders({ "Content-Type": "multipart/form-data" })
   };
 
-  constructor(
-    private http: HttpClient,
-    private socket: EventsSocket,
-    private userSocket: EventsSocket
-  ) {}
+  constructor(private http: HttpClient, private socket: EventsSocket) {}
 
   // HTTP methods here
 
@@ -104,10 +100,10 @@ export class UserService {
   }
 
   initUserRooms(data) {
-    this.userSocket.emit("reconnect", data);
+    this.socket.emit("initialize", data);
   }
 
   loginUserSocket(data) {
-    this.userSocket.emit("login", data);
+    this.socket.emit("login", data);
   }
 }

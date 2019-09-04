@@ -51,6 +51,6 @@ export class AdvertisementService {
   }
 
   addAdSocket(data) {
-    this.socket.emit("onCreated", data);
+    this.socket.emit("adSubmitted", data);
   }
 }

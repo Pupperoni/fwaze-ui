@@ -150,6 +150,8 @@ export class LivemapComponent implements OnInit, OnDestroy {
 
     this.reportCreatedSub = this.reportService.reportCreated.subscribe(
       report => {
+        console.log("report created");
+
         if (this.isInside(report)) {
           if (
             this.reportFilter &&
@@ -169,6 +171,8 @@ export class LivemapComponent implements OnInit, OnDestroy {
     );
 
     this.adCreatedSub = this.advertisementService.adCreated.subscribe(ad => {
+      console.log("ad created");
+
       if (this.adFilter && this.zoom > 15) {
         this.adMarkers.push({
           id: ad.id,

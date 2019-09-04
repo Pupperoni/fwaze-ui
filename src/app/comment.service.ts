@@ -31,6 +31,6 @@ export class CommentService {
   }
 
   createCommentSocket(data) {
-    this.socket.emit("onCreated", data);
+    this.socket.emit("commentSubmitted", data);
   }
 }
