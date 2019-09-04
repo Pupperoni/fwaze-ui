@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ApplicationsSocket } from "./sockets";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { UsersSocket } from "./sockets";
 import { environment } from "./../environments/environment";
 import { Observable } from "rxjs";
 
@@ -24,7 +23,7 @@ interface UserResponse {
   providedIn: "root"
 })
 export class UserService {
-  currentUserChanged = this.socket.fromEvent<any>("applicationSent");
+  currentUserChanged = this.socket.fromEvent<any>("changeToAdvertiser");
 
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users`;
 
@@ -39,7 +38,7 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private socket: ApplicationsSocket,
-    private userSocket: UsersSocket
+    private userSocket: ApplicationsSocket
   ) {}
 
   // HTTP methods here

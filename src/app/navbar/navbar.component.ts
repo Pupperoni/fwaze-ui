@@ -65,15 +65,13 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.applicationCreatedSub = this.applicationService.applicationCreated.subscribe(
       data => {
         console.log("create");
-        if (this.currentUser.role === 2) {
-          this.toastr.success(
-            "A new application was posted.",
-            "New Application",
-            {
-              timeOut: 5000
-            }
-          );
-        }
+        this.toastr.success(
+          "A new application was posted.",
+          "New Application",
+          {
+            timeOut: 5000
+          }
+        );
       }
     );
 

@@ -3,15 +3,6 @@ import { Socket } from "ngx-socket-io";
 import { environment } from "./../environments/environment";
 
 import { CookieService } from "ngx-cookie-service";
-@Injectable()
-export class UsersSocket extends Socket {
-  constructor() {
-    super({
-      url: `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/events`,
-      options: {}
-    });
-  }
-}
 
 @Injectable()
 export class ReportsSocket extends Socket {
