@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "./../environments/environment";
 import { Advertisement } from "./advertisement";
-import { AdsSocket } from "./sockets";
+import { EventsSocket } from "./sockets";
 import { Observable } from "rxjs";
 
 interface AdvertisementArrayResponse {
@@ -22,7 +22,7 @@ export class AdvertisementService {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
 
-  constructor(private http: HttpClient, private socket: AdsSocket) {}
+  constructor(private http: HttpClient, private socket: EventsSocket) {}
 
   getAllAds(): Observable<AdvertisementArrayResponse> {
     // console.log(`Submit GET request to ${this.url}`);

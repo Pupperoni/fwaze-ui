@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ApplicationsSocket } from "./sockets";
+import { EventsSocket } from "./sockets";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "./../environments/environment";
 import { Observable } from "rxjs";
@@ -37,8 +37,8 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private socket: ApplicationsSocket,
-    private userSocket: ApplicationsSocket
+    private socket: EventsSocket,
+    private userSocket: EventsSocket
   ) {}
 
   // HTTP methods here

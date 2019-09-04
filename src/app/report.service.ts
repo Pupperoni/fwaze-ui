@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Report } from "./report";
-import { ReportsSocket } from "./sockets";
+import { EventsSocket } from "./sockets";
 import { environment } from "./../environments/environment";
 
 interface ReportResponse {
@@ -34,7 +34,7 @@ export class ReportService {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
 
-  constructor(private http: HttpClient, private socket: ReportsSocket) {}
+  constructor(private http: HttpClient, private socket: EventsSocket) {}
 
   getAllReports(): Observable<ReportArrayResponse> {
     // console.log(`Sending GET request to ${this.url}`);

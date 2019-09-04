@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ApplicationsSocket } from "./sockets";
+import { EventsSocket } from "./sockets";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { environment } from "./../environments/environment";
@@ -10,7 +10,7 @@ import { Observable } from "rxjs";
 })
 export class ApplicationService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users/apply`;
-  constructor(private http: HttpClient, private socket: ApplicationsSocket) {
+  constructor(private http: HttpClient, private socket: EventsSocket) {
     console.log("hello");
     this.socket.on("event", data => {
       console.log("Event received", data);

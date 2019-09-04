@@ -13,12 +13,7 @@ import { LivemapComponent } from "./livemap/livemap.component";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import {
-  ReportsSocket,
-  CommentsSocket,
-  AdsSocket,
-  ApplicationsSocket
-} from "./sockets";
+import { EventsSocket } from "./sockets";
 import { Secret } from "./config";
 import { CookieService } from "ngx-cookie-service";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
@@ -103,13 +98,7 @@ registerLocaleData(localeFil);
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot() // ToastrModule added
   ],
-  providers: [
-    CookieService,
-    ReportsSocket,
-    CommentsSocket,
-    AdsSocket,
-    ApplicationsSocket
-  ],
+  providers: [CookieService, EventsSocket],
   bootstrap: [AppComponent]
 })
 export class AppModule {
