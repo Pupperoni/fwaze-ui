@@ -187,16 +187,6 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     } else {
       this.commentService.createComment(data).subscribe((res: any) => {
         this.commentService.createCommentSocket(data);
-        this.commentService
-          .countCommentsbyReport(data.reportId)
-          .subscribe((count: any) => {
-            this.maxPages = Math.ceil(count.data / 5);
-            this.commentForm.setValue({
-              body: ""
-            });
-            // After adding comment, go to the first page again
-            this.changePage(0);
-          });
       });
     }
   }
