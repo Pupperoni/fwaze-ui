@@ -51,6 +51,9 @@
             />
           </div>
         </div>
+        <div *ngIf="invalidImage" class="alert alert-danger" role="alert">
+          File uploaded is not an image
+        </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">

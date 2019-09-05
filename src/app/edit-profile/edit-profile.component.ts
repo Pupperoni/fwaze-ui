@@ -6,6 +6,7 @@ import { User } from "../user";
 import { catchError } from "rxjs/operators";
 import { CookieService } from "ngx-cookie-service";
 import { throwError } from "rxjs";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-edit-profile",
@@ -15,6 +16,7 @@ import { throwError } from "rxjs";
 export class EditProfileComponent implements OnInit {
   currentUser: User = undefined;
   profileForm: FormGroup;
+  invalidImage = false;
 
   avatarUpload = null;
 
@@ -35,7 +37,8 @@ export class EditProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -59,11 +62,11 @@ export class EditProfileComponent implements OnInit {
       if (
         $event.target.files[0].type == "image/png" ||
         $event.target.files[0].type == "image/jpeg"
-      )
+      ) {
+        this.invalidImage = false;
         this.avatarUpload = $event.target.files[0];
-      else {
-        console.log("File uploaded is not an image");
-        alert("File uploaded is not an image");
+      } else {
+        this.invalidImage = true;
       }
     }
   }
@@ -103,8 +106,15 @@ export class EditProfileComponent implements OnInit {
 
   onSubmit(formData) {
     if (!this.validateEmail(formData.email)) {
-      console.log("Format is not a valid email address.");
-      alert("Format is not a valid email address.");
+      this.toastr.error("Please enter a valid Email address", "Invalid email", {
+        timeOut: 5000
+      });
+    } else if (this.invalidImage) {
+      this.toastr.error(
+        "Please upload a valid image file",
+        "Invalid image format",
+        { timeOut: 5000 }
+      );
     } else {
       let uploadData = new FormData();
 
@@ -125,8 +135,7 @@ export class EditProfileComponent implements OnInit {
         .updateUser(uploadData)
         .pipe(
           catchError(err => {
-            alert(err.error.err);
-            console.log(err);
+            this.toastr.error(err.error.err, "Error", { timeOut: 5000 });
             return throwError(err);
           })
         )

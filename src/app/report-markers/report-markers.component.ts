@@ -12,6 +12,7 @@ import { CurrentMarkerService } from "../current-marker.service";
 import { ReportService } from "../report.service";
 import { CommentService } from "../comment.service";
 import { Subscription } from "rxjs";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-report-markers",
@@ -41,7 +42,8 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     private commentService: CommentService,
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toastr: ToastrService
   ) {
     this.commentForm = new FormGroup({
       body: new FormControl("")
@@ -182,11 +184,13 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
       1}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}.${dateNow.getMilliseconds()}`;
 
     if (data.body == "") {
-      console.log("Missing comment text");
-      alert("Missing comment text");
+      this.toastr.error("Please include a comment", "Error", {
+        timeOut: 5000
+      });
     } else {
       this.commentService.createComment(data).subscribe((res: any) => {
         this.commentService.createCommentSocket(data);
+        this.commentForm.setValue({ body: "" });
       });
     }
   }

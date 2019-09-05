@@ -2,9 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { User } from "../user";
 import { AdvertisementService } from "../advertisement.service";
 import { CookieService } from "ngx-cookie-service";
-
 import { CurrentMarkerService } from "../current-marker.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-ad-modal",
@@ -15,12 +15,14 @@ export class AdModalComponent implements OnInit {
   currentUser: User = undefined;
   currentMarker: marker = undefined;
   photoUpload = undefined;
+  invalidImage = false;
   adForm: FormGroup;
 
   constructor(
     private advertisementService: AdvertisementService,
     private cookieService: CookieService,
-    private currentMarkerService: CurrentMarkerService
+    private currentMarkerService: CurrentMarkerService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -37,11 +39,11 @@ export class AdModalComponent implements OnInit {
       if (
         $event.target.files[0].type == "image/png" ||
         $event.target.files[0].type == "image/jpeg"
-      )
+      ) {
+        this.invalidImage = false;
         this.photoUpload = $event.target.files[0];
-      else {
-        console.log("File uploaded is not an image");
-        alert("File uploaded is not an image");
+      } else {
+        this.invalidImage = true;
       }
     }
   }
@@ -49,8 +51,15 @@ export class AdModalComponent implements OnInit {
   adSubmit(formData) {
     if (formData.caption == "") {
       // Can't have empty fields
-      console.log("Empty field found");
-      alert("Empty field found");
+      this.toastr.error("Please include a caption", "Blank caption", {
+        timeOut: 5000
+      });
+    } else if (this.invalidImage) {
+      this.toastr.error(
+        "Please upload a valid image file",
+        "Invalid image format",
+        { timeOut: 5000 }
+      );
     } else {
       // All good!
       this.currentMarker = this.currentMarkerService.getMarker();

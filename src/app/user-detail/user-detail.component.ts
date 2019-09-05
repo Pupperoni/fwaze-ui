@@ -7,6 +7,7 @@ import { catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
 import { User } from "../user";
 import { Subscription } from "rxjs";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-user-detail",
@@ -28,7 +29,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private applicationService: ApplicationService,
     private route: ActivatedRoute,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.subscription = this.router.events.subscribe(e => {
       if (e instanceof NavigationEnd) this.getUser();
@@ -108,15 +110,21 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       .sendApplication(userData)
       .pipe(
         catchError(err => {
-          alert(err.error.err);
-          console.log(err);
+          this.toastr.success(err.error.err, "Error", {
+            timeOut: 5000
+          });
           return throwError(err);
         })
       )
       .subscribe(res => {
         this.applicationService.sendApplicationSocket(res);
-        console.log("Your application is now being processed");
-        alert("Your application is now being processed");
+        this.toastr.success(
+          "Your application is now being processed",
+          "Application submitted",
+          {
+            timeOut: 5000
+          }
+        );
         this.canApply = false;
       });
   }

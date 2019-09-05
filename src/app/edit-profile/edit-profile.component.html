@@ -67,16 +67,6 @@
           />
         </div>
 
-        <!-- <div class="form-group">
-          <label>Password: </label>
-          <input type="password" class="form-control" id="password" />
-        </div>
-
-        <div class="form-group">
-          <label>Confirm password: </label>
-          <input type="password" class="form-control" id="confirm-password" />
-        </div> -->
-
         <div class="form-group">
           <label>Upload display picture:</label>
           <input
@@ -86,39 +76,9 @@
             (change)="handleFileInput($event)"
           />
         </div>
-        <!-- <div *ngIf="currentUser.role != 2">
-          <div class="role-radios">
-            <div class="role-radio-regular">
-              <input
-                class="form-check-input"
-                type="radio"
-                value="0"
-                id="role-regular"
-                formControlName="role"
-              />
-              <label>Regular</label>
-            </div>
-            <div class="role-radio-advertiser">
-              <input
-                class="form-check-input"
-                type="radio"
-                value="1"
-                id="role-advertiser"
-                formControlName="role"
-              />
-              <label>Advertiser</label>
-            </div>
-          </div>
-          <div
-            *ngIf="role.invalid && (role.dirty || role.touched)"
-            class="alert alert-danger"
-          >
-            <div *ngIf="role.errors.required">
-              Role is required.
-            </div>
-          </div>
-        </div> -->
-
+        <div *ngIf="invalidImage" class="alert alert-danger" role="alert">
+          File uploaded is not an image
+        </div>
         <button type="submit" class="btn btn-success btn-block">
           Save
         </button>

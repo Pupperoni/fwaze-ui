@@ -50,6 +50,9 @@
                 (change)="handleFileInput($event)"
               />
             </div>
+            <div *ngIf="invalidImage" class="alert alert-danger" role="alert">
+              File uploaded is not an image
+            </div>
           </form>
         </div>
         <div class="modal-footer">

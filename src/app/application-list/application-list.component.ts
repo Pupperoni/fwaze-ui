@@ -3,6 +3,7 @@ import { ApplicationService } from "../application.service";
 import { CookieService } from "ngx-cookie-service";
 import { catchError } from "rxjs/operators";
 import { throwError, Subscription } from "rxjs";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-application-list",
@@ -18,7 +19,8 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   applicationCreatedSub: Subscription;
   constructor(
     private applicationService: ApplicationService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private toastr: ToastrService
   ) {
     this.applicationService.getPendingApplications().subscribe(res => {
       res.data.forEach(application => {
@@ -87,8 +89,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
       .approveApplication(data)
       .pipe(
         catchError(err => {
-          alert(err.error.err);
-          console.log(err);
+          this.toastr.error(err.error.err, "Error", { timeOut: 5000 });
           return throwError(err);
         })
       )
@@ -110,8 +111,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
       .rejectApplication(data)
       .pipe(
         catchError(err => {
-          alert(err.error.err);
-          console.log(err);
+          this.toastr.error(err.error.err, "Error", { timeOut: 5000 });
           return throwError(err);
         })
       )

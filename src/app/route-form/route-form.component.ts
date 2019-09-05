@@ -11,7 +11,7 @@ declare let google: any;
 
 import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
-
+import { ToastrService } from "ngx-toastr";
 import { FormGroup, FormControl } from "@angular/forms";
 
 @Component({
@@ -39,7 +39,10 @@ export class RouteFormComponent implements OnInit, OnDestroy {
   currentUser: User = undefined;
   geocoder = new google.maps.Geocoder();
   directionForm: FormGroup = undefined;
-  constructor(private cookieService: CookieService) {
+  constructor(
+    private cookieService: CookieService,
+    private toastr: ToastrService
+  ) {
     this.directionForm = new FormGroup({
       source: new FormControl(""),
       destination: new FormControl("")
@@ -156,7 +159,13 @@ export class RouteFormComponent implements OnInit, OnDestroy {
         });
       });
     } else {
-      alert("Geolocation not supported by your browser! :(");
+      this.toastr.error(
+        "Geolocation not supported by your browser. Considering updating your browser.",
+        "Error",
+        {
+          timeOut: 5000
+        }
+      );
     }
   }
 }

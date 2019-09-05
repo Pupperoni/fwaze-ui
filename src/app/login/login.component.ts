@@ -5,6 +5,7 @@ import { throwError } from "rxjs";
 import { Router } from "@angular/router";
 import { UserService } from "../user.service";
 import { CookieService } from "ngx-cookie-service";
+import { ToastrService, Toast } from "ngx-toastr";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private userService: UserService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     // Don't get logged in users log in again lol
     if (this.cookieService.check("currentUser")) {
@@ -40,19 +42,20 @@ export class LoginComponent implements OnInit {
 
   onSubmit(userData) {
     // Process form here
-    console.log("Login form submitted");
     if (userData.name == "" || userData.password == "") {
       // Can't have empty fields
-      console.log("Empty field found");
-      alert("Can't have empty fields");
+      this.toastr.error("Please include complete details", "Login Error", {
+        timeOut: 5000
+      });
     } else {
       // All looks good
       this.userService
         .loginUser(userData)
         .pipe(
           catchError(err => {
-            alert(err.error.err);
-            console.log(err);
+            this.toastr.error(err.error.err, "Error", {
+              timeOut: 5000
+            });
             return throwError(err);
           })
         )

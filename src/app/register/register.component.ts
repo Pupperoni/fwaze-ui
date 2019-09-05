@@ -5,6 +5,7 @@ import { UserService } from "../user.service";
 import { CookieService } from "ngx-cookie-service";
 import { catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
+import { ToastrService } from "ngx-toastr";
 @Component({
   selector: "app-register",
   templateUrl: "./register.component.html",
@@ -15,7 +16,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private userService: UserService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     if (this.cookieService.check("currentUser")) {
       this.router.navigate(["/"]);
@@ -38,8 +40,6 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(userData) {
     // Process form here
-    console.log("Register form submitted");
-    console.log("Automatically setting role: Regular(0)");
     userData.role = 0;
     if (
       userData.name == "" ||
@@ -48,24 +48,28 @@ export class RegisterComponent implements OnInit {
       userData.confirmPassword == ""
     ) {
       // Can't have empty fields
-      console.log("Empty field found");
-      alert("Can't have empty fields");
+      this.toastr.error("Please include complete details", "Error", {
+        timeOut: 5000
+      });
     } else if (userData.password != userData.confirmPassword) {
       // Check password and confirmPassword; must match
-      console.log("Passwords don't match");
-      alert("Passwords don't match");
+      this.toastr.error("Passwords don't match", "Error", {
+        timeOut: 5000
+      });
     } else if (!this.validateEmail(userData.email)) {
       // Check if email is valid
-      console.log("Format is not a valid email address.");
-      alert("Format is not a valid email address.");
+      this.toastr.error("Please enter a valid Email address", "Error", {
+        timeOut: 5000
+      });
     } else {
       // All looks good
       this.userService
         .registerUser(userData)
         .pipe(
           catchError(err => {
-            alert(err.error.err);
-            console.log(err.error.err);
+            this.toastr.error(err.error.err, "Error", {
+              timeOut: 5000
+            });
             return throwError(err);
           })
         )

@@ -83,6 +83,18 @@
             Password confirmation is required.
           </div>
         </div>
+
+        <div
+          *ngIf="
+            (confirmPassword.dirty || confirmPassword.touched) &&
+            (password.dirty || password.touched) &&
+            password.value != confirmPassword.value
+          "
+          class="alert alert-danger"
+          role="alert"
+        >
+          Passwords don't match
+        </div>
         <div class="login-redirect">
           <a routerLink="/login">Already a member? Login here!</a>
         </div>

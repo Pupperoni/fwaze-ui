@@ -7,7 +7,7 @@ import {
   OnDestroy
 } from "@angular/core";
 import { Observable } from "rxjs";
-
+import { ToastrService } from "ngx-toastr";
 import { CookieService } from "ngx-cookie-service";
 import { UserService } from "../user.service";
 
@@ -33,7 +33,8 @@ export class FaveRouteOptionsComponent implements OnInit, OnDestroy {
   currentUser;
   constructor(
     private cookieService: CookieService,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -111,7 +112,7 @@ export class FaveRouteOptionsComponent implements OnInit, OnDestroy {
         });
       });
     } else if (!this.currentUser) {
-      alert("Please login");
+      this.toastr.error("Please login", "Error", { timeOut: 5000 });
     }
   }
 
@@ -124,12 +125,14 @@ export class FaveRouteOptionsComponent implements OnInit, OnDestroy {
       };
 
       this.userService.deleteFaveRoute(routeData).subscribe(res => {
-        alert("Route has been deleted");
+        this.toastr.success(res.msg, "Route has been successfully deleted", {
+          timeOut: 5000
+        });
         this.faveRoutes.splice(this.selectedRoute, 1);
         this.selectedRoute = -1;
       });
     } else if (!this.currentUser) {
-      alert("Please login");
+      this.toastr.error("Please login", "Error", { timeOut: 5000 });
     }
   }
 }
