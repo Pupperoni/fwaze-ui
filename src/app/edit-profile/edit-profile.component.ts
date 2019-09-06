@@ -106,15 +106,13 @@ export class EditProfileComponent implements OnInit {
 
   onSubmit(formData) {
     if (!this.validateEmail(formData.email)) {
-      this.toastr.error("Please enter a valid Email address", "Invalid email", {
+      this.toastr.error("Please enter a valid Email address", "Error", {
         timeOut: 5000
       });
     } else if (this.invalidImage) {
-      this.toastr.error(
-        "Please upload a valid image file",
-        "Invalid image format",
-        { timeOut: 5000 }
-      );
+      this.toastr.error("Please upload a valid image file", "Error", {
+        timeOut: 5000
+      });
     } else {
       let uploadData = new FormData();
 

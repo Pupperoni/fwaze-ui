@@ -51,15 +51,13 @@ export class AdModalComponent implements OnInit {
   adSubmit(formData) {
     if (formData.caption == "") {
       // Can't have empty fields
-      this.toastr.error("Please include a caption", "Blank caption", {
+      this.toastr.error("Please include a caption", "Error", {
         timeOut: 5000
       });
     } else if (this.invalidImage) {
-      this.toastr.error(
-        "Please upload a valid image file",
-        "Invalid image format",
-        { timeOut: 5000 }
-      );
+      this.toastr.error("Please upload a valid image file", "Error", {
+        timeOut: 5000
+      });
     } else {
       // All good!
       this.currentMarker = this.currentMarkerService.getMarker();

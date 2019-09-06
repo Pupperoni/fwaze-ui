@@ -46,11 +46,9 @@ export class ReportModalComponent implements OnInit {
 
   reportSubmit() {
     if (this.invalidImage) {
-      this.toastr.error(
-        "Please upload a valid image file",
-        "Invalid image format",
-        { timeOut: 5000 }
-      );
+      this.toastr.error("Please upload a valid image file", "Error", {
+        timeOut: 5000
+      });
     }
     this.currentMarker = this.currentMarkerService.getMarker();
     let location = this.currentMarkerService.getMarkerLocation();
