@@ -111,12 +111,12 @@ export class LivemapComponent implements OnInit, OnDestroy {
     this.currentMarkerService.voteIncr$.subscribe(data => {
       this.voteIncr = data;
 
-      this.updateReportMarker(data.index);
+      // this.updateReportMarker(data.index);
       this.reportService.addVoteSocket(data.data);
     });
     this.currentMarkerService.voteDecr$.subscribe(data => {
       this.voteDecr = data;
-      this.updateReportMarker(data.index);
+      // this.updateReportMarker(data.index);
       this.reportService.deleteVoteSocket(data.data);
     });
   }

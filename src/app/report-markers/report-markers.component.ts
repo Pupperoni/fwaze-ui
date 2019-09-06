@@ -54,14 +54,17 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     this.voteCreatedSub = this.reportService.voteCreated.subscribe(report => {
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
-          this.reportService.getReportById(report.id).subscribe((res: any) => {
-            this.markerInfo.votes = res.report.votes;
-            this.reportService
-              .getUserVotePair(res.report.id, this.currentUser.id)
-              .subscribe(res2 => {
-                this.markerInfo.curUserVoted = res2 ? true : false;
-              });
-          });
+          this.markerInfo.votes++;
+          if (report.userId === this.currentUser.id)
+            this.markerInfo.curUserVoted = true;
+          // this.reportService.getReportById(report.id).subscribe((res: any) => {
+          //   this.markerInfo.votes = res.report.votes;
+          //   this.reportService
+          //     .getUserVotePair(res.report.id, this.currentUser.id)
+          //     .subscribe(res2 => {
+          //       this.markerInfo.curUserVoted = res2 ? true : false;
+          //     });
+          // });
         }
       }
     });
@@ -69,14 +72,17 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     this.voteDeletedSub = this.reportService.voteDeleted.subscribe(report => {
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
-          this.reportService.getReportById(report.id).subscribe((res: any) => {
-            this.markerInfo.votes = res.report.votes;
-            this.reportService
-              .getUserVotePair(res.report.id, this.currentUser.id)
-              .subscribe(res2 => {
-                this.markerInfo.curUserVoted = res2 ? true : false;
-              });
-          });
+          this.markerInfo.votes--;
+          if (report.userId === this.currentUser.id)
+            this.markerInfo.curUserVoted = false;
+          // this.reportService.getReportById(report.id).subscribe((res: any) => {
+          //   this.markerInfo.votes = res.report.votes;
+          //   this.reportService
+          //     .getUserVotePair(res.report.id, this.currentUser.id)
+          //     .subscribe(res2 => {
+          //       this.markerInfo.curUserVoted = res2 ? true : false;
+          //     });
+          // });
         }
       }
     });
@@ -113,6 +119,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     this.voteDeletedSub.unsubscribe();
     this.commentCreatedSub.unsubscribe();
   }
+
   toggleInfoWindow(id: string): Promise<Subscription> {
     let subscriptionVal = this.reportService
       .getReportById(id)
