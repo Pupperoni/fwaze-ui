@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subject, Observable, Subscription } from "rxjs";
 declare let google: any;
 
@@ -92,8 +92,7 @@ export class LivemapComponent implements OnInit, OnDestroy {
     private currentMarkerService: CurrentMarkerService,
     private reportService: ReportService,
     private userService: UserService,
-    private advertisementService: AdvertisementService,
-    private cdr: ChangeDetectorRef
+    private advertisementService: AdvertisementService
   ) {}
 
   ngOnDestroy() {
@@ -290,7 +289,6 @@ export class LivemapComponent implements OnInit, OnDestroy {
 
   changeTravel(mode: string) {
     this.transitOptions = mode;
-    this.cdr.detectChanges();
   }
 
   swap($event) {
@@ -344,7 +342,6 @@ export class LivemapComponent implements OnInit, OnDestroy {
       this.lat = $event.source.lat;
       this.lng = $event.source.lng;
     }
-    this.cdr.detectChanges();
 
     this.updateChildren();
   }
@@ -431,7 +428,6 @@ export class LivemapComponent implements OnInit, OnDestroy {
     this.lng = $event.source.lng;
 
     this.updateChildren();
-    this.cdr.detectChanges();
   }
 
   onRouteUsed($event) {
@@ -462,8 +458,6 @@ export class LivemapComponent implements OnInit, OnDestroy {
     this.sourceString = $event.sourceString;
 
     this.updateChildren();
-
-    this.cdr.detectChanges();
   }
 
   sourceAddressChange($event) {
@@ -515,8 +509,6 @@ export class LivemapComponent implements OnInit, OnDestroy {
       lng: undefined,
       label: "D"
     };
-
-    this.cdr.detectChanges();
   }
 
   // source: https://davidwalsh.name/javascript-debounce-function
@@ -585,14 +577,12 @@ export class LivemapComponent implements OnInit, OnDestroy {
             // Done adding the last reports
             if (itemsProcessed === this.filterList.length) {
               this.updateReportList(wantedResults);
-              this.cdr.detectChanges();
             }
           });
       } else {
         itemsProcessed++;
         if (itemsProcessed === this.filterList.length) {
           this.updateReportList(wantedResults);
-          this.cdr.detectChanges();
         }
       }
     });

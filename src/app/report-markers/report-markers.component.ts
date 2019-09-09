@@ -94,6 +94,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
 
     this.commentCreatedSub = this.commentService.commentCreated.subscribe(
       comment => {
+        console.log(comment);
         if (this.markerInfo) {
           if (comment.reportId === this.markerInfo.id && this.commentUp) {
             if (this.pageNum == 0) {
@@ -176,6 +177,9 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
         .subscribe((res: any) => {
           res.data.forEach(comment => {
             comment.userId = comment.user_id;
+            // process timestamp to remove what possibly changes timezone
+            comment.created_at = comment.created_at.replace("T", " ");
+            comment.created_at = comment.created_at.replace(".000Z", "");
             this.commentList.push(comment);
           });
         });
