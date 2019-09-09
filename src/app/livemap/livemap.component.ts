@@ -214,23 +214,23 @@ export class LivemapComponent implements OnInit, OnDestroy {
   }
 
   onReportSubmit($event) {
-    this.reportService.addReportSocket($event);
+    // this.reportService.addReportSocket($event);
     this.currentMarkerService.setMarker(undefined);
     this.currentMarker = this.currentMarkerService.getMarker();
   }
 
   onAdSubmit($event) {
-    this.advertisementService.addAdSocket($event);
+    // this.advertisementService.addAdSocket($event);
     this.currentMarkerService.setMarker(undefined);
     this.currentMarker = this.currentMarkerService.getMarker();
   }
 
   onUpVote($event) {
-    this.reportService.addVoteSocket($event.data);
+    // this.reportService.addVoteSocket($event.data);
   }
 
   onDownVote($event) {
-    this.reportService.deleteVoteSocket($event.data);
+    // this.reportService.deleteVoteSocket($event.data);
   }
 
   // Removes elements from reportMarkers not in wantedList and push new elements from wantedList

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { EventsSocket } from "./sockets";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-
+import { CONSTANTS } from "../../constants";
 import { environment } from "./../environments/environment";
 import { Observable } from "rxjs";
 
@@ -12,9 +12,15 @@ export class ApplicationService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users/apply`;
   constructor(private http: HttpClient, private socket: EventsSocket) {}
 
-  applicationRejected = this.socket.fromEvent<any>("applicationRejected");
-  applicationAccepted = this.socket.fromEvent<any>("applicationAccepted");
-  applicationCreated = this.socket.fromEvent<any>("applicationSent");
+  applicationRejected = this.socket.fromEvent<any>(
+    CONSTANTS.EVENTS.REJECT_APPLICATION
+  );
+  applicationAccepted = this.socket.fromEvent<any>(
+    CONSTANTS.EVENTS.APPROVE_APPLICATION
+  );
+  applicationCreated = this.socket.fromEvent<any>(
+    CONSTANTS.EVENTS.CREATE_APPLICATION
+  );
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -42,17 +48,5 @@ export class ApplicationService {
 
   rejectApplication(data): Observable<any> {
     return this.http.put<any>(`${this.url}/reject`, data, this.httpOptions);
-  }
-
-  sendApplicationSocket(data) {
-    this.socket.emit("applicationCreated", data);
-  }
-
-  approveApplicationSocket(data) {
-    this.socket.emit("onAccepted", data);
-  }
-
-  rejectApplicationSocket(data) {
-    this.socket.emit("onRejected", data);
   }
 }

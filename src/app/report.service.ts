@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Report } from "./report";
 import { EventsSocket } from "./sockets";
 import { environment } from "./../environments/environment";
-
+import { CONSTANTS } from "../../constants";
 interface ReportResponse {
   report: Report;
 }
@@ -27,9 +27,9 @@ interface VoterPair {
 })
 export class ReportService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/reports`;
-  reportCreated = this.socket.fromEvent<any>("reportCreated");
-  voteCreated = this.socket.fromEvent<any>("voteCreated");
-  voteDeleted = this.socket.fromEvent<any>("voteDeleted");
+  reportCreated = this.socket.fromEvent<any>(CONSTANTS.EVENTS.CREATE_REPORT);
+  voteCreated = this.socket.fromEvent<any>(CONSTANTS.EVENTS.CREATE_REPORT_VOTE);
+  voteDeleted = this.socket.fromEvent<any>(CONSTANTS.EVENTS.DELETE_REPORT_VOTE);
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
@@ -99,32 +99,24 @@ export class ReportService {
     return this.http.get<VoteResponse>(`${this.url}/${id}/votes`);
   }
 
-  addReportSocket(data) {
-    this.socket.emit("reportSubmitted", data);
-  }
-
-  addVoteSocket(data) {
-    this.socket.emit("onUpVoted", data);
-  }
-
-  deleteVoteSocket(data) {
-    this.socket.emit("onDownVoted", data);
-  }
-
   visitMap() {
-    this.socket.emit("mapVisited");
-  }
-
-  viewMarker(data) {
-    this.socket.emit("viewReport", data);
-  }
-
-  leaveMarker(data) {
-    this.socket.emit("leaveReport", data);
+    let room = "map viewers";
+    this.socket.emit("subscribe", room);
   }
 
   exitMap() {
-    this.socket.emit("mapExited");
+    let room = "map viewers";
+    this.socket.emit("unsubscribe", room);
+  }
+
+  viewMarker(data) {
+    let room = `${CONSTANTS.AGGREGATES.REPORT_AGGREGATE_NAME} ${data}`;
+    this.socket.emit("subscribe", room);
+  }
+
+  leaveMarker(data) {
+    let room = `${CONSTANTS.AGGREGATES.REPORT_AGGREGATE_NAME} ${data}`;
+    this.socket.emit("unsubscribe", room);
   }
 
   private getValues(form: any) {

@@ -2,12 +2,13 @@ import { Injectable } from "@angular/core";
 import { EventsSocket } from "./sockets";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "./../environments/environment";
+import { CONSTANTS } from "../../constants";
 @Injectable({
   providedIn: "root"
 })
 export class CommentService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/comments`;
-  commentCreated = this.socket.fromEvent<any>("commentCreated");
+  commentCreated = this.socket.fromEvent<any>(CONSTANTS.EVENTS.CREATE_COMMENT);
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
@@ -30,7 +31,13 @@ export class CommentService {
     return this.http.get(`${this.url}/report/${report_id}/count`);
   }
 
-  createCommentSocket(data) {
-    this.socket.emit("commentSubmitted", data);
+  viewComments(data) {
+    let room = `${CONSTANTS.AGGREGATES.COMMENT_AGGREGATE_NAME} ${data}`;
+    this.socket.emit("subscribe", room);
+  }
+
+  leaveComments(data) {
+    let room = `${CONSTANTS.AGGREGATES.COMMENT_AGGREGATE_NAME} ${data}`;
+    this.socket.emit("unsubscribe", room);
   }
 }

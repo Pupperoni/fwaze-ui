@@ -42,7 +42,6 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     this.applicationRejectedSub = this.applicationService.applicationRejected.subscribe(
       data => {
-        console.log("reject");
         this.toastr.error(
           "Sorry. Your application to become an advertiser was rejected!",
           "Application Rejected!",
@@ -55,7 +54,6 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     this.applicationAcceptedSub = this.applicationService.applicationAccepted.subscribe(
       data => {
-        console.log("accept");
         this.toastr.success(
           "Congrats! You've been accepted as a premium Advertiser!",
           "Application Accepted!",
@@ -68,7 +66,6 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     this.applicationCreatedSub = this.applicationService.applicationCreated.subscribe(
       data => {
-        console.log("create");
         this.toastr.success(
           "A new application was posted.",
           "New Application",

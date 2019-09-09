@@ -50,10 +50,10 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
     this.applicationCreatedSub = this.applicationService.applicationCreated.subscribe(
       application => {
         this.pendingApplications.push({
-          id: application.data.id,
-          userId: application.data.userId,
-          userName: application.data.userName,
-          timestamp: application.data.timestamp,
+          id: application.id,
+          userId: application.userId,
+          userName: application.userName,
+          timestamp: application.timestamp,
           status: 0
         });
       }
@@ -94,7 +94,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(res => {
-        this.applicationService.approveApplicationSocket(res);
+        // this.applicationService.approveApplicationSocket(res);
         let applications = this.pendingApplications.splice(index, 1);
         applications[0].status = 1;
         this.doneApplications.unshift(applications[0]);
@@ -116,7 +116,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(res => {
-        this.applicationService.rejectApplicationSocket(res);
+        // this.applicationService.rejectApplicationSocket(res);
         let applications = this.pendingApplications.splice(index, 1);
         applications[0].status = -1;
         this.doneApplications.unshift(applications[0]);

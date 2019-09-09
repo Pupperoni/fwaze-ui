@@ -44,7 +44,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
     this.applicationRejectedSub = this.applicationService.applicationRejected.subscribe(
       data => {
-        if (data.data.userId === this.user.id) {
+        console.log(data);
+        if (data.userId === this.user.id) {
           this.canApply = true;
         }
       }
@@ -52,7 +53,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
     this.applicationAcceptedSub = this.applicationService.applicationAccepted.subscribe(
       data => {
-        if (data.data.userId === this.user.id) {
+        console.log(data);
+        if (data.userId === this.user.id) {
           this.user.role = 1;
         }
       }
@@ -60,8 +62,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
     this.currentUserSub = this.userService.currentUserChanged.subscribe(
       data => {
-        if (data.data.userId === this.currentUser.id) {
-          this.userService.getUser(data.data.userId).subscribe(res => {
+        console.log(data);
+        if (data.id === this.currentUser.id) {
+          this.userService.getUser(data.id).subscribe(res => {
             this.cookieService.set(
               "currentUser",
               JSON.stringify(res.user),
@@ -117,7 +120,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(res => {
-        this.applicationService.sendApplicationSocket(res);
+        // this.applicationService.sendApplicationSocket(res);
         this.toastr.success(
           "Your application is now being processed",
           "Application submitted",

@@ -3,7 +3,7 @@ import { EventsSocket } from "./sockets";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "./../environments/environment";
 import { Observable } from "rxjs";
-
+import { CONSTANTS } from "../../constants";
 import { User } from "./user";
 
 interface MiscResponse {
@@ -23,7 +23,7 @@ interface UserResponse {
   providedIn: "root"
 })
 export class UserService {
-  currentUserChanged = this.socket.fromEvent<any>("changeToAdvertiser");
+  currentUserChanged = this.socket.fromEvent<any>(CONSTANTS.EVENTS.UPDATE_USER);
 
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users`;
 

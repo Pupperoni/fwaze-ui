@@ -4,7 +4,7 @@ import { environment } from "./../environments/environment";
 import { Advertisement } from "./advertisement";
 import { EventsSocket } from "./sockets";
 import { Observable } from "rxjs";
-
+import { CONSTANTS } from "../../constants";
 interface AdvertisementArrayResponse {
   ads: Advertisement[];
 }
@@ -17,7 +17,8 @@ interface AdvertisementResponse {
 })
 export class AdvertisementService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/ads`;
-  adCreated = this.socket.fromEvent<any>("adCreated");
+  adCreated = this.socket.fromEvent<any>(CONSTANTS.EVENTS.CREATE_AD);
+
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
@@ -50,7 +51,7 @@ export class AdvertisementService {
     return this.http.post(`${this.url}/new`, ad);
   }
 
-  addAdSocket(data) {
-    this.socket.emit("adSubmitted", data);
-  }
+  // addAdSocket(data) {
+  //   this.socket.emit("adSubmitted", data);
+  // }
 }

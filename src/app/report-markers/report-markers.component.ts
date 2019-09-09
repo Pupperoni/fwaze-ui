@@ -10,7 +10,6 @@ import {
 import { FormControl, FormGroup } from "@angular/forms";
 import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
-import { CurrentMarkerService } from "../current-marker.service";
 import { ReportService } from "../report.service";
 import { CommentService } from "../comment.service";
 import { Subscription } from "rxjs";
@@ -45,7 +44,6 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     private reportService: ReportService,
     private commentService: CommentService,
     private cookieService: CookieService,
-    private currentMarkerService: CurrentMarkerService,
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService
   ) {
@@ -57,6 +55,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // could move these to livemap component
     this.voteCreatedSub = this.reportService.voteCreated.subscribe(report => {
+      console.log("upvoted");
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
           this.markerInfo.votes++;
@@ -172,6 +171,11 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     this.commentList = [];
     this.commentUp = !this.commentUp;
     if (this.commentUp) {
+      this.commentService.viewComments(this.markerInfo.id);
+    } else {
+      this.commentService.leaveComments(this.markerInfo.id);
+    }
+    if (this.commentUp) {
       this.commentService
         .getCommentsbyReport(this.marker.id, this.pageNum)
         .subscribe((res: any) => {
@@ -216,7 +220,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
       });
     } else {
       this.commentService.createComment(data).subscribe((res: any) => {
-        this.commentService.createCommentSocket(data);
+        // this.commentService.createCommentSocket(data);
         this.commentForm.setValue({ body: "" });
       });
     }
