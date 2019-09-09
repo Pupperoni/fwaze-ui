@@ -1,7 +1,9 @@
 import {
   Component,
+  EventEmitter,
   OnInit,
   Input,
+  Output,
   OnDestroy,
   ChangeDetectorRef
 } from "@angular/core";
@@ -22,6 +24,8 @@ import { ToastrService } from "ngx-toastr";
 export class ReportMarkersComponent implements OnInit, OnDestroy {
   @Input() marker;
   @Input() index;
+  @Output() onUpVote = new EventEmitter();
+  @Output() onDownVote = new EventEmitter();
   commentUp = false;
   commentForm: FormGroup;
   imagePath = undefined;
@@ -230,7 +234,8 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
       userId: userId
     };
     this.reportService.addVote(data).subscribe((res: any) => {
-      this.currentMarkerService.voteIncr(this.index, res.data);
+      // this.currentMarkerService.voteIncr(this.index, res.data);
+      this.onUpVote.emit({ index: this.index, data: res.data });
     });
   }
 
@@ -240,7 +245,8 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
       userId: userId
     };
     this.reportService.deleteVote(data).subscribe((res: any) => {
-      this.currentMarkerService.voteDecr(this.index, res.data);
+      // this.currentMarkerService.voteDecr(this.index, res.data);
+      this.onDownVote.emit({ index: this.index, data: res.data });
     });
   }
 }

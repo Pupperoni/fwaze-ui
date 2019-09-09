@@ -126,7 +126,12 @@
       *ngFor="let marker of reportMarkers; let i = index"
       class="report-markers-component"
     >
-      <app-report-markers [marker]="marker" [index]="i"></app-report-markers>
+      <app-report-markers
+        [marker]="marker"
+        [index]="i"
+        (onUpVote)="onUpVote($event)"
+        (onDownVote)="onDownVote($event)"
+      ></app-report-markers>
     </div>
 
     <!-- Ad markers -->

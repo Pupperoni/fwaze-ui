@@ -94,16 +94,7 @@ export class LivemapComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private advertisementService: AdvertisementService,
     private cdr: ChangeDetectorRef
-  ) {
-    this.currentMarkerService.voteIncr$.subscribe(data => {
-      this.voteIncr = data;
-      this.reportService.addVoteSocket(data.data);
-    });
-    this.currentMarkerService.voteDecr$.subscribe(data => {
-      this.voteDecr = data;
-      this.reportService.deleteVoteSocket(data.data);
-    });
-  }
+  ) {}
 
   ngOnDestroy() {
     // leave map room
@@ -233,6 +224,14 @@ export class LivemapComponent implements OnInit, OnDestroy {
     this.advertisementService.addAdSocket($event);
     this.currentMarkerService.setMarker(undefined);
     this.currentMarker = this.currentMarkerService.getMarker();
+  }
+
+  onUpVote($event) {
+    this.reportService.addVoteSocket($event.data);
+  }
+
+  onDownVote($event) {
+    this.reportService.deleteVoteSocket($event.data);
   }
 
   // Removes elements from reportMarkers not in wantedList and push new elements from wantedList
