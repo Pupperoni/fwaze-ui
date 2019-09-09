@@ -32,6 +32,7 @@ export class LivemapComponent implements OnInit, OnDestroy {
 
   adCreatedSub: Subscription;
   reportCreatedSub: Subscription;
+  currentUserSub: Subscription;
 
   filterList = [
     { name: "Traffic Jam", apiName: "traffic_jam", active: true },
@@ -94,13 +95,6 @@ export class LivemapComponent implements OnInit, OnDestroy {
     private advertisementService: AdvertisementService,
     private cdr: ChangeDetectorRef
   ) {
-    this.currentMarkerService.reportSubmit$.subscribe(data => {
-      this.reportSubmit = data;
-      this.reportService.addReportSocket(data);
-
-      this.currentMarkerService.setMarker(undefined);
-      this.currentMarker = this.currentMarkerService.getMarker();
-    });
     this.currentMarkerService.adSubmit$.subscribe(data => {
       this.adSubmit = data;
       this.advertisementService.addAdSocket(data);
@@ -110,13 +104,10 @@ export class LivemapComponent implements OnInit, OnDestroy {
     });
     this.currentMarkerService.voteIncr$.subscribe(data => {
       this.voteIncr = data;
-
-      // this.updateReportMarker(data.index);
       this.reportService.addVoteSocket(data.data);
     });
     this.currentMarkerService.voteDecr$.subscribe(data => {
       this.voteDecr = data;
-      // this.updateReportMarker(data.index);
       this.reportService.deleteVoteSocket(data.data);
     });
   }
@@ -126,6 +117,7 @@ export class LivemapComponent implements OnInit, OnDestroy {
     this.reportService.exitMap();
     this.adCreatedSub.unsubscribe();
     this.reportCreatedSub.unsubscribe();
+    this.currentUserSub.unsubscribe();
   }
 
   private isInside(report) {
@@ -178,19 +170,23 @@ export class LivemapComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.userService.currentUserChanged.subscribe(data => {
-      if (this.currentUser && data.data.userId === this.currentUser.id) {
-        this.userService.getUser(data.data.userId).subscribe(res => {
-          this.cookieService.set(
-            "currentUser",
-            JSON.stringify(res.user),
-            null,
-            "/"
-          );
-          this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
-        });
+    this.currentUserSub = this.userService.currentUserChanged.subscribe(
+      data => {
+        if (this.currentUser && data.data.userId === this.currentUser.id) {
+          this.userService.getUser(data.data.userId).subscribe(res => {
+            this.cookieService.set(
+              "currentUser",
+              JSON.stringify(res.user),
+              null,
+              "/"
+            );
+            this.currentUser = JSON.parse(
+              this.cookieService.get("currentUser")
+            );
+          });
+        }
       }
-    });
+    );
 
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
@@ -232,6 +228,12 @@ export class LivemapComponent implements OnInit, OnDestroy {
         this.location = this.currentMarkerService.getMarkerLocation();
       }
     });
+  }
+
+  onReportSubmit($event) {
+    this.reportService.addReportSocket($event);
+    this.currentMarkerService.setMarker(undefined);
+    this.currentMarker = this.currentMarkerService.getMarker();
   }
 
   // Removes elements from reportMarkers not in wantedList and push new elements from wantedList
@@ -568,11 +570,6 @@ export class LivemapComponent implements OnInit, OnDestroy {
       type: report.type,
       label: "R"
     });
-  }
-
-  private updateReportMarker(index: number) {
-    // let updateReportId = this.reportMarkers.slice(index, index + 1)[0].id;
-    this.reportMarkers[index].autoOpen = true;
   }
 
   private assignReportMarkers() {

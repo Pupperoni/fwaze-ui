@@ -51,6 +51,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // could move these to livemap component
     this.voteCreatedSub = this.reportService.voteCreated.subscribe(report => {
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
@@ -91,12 +92,16 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
       comment => {
         if (this.markerInfo) {
           if (comment.reportId === this.markerInfo.id && this.commentUp) {
-            this.commentService
-              .countCommentsbyReport(comment.reportId)
-              .subscribe((count: any) => {
-                this.maxPages = Math.ceil(count.data / 5);
-                this.changePage(this.pageNum);
-              });
+            if (this.pageNum == 0) {
+              comment.created_at = comment.timestamp;
+              this.commentList.unshift(comment);
+            }
+            // this.commentService
+            //   .countCommentsbyReport(comment.reportId)
+            //   .subscribe((count: any) => {
+            //     this.maxPages = Math.ceil(count.data / 5);
+            //     this.changePage(this.pageNum);
+            //   });
           }
         }
       }
@@ -120,7 +125,14 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     this.commentCreatedSub.unsubscribe();
   }
 
+  onWindowClose() {
+    this.reportService.leaveMarker(this.marker.id);
+  }
+
   toggleInfoWindow(id: string): Promise<Subscription> {
+    // enter room that views this marker
+    this.reportService.viewMarker(id);
+
     let subscriptionVal = this.reportService
       .getReportById(id)
       .subscribe((res: any) => {

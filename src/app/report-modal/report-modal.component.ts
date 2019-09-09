@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
 import { CurrentMarkerService } from "../current-marker.service";
@@ -10,6 +10,7 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./report-modal.component.css"]
 })
 export class ReportModalComponent implements OnInit {
+  @Output() onSubmit = new EventEmitter();
   currentUser: User = undefined;
   currentMarker: marker = undefined;
   invalidImage = false;
@@ -66,7 +67,7 @@ export class ReportModalComponent implements OnInit {
 
     this.reportService.addReport(uploadData).subscribe((res: any) => {
       this.selectedOption = 0;
-      this.currentMarkerService.reportSubmit(res.data);
+      this.onSubmit.emit(res.data);
       this.photoUpload = null;
     });
   }

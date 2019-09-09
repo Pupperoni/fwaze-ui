@@ -115,6 +115,14 @@ export class ReportService {
     this.socket.emit("mapVisited");
   }
 
+  viewMarker(data) {
+    this.socket.emit("viewReport", data);
+  }
+
+  leaveMarker(data) {
+    this.socket.emit("leaveReport", data);
+  }
+
   exitMap() {
     this.socket.emit("mapExited");
   }
