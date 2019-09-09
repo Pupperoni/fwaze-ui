@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { User } from "../user";
 import { AdvertisementService } from "../advertisement.service";
 import { CookieService } from "ngx-cookie-service";
@@ -12,6 +12,7 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./ad-modal.component.css"]
 })
 export class AdModalComponent implements OnInit {
+  @Output() onSubmit = new EventEmitter();
   currentUser: User = undefined;
   currentMarker: marker = undefined;
   photoUpload = undefined;
@@ -75,7 +76,7 @@ export class AdModalComponent implements OnInit {
         uploadData.append("photo", this.photoUpload, this.photoUpload.name);
 
       this.advertisementService.addAd(uploadData).subscribe((res: any) => {
-        this.currentMarkerService.adSubmit(res.data);
+        this.onSubmit.emit(res.data);
         this.photoUpload = null;
       });
     }

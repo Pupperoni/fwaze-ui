@@ -95,13 +95,6 @@ export class LivemapComponent implements OnInit, OnDestroy {
     private advertisementService: AdvertisementService,
     private cdr: ChangeDetectorRef
   ) {
-    this.currentMarkerService.adSubmit$.subscribe(data => {
-      this.adSubmit = data;
-      this.advertisementService.addAdSocket(data);
-
-      this.currentMarkerService.setMarker(undefined);
-      this.currentMarker = this.currentMarkerService.getMarker();
-    });
     this.currentMarkerService.voteIncr$.subscribe(data => {
       this.voteIncr = data;
       this.reportService.addVoteSocket(data.data);
@@ -232,6 +225,12 @@ export class LivemapComponent implements OnInit, OnDestroy {
 
   onReportSubmit($event) {
     this.reportService.addReportSocket($event);
+    this.currentMarkerService.setMarker(undefined);
+    this.currentMarker = this.currentMarkerService.getMarker();
+  }
+
+  onAdSubmit($event) {
+    this.advertisementService.addAdSocket($event);
     this.currentMarkerService.setMarker(undefined);
     this.currentMarker = this.currentMarkerService.getMarker();
   }
