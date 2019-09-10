@@ -55,20 +55,11 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // could move these to livemap component
     this.voteCreatedSub = this.reportService.voteCreated.subscribe(report => {
-      console.log("upvoted");
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
           this.markerInfo.votes++;
           if (report.userId === this.currentUser.id)
             this.markerInfo.curUserVoted = true;
-          // this.reportService.getReportById(report.id).subscribe((res: any) => {
-          //   this.markerInfo.votes = res.report.votes;
-          //   this.reportService
-          //     .getUserVotePair(res.report.id, this.currentUser.id)
-          //     .subscribe(res2 => {
-          //       this.markerInfo.curUserVoted = res2 ? true : false;
-          //     });
-          // });
         }
       }
     });
@@ -79,33 +70,23 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
           this.markerInfo.votes--;
           if (report.userId === this.currentUser.id)
             this.markerInfo.curUserVoted = false;
-          // this.reportService.getReportById(report.id).subscribe((res: any) => {
-          //   this.markerInfo.votes = res.report.votes;
-          //   this.reportService
-          //     .getUserVotePair(res.report.id, this.currentUser.id)
-          //     .subscribe(res2 => {
-          //       this.markerInfo.curUserVoted = res2 ? true : false;
-          //     });
-          // });
         }
       }
     });
 
     this.commentCreatedSub = this.commentService.commentCreated.subscribe(
       comment => {
-        console.log(comment);
         if (this.markerInfo) {
           if (comment.reportId === this.markerInfo.id && this.commentUp) {
             if (this.pageNum == 0) {
               comment.created_at = comment.timestamp;
+              // max comments reached
+              if (this.commentList.length == 5) {
+                this.maxPages++;
+                this.commentList.pop();
+              }
               this.commentList.unshift(comment);
             }
-            // this.commentService
-            //   .countCommentsbyReport(comment.reportId)
-            //   .subscribe((count: any) => {
-            //     this.maxPages = Math.ceil(count.data / 5);
-            //     this.changePage(this.pageNum);
-            //   });
           }
         }
       }
@@ -199,6 +180,9 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         res.data.forEach(comment => {
           comment.userId = comment.user_id;
+          // process timestamp to remove what possibly changes timezone
+          comment.created_at = comment.created_at.replace("T", " ");
+          comment.created_at = comment.created_at.replace(".000Z", "");
           this.commentList.push(comment);
         });
       });
