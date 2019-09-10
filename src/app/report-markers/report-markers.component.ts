@@ -55,6 +55,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // could move these to livemap component
     this.voteCreatedSub = this.reportService.voteCreated.subscribe(report => {
+      console.log("upvoted");
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
           this.markerInfo.votes++;
@@ -65,6 +66,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     });
 
     this.voteDeletedSub = this.reportService.voteDeleted.subscribe(report => {
+      console.log("downvoted");
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
           this.markerInfo.votes--;

@@ -13,13 +13,13 @@ export class ApplicationService {
   constructor(private http: HttpClient, private socket: EventsSocket) {}
 
   applicationRejected = this.socket.fromEvent<any>(
-    CONSTANTS.EVENTS.REJECT_APPLICATION
+    CONSTANTS.EVENTS.APPLICATION_REJECTED
   );
   applicationAccepted = this.socket.fromEvent<any>(
-    CONSTANTS.EVENTS.APPROVE_APPLICATION
+    CONSTANTS.EVENTS.APPLICATION_APPROVED
   );
   applicationCreated = this.socket.fromEvent<any>(
-    CONSTANTS.EVENTS.CREATE_APPLICATION
+    CONSTANTS.EVENTS.APPLICATION_CREATED
   );
 
   httpOptions = {

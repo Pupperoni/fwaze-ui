@@ -23,7 +23,9 @@ interface UserResponse {
   providedIn: "root"
 })
 export class UserService {
-  currentUserChanged = this.socket.fromEvent<any>(CONSTANTS.EVENTS.UPDATE_USER);
+  currentUserChanged = this.socket.fromEvent<any>(
+    CONSTANTS.EVENTS.USER_UPDATED
+  );
 
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users`;
 

@@ -27,9 +27,13 @@ interface VoterPair {
 })
 export class ReportService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/reports`;
-  reportCreated = this.socket.fromEvent<any>(CONSTANTS.EVENTS.CREATE_REPORT);
-  voteCreated = this.socket.fromEvent<any>(CONSTANTS.EVENTS.CREATE_REPORT_VOTE);
-  voteDeleted = this.socket.fromEvent<any>(CONSTANTS.EVENTS.DELETE_REPORT_VOTE);
+  reportCreated = this.socket.fromEvent<any>(CONSTANTS.EVENTS.REPORT_CREATED);
+  voteCreated = this.socket.fromEvent<any>(
+    CONSTANTS.EVENTS.REPORT_VOTE_CREATED
+  );
+  voteDeleted = this.socket.fromEvent<any>(
+    CONSTANTS.EVENTS.REPORT_VOTE_DELETED
+  );
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
