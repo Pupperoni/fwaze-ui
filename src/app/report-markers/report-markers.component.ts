@@ -86,6 +86,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
               .subscribe((count: any) => {
                 this.maxPages = Math.ceil(count.data / 5);
               });
+            // will get problems if net is slow
             this.changePage(this.pageNum);
           }
         }
@@ -150,11 +151,6 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
 
   toggleComments() {
     this.commentUp = !this.commentUp;
-    if (this.commentUp) {
-      this.commentService.viewComments(this.markerInfo.id);
-    } else {
-      this.commentService.leaveComments(this.markerInfo.id);
-    }
     if (this.commentUp) {
       this.changePage(0);
     }

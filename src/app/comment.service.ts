@@ -8,7 +8,9 @@ import { CONSTANTS } from "../../constants";
 })
 export class CommentService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/comments`;
-  commentCreated = this.socket.fromEvent<any>(CONSTANTS.EVENTS.COMMENT_CREATED);
+  commentCreated = this.socket.fromEvent<any>(
+    CONSTANTS.EVENTS.REPORT_COMMENT_CREATED
+  );
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
