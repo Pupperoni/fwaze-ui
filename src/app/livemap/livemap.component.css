@@ -7,7 +7,7 @@ img {
 }
 
 agm-map {
-  height: 1000px;
+  height: 700px;
 }
 
 .map-form {
@@ -26,9 +26,7 @@ agm-map {
 
 .direction-data {
   padding: 0.5em;
-  border: springgreen;
   border-radius: 0.25cm 0.25cm 0.25cm 0.25cm;
-  background-color: #b3ffff;
 }
 
 .direction-data-container {
@@ -40,4 +38,27 @@ agm-map {
   height: auto;
   max-height: 200px;
   overflow-x: hidden;
+}
+
+.directions {
+  border-radius: 4px;
+  text-align: center;
+  background-color: #fff;
+}
+
+#wrapper {
+  position: relative;
+}
+
+#floating-panel {
+  position: absolute;
+  top: 2%;
+  left: 1%;
+  z-index: 5;
+  /* background-color: #ddd; */
+  padding: 2em;
+  border-radius: 4px;
+  text-align: center;
+  font-family: "Roboto";
+  line-height: 30px;
 }

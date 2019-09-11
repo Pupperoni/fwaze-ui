@@ -1,77 +1,6 @@
 <div class="livemap-component">
   <!-- <img src="../../assets/GoogleMapTA.jpg" /> -->
 
-  <span *ngIf="reports | async"> {{ reports }}</span>
-
-  <!-- Form for source and destination: Move to another component -->
-  <app-route-form
-    [sourceData]="sourceData"
-    [destData]="destData"
-    [sourceString]="sourceString"
-    [destString]="destString"
-    [routeUsedEvent]="routeUsedSubject"
-    (onSourceChange)="sourceAddressChange($event)"
-    (onDestinationChange)="destinationAddressChange($event)"
-    (onSwapClick)="swap($event)"
-    (onCurrentLocationClick)="setLocationNow($event)"
-    (onHomeClick)="addHome($event)"
-    (onWorkClick)="addWork($event)"
-  ></app-route-form>
-
-  <div class="row justify-content-center">
-    <div>
-      <h3>Travel Modes</h3>
-    </div>
-  </div>
-  <div class="row justify-content-center">
-    <div class="direction-buttons btn-group">
-      <button
-        [class.activated]="isActive('DRIVING')"
-        class="btn btn-primary"
-        (click)="changeTravel('DRIVING')"
-      >
-        <fa-icon [icon]="['fa', 'car']"></fa-icon>
-      </button>
-      <button
-        [class.activated]="isActive('WALKING')"
-        class="btn btn-primary"
-        (click)="changeTravel('WALKING')"
-      >
-        <fa-icon [icon]="['fa', 'walking']"></fa-icon>
-      </button>
-      <button
-        [class.activated]="isActive('TRANSIT')"
-        class="btn btn-primary"
-        (click)="changeTravel('TRANSIT')"
-      >
-        <fa-icon [icon]="['fa', 'train']"></fa-icon>
-      </button>
-    </div>
-  </div>
-
-  <div class="direction-data-container row justify-content-center">
-    <div class="direction-data" *ngIf="distance && eta">
-      <div class="col-12 align-self-center">
-        Travel Mode
-      </div>
-      <div class="col-12 align-self-center">
-        <strong>{{ transitOptions }}</strong>
-      </div>
-      <div class="col-12 align-self-center">
-        Distance
-      </div>
-      <div class="col-12 align-self-center">
-        <strong>{{ distance }}</strong>
-      </div>
-      <div class="col-12 align-self-center">
-        ETA
-      </div>
-      <div class="col-12 align-self-center">
-        <strong>{{ eta }}</strong>
-      </div>
-    </div>
-  </div>
-
   <div *ngIf="currentUser">
     <app-fave-route-options
       [sourceData]="sourceData"
@@ -94,98 +23,170 @@
     </button>
   </div>
 
-  <!-- Main map component -->
-  <agm-map
-    [latitude]="lat"
-    [longitude]="lng"
-    [zoom]="zoom"
-    (mapClick)="onMapClick($event)"
-    (boundsChange)="mapPositionChange($event)"
-    (zoomChange)="mapZoomChange($event)"
-  >
-    <!-- Source and destination markers -->
-    <agm-marker
-      *ngIf="source.lat"
-      [latitude]="source.lat"
-      [longitude]="source.lng"
-      [label]="source.label"
-      [markerDraggable]="false"
-    >
-    </agm-marker>
-    <agm-marker
-      *ngIf="destination.lat"
-      [latitude]="destination.lat"
-      [longitude]="destination.lng"
-      [label]="destination.label"
-      [markerDraggable]="false"
-    >
-    </agm-marker>
+  <div id="wrapper">
+    <div id="floating-panel">
+      <!-- Form for source and destination: Move to another component -->
+      <app-route-form
+        [sourceData]="sourceData"
+        [destData]="destData"
+        [sourceString]="sourceString"
+        [destString]="destString"
+        [routeUsedEvent]="routeUsedSubject"
+        (onSourceChange)="sourceAddressChange($event)"
+        (onDestinationChange)="destinationAddressChange($event)"
+        (onSwapClick)="swap($event)"
+        (onCurrentLocationClick)="setLocationNow($event)"
+        (onHomeClick)="addHome($event)"
+        (onWorkClick)="addWork($event)"
+      ></app-route-form>
 
-    <!-- Report markers -->
-    <div
-      *ngFor="let marker of reportMarkers; let i = index"
-      class="report-markers-component"
-    >
-      <app-report-markers
-        [marker]="marker"
-        [index]="i"
-        (onUpVote)="onUpVote($event)"
-        (onDownVote)="onDownVote($event)"
-      ></app-report-markers>
+      <div
+        class="directions shadow p-3 mb-5"
+        *ngIf="sourceData.lat && destData.lat"
+      >
+        <div class="row justify-content-center">
+          <div>
+            <h3>Travel Modes</h3>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="direction-buttons btn-group">
+            <button
+              [class.activated]="isActive('DRIVING')"
+              class="btn btn-primary"
+              (click)="changeTravel('DRIVING')"
+            >
+              <fa-icon [icon]="['fa', 'car']"></fa-icon>
+            </button>
+            <button
+              [class.activated]="isActive('WALKING')"
+              class="btn btn-primary"
+              (click)="changeTravel('WALKING')"
+            >
+              <fa-icon [icon]="['fa', 'walking']"></fa-icon>
+            </button>
+            <button
+              [class.activated]="isActive('TRANSIT')"
+              class="btn btn-primary"
+              (click)="changeTravel('TRANSIT')"
+            >
+              <fa-icon [icon]="['fa', 'train']"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="direction-data-container row justify-content-center">
+          <div class="direction-data" *ngIf="distance && eta">
+            <div class="col-12 align-self-center">
+              Distance
+            </div>
+            <div class="col-12 align-self-center">
+              <strong>{{ distance }}</strong>
+            </div>
+            <div class="col-12 align-self-center">
+              ETA
+            </div>
+            <div class="col-12 align-self-center">
+              <strong>{{ eta }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Ad markers -->
-    <div
-      *ngFor="let marker of adMarkers; let i = index"
-      class="ad-markers-component"
+    <!-- Main map component -->
+    <agm-map
+      [latitude]="lat"
+      [longitude]="lng"
+      [zoom]="zoom"
+      (mapClick)="onMapClick($event)"
+      (boundsChange)="mapPositionChange($event)"
+      (zoomChange)="mapZoomChange($event)"
     >
-      <app-ad-markers [marker]="marker" [index]="i"></app-ad-markers>
-    </div>
+      <!-- Source and destination markers -->
+      <agm-marker
+        *ngIf="source.lat"
+        [latitude]="source.lat"
+        [longitude]="source.lng"
+        [label]="source.label"
+        [markerDraggable]="false"
+      >
+      </agm-marker>
+      <agm-marker
+        *ngIf="destination.lat"
+        [latitude]="destination.lat"
+        [longitude]="destination.lng"
+        [label]="destination.label"
+        [markerDraggable]="false"
+      >
+      </agm-marker>
 
-    <agm-direction
-      *ngIf="sourceData.lat && destData.lat"
-      [origin]="sourceData"
-      [destination]="destData"
-      [travelMode]="transitOptions"
-      (onChange)="deleteMarkers($event)"
-    ></agm-direction>
+      <!-- Report markers -->
+      <div
+        *ngFor="let marker of reportMarkers; let i = index"
+        class="report-markers-component"
+      >
+        <app-report-markers
+          [marker]="marker"
+          [index]="i"
+          (onUpVote)="onUpVote($event)"
+          (onDownVote)="onDownVote($event)"
+        ></app-report-markers>
+      </div>
 
-    <!-- Current marker clicked -->
-    <agm-marker
-      *ngIf="currentMarker"
-      [latitude]="currentMarker.lat"
-      [longitude]="currentMarker.lng"
-      [label]="currentMarker.label"
-      [markerDraggable]="false"
-    >
-      <agm-info-window #cwindow>
-        <div>
-          <strong>{{ location }}</strong>
-        </div>
-        <div *ngIf="currentUser">
-          <!-- Ad button -->
-          <button
-            *ngIf="currentUser.role >= 1"
-            type="button"
-            class="btn btn-primary"
-            data-toggle="modal"
-            data-target="#adModal"
-          >
-            Advertise
-          </button>
-          <!-- Report button -->
-          <button
-            type="button"
-            class="btn btn-danger"
-            data-toggle="modal"
-            data-target="#reportModal"
-          >
-            Report
-          </button>
-        </div>
-      </agm-info-window>
-    </agm-marker>
-  </agm-map>
+      <!-- Ad markers -->
+      <div
+        *ngFor="let marker of adMarkers; let i = index"
+        class="ad-markers-component"
+      >
+        <app-ad-markers [marker]="marker" [index]="i"></app-ad-markers>
+      </div>
+
+      <agm-direction
+        *ngIf="sourceData.lat && destData.lat"
+        [origin]="sourceData"
+        [destination]="destData"
+        [travelMode]="transitOptions"
+        (onChange)="deleteMarkers($event)"
+      ></agm-direction>
+
+      <!-- Current marker clicked -->
+      <agm-marker
+        *ngIf="currentMarker"
+        [latitude]="currentMarker.lat"
+        [longitude]="currentMarker.lng"
+        [label]="currentMarker.label"
+        [markerDraggable]="false"
+      >
+        <agm-info-window #cwindow>
+          <div>
+            <strong>{{ location }}</strong>
+          </div>
+          <div *ngIf="currentUser">
+            <!-- Ad button -->
+            <button
+              *ngIf="currentUser.role >= 1"
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#adModal"
+            >
+              Advertise
+            </button>
+            <!-- Report button -->
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-toggle="modal"
+              data-target="#reportModal"
+            >
+              Report
+            </button>
+          </div>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </div>
 
   <app-report-modal (onSubmit)="onReportSubmit($event)"></app-report-modal>
 

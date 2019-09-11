@@ -1,13 +1,13 @@
 <form [formGroup]="directionForm">
   <div class="map-form form-row d-flex justify-content-center">
-    <div class="src form-group col-sm-12 col-md-12 col-lg-5">
-      <label>Enter source:</label>
+    <div class="src form-group">
       <input
         ngx-google-places-autocomplete
         class="form-control"
         type="text"
         id="src"
         formControlName="source"
+        placeholder="Enter source"
         (onAddressChange)="sourceAddressChange($event)"
       />
       <button
@@ -26,35 +26,14 @@
       </button>
     </div>
 
-    <div class="col-sm-12 col-md-12 col-lg-1">
-      <div class="row justify-content-center">
-        <button
-          class="btn btn-secondary fxn-button text-center"
-          (click)="swapButtonClicked()"
-        >
-          &nbsp;<fa-icon [icon]="['fa', 'exchange-alt']"> </fa-icon>
-          &nbsp;
-        </button>
-      </div>
-      <div class="row justify-content-center">
-        <button
-          class="btn btn-secondary fxn-button text-center"
-          (click)="currentLocationButtonClicked()"
-        >
-          &nbsp;<fa-icon [icon]="['fa', 'location-arrow']"> </fa-icon>
-          &nbsp;
-        </button>
-      </div>
-    </div>
-
-    <div class="dest form-group col-sm-12 col-md-12 col-lg-5">
-      <label>Enter destination:</label>
+    <div class="dest form-group">
       <input
         ngx-google-places-autocomplete
         class="form-control"
         type="text"
         id="dest"
         formControlName="destination"
+        placeholder="Enter destination"
         (onAddressChange)="destinationAddressChange($event)"
       />
       <button
@@ -70,6 +49,27 @@
         (click)="workButtonClicked('destination')"
       >
         Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col align-self-center">
+      <button
+        class="btn btn-secondary fxn-button text-center"
+        (click)="swapButtonClicked()"
+      >
+        &nbsp;<fa-icon [icon]="['fa', 'exchange-alt']"> </fa-icon>
+        &nbsp;
+      </button>
+    </div>
+    <div class="col align-self-center">
+      <button
+        class="btn btn-secondary fxn-button text-center"
+        (click)="currentLocationButtonClicked()"
+      >
+        &nbsp;<fa-icon [icon]="['fa', 'location-arrow']"> </fa-icon>
+        &nbsp;
       </button>
     </div>
   </div>

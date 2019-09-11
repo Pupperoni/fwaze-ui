@@ -102,14 +102,21 @@ export class FaveRouteOptionsComponent implements OnInit, OnDestroy {
       };
 
       this.userService.addFaveRoute(routeData).subscribe(res => {
-        this.userService.getfaveRoutes(this.currentUser.id).subscribe(res => {
-          this.faveRoutes = [];
-          res.routes.forEach(route => {
-            this.faveRoutes.push(route);
-          });
-          // oof
-          this.selectedRoute = -1;
-        });
+        let newRoute = {
+          id: res.data.routeId,
+          name: res.data.routeName,
+          destination_coords: {
+            x: res.data.destinationLongitude,
+            y: res.data.destinationLatitude
+          },
+          source_coords: {
+            x: res.data.sourceLongitude,
+            y: res.data.sourceLatitude
+          },
+          destination_string: res.data.destinationString,
+          source_string: res.data.sourceString
+        };
+        this.faveRoutes.push(newRoute);
       });
     } else if (!this.currentUser) {
       this.toastr.error("Please login", "Error", { timeOut: 5000 });
@@ -125,7 +132,7 @@ export class FaveRouteOptionsComponent implements OnInit, OnDestroy {
       };
 
       this.userService.deleteFaveRoute(routeData).subscribe(res => {
-        this.toastr.success(res.msg, "Route has been successfully deleted", {
+        this.toastr.success("Route has been successfully deleted", res.msg, {
           timeOut: 5000
         });
         this.faveRoutes.splice(this.selectedRoute, 1);
