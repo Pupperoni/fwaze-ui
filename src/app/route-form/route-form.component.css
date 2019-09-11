@@ -1,8 +1,10 @@
 .form-group {
   margin: 1em;
+  margin-right: 0em;
 }
 
 .fxn-button {
   border-radius: 2cm 2cm 2cm 2cm;
   margin: 1em;
+  margin-top: 2em;
 }
