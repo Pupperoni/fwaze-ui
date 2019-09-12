@@ -58,6 +58,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
       console.log("upvoted");
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
+          this.markerInfo.offset = report.offset;
           this.markerInfo.votes++;
           if (report.userId === this.currentUser.id)
             this.markerInfo.curUserVoted = true;
@@ -69,6 +70,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
       console.log("downvoted");
       if (this.markerInfo) {
         if (report.id === this.markerInfo.id) {
+          this.markerInfo.offset = report.offset;
           this.markerInfo.votes--;
           if (report.userId === this.currentUser.id)
             this.markerInfo.curUserVoted = false;
@@ -79,15 +81,19 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     this.commentCreatedSub = this.commentService.commentCreated.subscribe(
       comment => {
         if (this.markerInfo) {
-          if (comment.reportId === this.markerInfo.id && this.commentUp) {
-            // count new ones
-            this.commentService
-              .countCommentsbyReport(comment.reportId)
-              .subscribe((count: any) => {
-                this.maxPages = Math.ceil(count.data / 5);
-              });
-            // will get problems if net is slow
-            this.changePage(this.pageNum);
+          if (comment.reportId === this.markerInfo.id) {
+            this.markerInfo.offset = comment.offset;
+
+            if (this.commentUp) {
+              // count new ones
+              this.commentService
+                .countCommentsbyReport(comment.reportId)
+                .subscribe((count: any) => {
+                  this.maxPages = Math.ceil(count.data / 5);
+                });
+              // will get problems if net is slow
+              this.changePage(this.pageNum);
+            }
           }
         }
       }

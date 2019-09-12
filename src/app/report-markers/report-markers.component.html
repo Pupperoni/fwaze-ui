@@ -18,6 +18,8 @@
           <h6 *ngIf="markerInfo.type == 6">Minor Accident</h6>
           <h6 *ngIf="markerInfo.type == 7">Major Accident</h6>
           <h6 *ngIf="markerInfo.type == 8">Others</h6>
+          &nbsp;
+          <h6>({{ markerInfo.offset }})</h6>
         </div>
 
         <div *ngIf="imagePath" class="image-block row justify-content-center">
