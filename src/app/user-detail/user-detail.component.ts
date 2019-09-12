@@ -110,7 +110,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       .sendApplication(userData)
       .pipe(
         catchError(err => {
-          this.toastr.success(err.error.err, "Error", {
+          this.toastr.error(err.error.err, "Error", {
             timeOut: 5000
           });
           return throwError(err);
