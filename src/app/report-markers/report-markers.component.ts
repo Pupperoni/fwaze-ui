@@ -59,7 +59,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     this.voteCreatedSub = this.eventService
       .getReportVoteCreatedEvents()
       .subscribe(report => {
-        console.log("upvoted");
+        // console.log("upvoted");
         if (this.markerInfo) {
           if (report.id === this.markerInfo.id) {
             this.markerInfo.offset = report.offset;
@@ -73,7 +73,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     this.voteDeletedSub = this.eventService
       .getReportVoteDeletedEvents()
       .subscribe(report => {
-        console.log("downvoted");
+        // console.log("downvoted");
         if (this.markerInfo) {
           if (report.id === this.markerInfo.id) {
             this.markerInfo.offset = report.offset;
