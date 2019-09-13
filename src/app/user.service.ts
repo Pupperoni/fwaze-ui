@@ -3,8 +3,8 @@ import { EventsSocket } from "./sockets";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "./../environments/environment";
 import { Observable } from "rxjs";
-import { CONSTANTS } from "../../constants";
 import { User } from "./user";
+import { CONSTANTS } from "../../constants";
 
 interface MiscResponse {
   msg: string;
@@ -23,10 +23,6 @@ interface UserResponse {
   providedIn: "root"
 })
 export class UserService {
-  currentUserChanged = this.socket.fromEvent<any>(
-    CONSTANTS.EVENTS.USER_UPDATED
-  );
-
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users`;
 
   httpOptions = {
@@ -106,6 +102,21 @@ export class UserService {
   }
 
   loginUserSocket(data) {
-    this.socket.emit("login", data);
+    let currentData = {
+      aggregateName: CONSTANTS.AGGREGATES.USER_AGGREGATE_NAME,
+      id: data.id,
+      role: parseInt(data.role),
+      offset: data.offset
+    };
+    this.socket.emit("subscribe", currentData);
+  }
+
+  logoutUserSocket(data) {
+    let currentData = {
+      aggregateName: CONSTANTS.AGGREGATES.USER_AGGREGATE_NAME,
+      id: data.id,
+      offset: data.offset
+    };
+    this.socket.emit("unsubscribe", currentData);
   }
 }

@@ -5,13 +5,15 @@ import {
   AfterViewChecked,
   OnDestroy
 } from "@angular/core";
-import { ApplicationService } from "../application.service";
+
 import { UserService } from "../user.service";
 import { User } from "../user";
 import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { ToastrService } from "ngx-toastr";
 import { Subscription } from "rxjs";
+import { EventService } from "../event.service";
+
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
@@ -29,7 +31,7 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService,
-    private applicationService: ApplicationService
+    private eventService: EventService
   ) {}
 
   ngOnInit() {
@@ -40,8 +42,9 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.userService.initUserRooms(this.currentUser);
     }
 
-    this.applicationRejectedSub = this.applicationService.applicationRejected.subscribe(
-      data => {
+    this.applicationRejectedSub = this.eventService
+      .getUserApplicationRejectedEventSubject()
+      .subscribe(data => {
         this.toastr.error(
           "Sorry. Your application to become an advertiser was rejected!",
           "Application Rejected!",
@@ -49,11 +52,11 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
             timeOut: 5000
           }
         );
-      }
-    );
+      });
 
-    this.applicationAcceptedSub = this.applicationService.applicationAccepted.subscribe(
-      data => {
+    this.applicationAcceptedSub = this.eventService
+      .getUserApplicationAcceptedEventSubject()
+      .subscribe(data => {
         this.toastr.success(
           "Congrats! You've been accepted as a premium Advertiser!",
           "Application Accepted!",
@@ -61,11 +64,11 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
             timeOut: 5000
           }
         );
-      }
-    );
+      });
 
-    this.applicationCreatedSub = this.applicationService.applicationCreated.subscribe(
-      data => {
+    this.applicationCreatedSub = this.eventService
+      .getUserApplicationCreatedEventSubject()
+      .subscribe(data => {
         this.toastr.success(
           "A new application was posted.",
           "New Application",
@@ -73,8 +76,7 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
             timeOut: 5000
           }
         );
-      }
-    );
+      });
   }
 
   ngAfterViewChecked() {
@@ -84,8 +86,9 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.userService.loginUserSocket(this.currentUser);
     this.cookieService.delete("currentUser");
-    this.currentUser = undefined;
+    this.currentUser = null;
     this.applicationAcceptedSub.unsubscribe();
     this.applicationRejectedSub.unsubscribe();
     this.applicationCreatedSub.unsubscribe();
@@ -96,6 +99,7 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   onLogout() {
+    this.userService.loginUserSocket(this.currentUser);
     this.cookieService.delete("currentUser", "/");
     this.currentUser = null;
     this.cdr.detectChanges();

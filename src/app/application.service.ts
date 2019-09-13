@@ -1,7 +1,5 @@
 import { Injectable } from "@angular/core";
-import { EventsSocket } from "./sockets";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { CONSTANTS } from "../../constants";
 import { environment } from "./../environments/environment";
 import { Observable } from "rxjs";
 
@@ -10,17 +8,7 @@ import { Observable } from "rxjs";
 })
 export class ApplicationService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users/apply`;
-  constructor(private http: HttpClient, private socket: EventsSocket) {}
-
-  applicationRejected = this.socket.fromEvent<any>(
-    CONSTANTS.EVENTS.USER_APPLICATION_REJECTED
-  );
-  applicationAccepted = this.socket.fromEvent<any>(
-    CONSTANTS.EVENTS.USER_APPLICATION_APPROVED
-  );
-  applicationCreated = this.socket.fromEvent<any>(
-    CONSTANTS.EVENTS.USER_APPLICATION_CREATED
-  );
+  constructor(private http: HttpClient) {}
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })

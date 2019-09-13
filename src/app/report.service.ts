@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Report } from "./report";
 import { EventsSocket } from "./sockets";
@@ -27,13 +27,7 @@ interface VoterPair {
 })
 export class ReportService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/reports`;
-  reportCreated = this.socket.fromEvent<any>(CONSTANTS.EVENTS.REPORT_CREATED);
-  voteCreated = this.socket.fromEvent<any>(
-    CONSTANTS.EVENTS.REPORT_VOTE_CREATED
-  );
-  voteDeleted = this.socket.fromEvent<any>(
-    CONSTANTS.EVENTS.REPORT_VOTE_DELETED
-  );
+
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
@@ -104,31 +98,39 @@ export class ReportService {
   }
 
   visitMap() {
-    let room = "map viewers";
-    this.socket.emit("subscribe", room);
+    let currentData = {
+      aggregateName: "map",
+      id: "viewers",
+      offset: null
+    };
+    this.socket.emit("subscribe", currentData);
   }
 
   exitMap() {
-    let room = "map viewers";
-    this.socket.emit("unsubscribe", room);
+    let currentData = {
+      aggregateName: "map",
+      id: "viewers",
+      offset: null
+    };
+    this.socket.emit("unsubscribe", currentData);
   }
 
-  viewMarker(data) {
-    let room = `${CONSTANTS.AGGREGATES.REPORT_AGGREGATE_NAME} ${data}`;
-    this.socket.emit("subscribe", room);
+  viewMarker(id, offset) {
+    let currentData = {
+      aggregateName: CONSTANTS.AGGREGATES.REPORT_AGGREGATE_NAME,
+      id: id,
+      offset: offset
+    };
+
+    this.socket.emit("subscribe", currentData);
   }
 
-  leaveMarker(data) {
-    let room = `${CONSTANTS.AGGREGATES.REPORT_AGGREGATE_NAME} ${data}`;
-    this.socket.emit("unsubscribe", room);
-  }
-
-  private getValues(form: any) {
-    let data = {};
-    for (let pair of form.entries()) {
-      data[pair[0]] = pair[1];
-    }
-
-    return data;
+  leaveMarker(id, offset) {
+    let currentData = {
+      aggregateName: CONSTANTS.AGGREGATES.REPORT_AGGREGATE_NAME,
+      id: id,
+      offset: offset
+    };
+    this.socket.emit("unsubscribe", currentData);
   }
 }

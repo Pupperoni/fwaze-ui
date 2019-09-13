@@ -9,6 +9,7 @@ import { CookieService } from "ngx-cookie-service";
 import { ReportService } from "../report.service";
 import { AdvertisementService } from "../advertisement.service";
 import { CurrentMarkerService } from "../current-marker.service";
+import { EventService } from "../event.service";
 
 @Component({
   selector: "app-livemap",
@@ -30,9 +31,9 @@ export class LivemapComponent implements OnInit, OnDestroy {
   private routeUsedSubject: Subject<any> = new Subject<any>();
   reports: Observable<any[]>;
 
-  adCreatedSub: Subscription;
-  reportCreatedSub: Subscription;
-  currentUserSub: Subscription;
+  adCreatedSubscription: Subscription;
+  reportCreatedSubscription: Subscription;
+  currentUserSubscription: Subscription;
 
   filterList = [
     { name: "Traffic Jam", apiName: "traffic_jam", active: true },
@@ -92,15 +93,16 @@ export class LivemapComponent implements OnInit, OnDestroy {
     private currentMarkerService: CurrentMarkerService,
     private reportService: ReportService,
     private userService: UserService,
-    private advertisementService: AdvertisementService
+    private advertisementService: AdvertisementService,
+    private eventService: EventService
   ) {}
 
   ngOnDestroy() {
     // leave map room
     this.reportService.exitMap();
-    this.adCreatedSub.unsubscribe();
-    this.reportCreatedSub.unsubscribe();
-    this.currentUserSub.unsubscribe();
+    this.adCreatedSubscription.unsubscribe();
+    this.reportCreatedSubscription.unsubscribe();
+    this.currentUserSubscription.unsubscribe();
   }
 
   private isInside(report) {
@@ -123,8 +125,9 @@ export class LivemapComponent implements OnInit, OnDestroy {
     // join map room
     this.reportService.visitMap();
 
-    this.reportCreatedSub = this.reportService.reportCreated.subscribe(
-      report => {
+    this.reportCreatedSubscription = this.eventService
+      .getReportCreatedEvents()
+      .subscribe(report => {
         if (this.isInside(report)) {
           if (
             this.reportFilter &&
@@ -140,21 +143,23 @@ export class LivemapComponent implements OnInit, OnDestroy {
             });
           }
         }
-      }
-    );
+      });
 
-    this.adCreatedSub = this.advertisementService.adCreated.subscribe(ad => {
-      if (this.adFilter && this.zoom > 15) {
-        this.adMarkers.push({
-          id: ad.id,
-          lat: ad.latitude,
-          lng: ad.longitude
-        });
-      }
-    });
+    this.adCreatedSubscription = this.eventService
+      .getAdCreatedEvents()
+      .subscribe(ad => {
+        if (this.adFilter && this.zoom > 15) {
+          this.adMarkers.push({
+            id: ad.id,
+            lat: ad.latitude,
+            lng: ad.longitude
+          });
+        }
+      });
 
-    this.currentUserSub = this.userService.currentUserChanged.subscribe(
-      data => {
+    this.currentUserSubscription = this.eventService
+      .getUserUpdatedEventSubject()
+      .subscribe(data => {
         if (this.currentUser && data.data.userId === this.currentUser.id) {
           this.userService.getUser(data.data.userId).subscribe(res => {
             this.cookieService.set(
@@ -168,8 +173,7 @@ export class LivemapComponent implements OnInit, OnDestroy {
             );
           });
         }
-      }
-    );
+      });
 
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));

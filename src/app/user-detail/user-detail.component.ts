@@ -8,6 +8,7 @@ import { throwError } from "rxjs";
 import { User } from "../user";
 import { Subscription } from "rxjs";
 import { ToastrService } from "ngx-toastr";
+import { EventService } from "../event.service";
 
 @Component({
   selector: "app-user-detail",
@@ -30,7 +31,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private cookieService: CookieService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private eventService: EventService
   ) {
     this.subscription = this.router.events.subscribe(e => {
       if (e instanceof NavigationEnd) this.getUser();
@@ -42,24 +44,25 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     }
 
-    this.applicationRejectedSub = this.applicationService.applicationRejected.subscribe(
-      data => {
+    this.applicationRejectedSub = this.eventService
+      .getUserApplicationRejectedEventSubject()
+      .subscribe(data => {
         if (data.userId === this.user.id) {
           this.canApply = true;
         }
-      }
-    );
+      });
 
-    this.applicationAcceptedSub = this.applicationService.applicationAccepted.subscribe(
-      data => {
+    this.applicationAcceptedSub = this.eventService
+      .getUserApplicationAcceptedEventSubject()
+      .subscribe(data => {
         if (data.userId === this.user.id) {
           this.user.role = 1;
         }
-      }
-    );
+      });
 
-    this.currentUserSub = this.userService.currentUserChanged.subscribe(
-      data => {
+    this.currentUserSub = this.eventService
+      .getUserUpdatedEventSubject()
+      .subscribe(data => {
         if (data.id === this.currentUser.id) {
           this.userService.getUser(data.id).subscribe(res => {
             this.cookieService.set(
@@ -73,8 +76,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             );
           });
         }
-      }
-    );
+      });
     // check if already advertised
     this.applicationService
       .getApplicationByUserId(this.currentUser.id)

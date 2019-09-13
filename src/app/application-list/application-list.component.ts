@@ -4,6 +4,7 @@ import { CookieService } from "ngx-cookie-service";
 import { catchError } from "rxjs/operators";
 import { throwError, Subscription } from "rxjs";
 import { ToastrService } from "ngx-toastr";
+import { EventService } from "../event.service";
 
 @Component({
   selector: "app-application-list",
@@ -20,7 +21,8 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   constructor(
     private applicationService: ApplicationService,
     private cookieService: CookieService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private eventService: EventService
   ) {
     this.applicationService.getPendingApplications().subscribe(res => {
       res.data.forEach(application => {
@@ -47,8 +49,9 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.applicationCreatedSub = this.applicationService.applicationCreated.subscribe(
-      application => {
+    this.applicationCreatedSub = this.eventService
+      .getUserApplicationCreatedEventSubject()
+      .subscribe(application => {
         this.pendingApplications.push({
           id: application.id,
           userId: application.userId,
@@ -56,8 +59,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
           timestamp: application.timestamp,
           status: 0
         });
-      }
-    );
+      });
 
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));

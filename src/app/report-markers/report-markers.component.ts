@@ -14,6 +14,7 @@ import { ReportService } from "../report.service";
 import { CommentService } from "../comment.service";
 import { Subscription } from "rxjs";
 import { ToastrService } from "ngx-toastr";
+import { EventService } from "../event.service";
 
 @Component({
   selector: "app-report-markers",
@@ -45,7 +46,8 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     private commentService: CommentService,
     private cookieService: CookieService,
     private cdr: ChangeDetectorRef,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private eventService: EventService
   ) {
     this.commentForm = new FormGroup({
       body: new FormControl("")
@@ -54,32 +56,37 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // could move these to livemap component
-    this.voteCreatedSub = this.reportService.voteCreated.subscribe(report => {
-      console.log("upvoted");
-      if (this.markerInfo) {
-        if (report.id === this.markerInfo.id) {
-          this.markerInfo.offset = report.offset;
-          this.markerInfo.votes++;
-          if (report.userId === this.currentUser.id)
-            this.markerInfo.curUserVoted = true;
+    this.voteCreatedSub = this.eventService
+      .getReportVoteCreatedEvents()
+      .subscribe(report => {
+        console.log("upvoted");
+        if (this.markerInfo) {
+          if (report.id === this.markerInfo.id) {
+            this.markerInfo.offset = report.offset;
+            this.markerInfo.votes++;
+            if (report.userId === this.currentUser.id)
+              this.markerInfo.curUserVoted = true;
+          }
         }
-      }
-    });
+      });
 
-    this.voteDeletedSub = this.reportService.voteDeleted.subscribe(report => {
-      console.log("downvoted");
-      if (this.markerInfo) {
-        if (report.id === this.markerInfo.id) {
-          this.markerInfo.offset = report.offset;
-          this.markerInfo.votes--;
-          if (report.userId === this.currentUser.id)
-            this.markerInfo.curUserVoted = false;
+    this.voteDeletedSub = this.eventService
+      .getReportVoteDeletedEvents()
+      .subscribe(report => {
+        console.log("downvoted");
+        if (this.markerInfo) {
+          if (report.id === this.markerInfo.id) {
+            this.markerInfo.offset = report.offset;
+            this.markerInfo.votes--;
+            if (report.userId === this.currentUser.id)
+              this.markerInfo.curUserVoted = false;
+          }
         }
-      }
-    });
+      });
 
-    this.commentCreatedSub = this.commentService.commentCreated.subscribe(
-      comment => {
+    this.commentCreatedSub = this.eventService
+      .getReportCommentCreatedEvents()
+      .subscribe(comment => {
         if (this.markerInfo) {
           if (comment.reportId === this.markerInfo.id) {
             this.markerInfo.offset = comment.offset;
@@ -96,8 +103,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
             }
           }
         }
-      }
-    );
+      });
 
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
@@ -118,16 +124,17 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
   }
 
   onWindowClose() {
-    this.reportService.leaveMarker(this.marker.id);
+    if (this.markerInfo)
+      this.reportService.leaveMarker(this.marker.id, this.markerInfo.offset);
   }
 
   toggleInfoWindow(id: string): Promise<Subscription> {
-    // enter room that views this marker
-    this.reportService.viewMarker(id);
-
     let subscriptionVal = this.reportService
       .getReportById(id)
       .subscribe((res: any) => {
+        // enter room that views this marker
+        console.log(res.report);
+        this.reportService.viewMarker(id, res.report.offset);
         this.commentService
           .countCommentsbyReport(id)
           .subscribe((count: any) => {

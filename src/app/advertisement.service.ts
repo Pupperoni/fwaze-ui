@@ -17,7 +17,6 @@ interface AdvertisementResponse {
 })
 export class AdvertisementService {
   private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/ads`;
-  adCreated = this.socket.fromEvent<any>(CONSTANTS.EVENTS.AD_CREATED);
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
