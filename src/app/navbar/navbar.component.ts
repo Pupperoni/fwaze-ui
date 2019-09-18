@@ -66,16 +66,14 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
         );
       });
 
+    // this works only for admins
+
     this.applicationCreatedSub = this.eventService
       .getUserApplicationCreatedEventSubject()
       .subscribe(data => {
-        this.toastr.success(
-          "A new application was posted.",
-          "New Application",
-          {
-            timeOut: 5000
-          }
-        );
+        this.toastr.info("A new application was posted.", "New Application", {
+          timeOut: 5000
+        });
       });
   }
 
