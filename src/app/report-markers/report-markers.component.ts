@@ -15,6 +15,7 @@ import { CommentService } from "../comment.service";
 import { Subscription } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { EventService } from "../event.service";
+import { environment } from "../../environments/environment";
 
 @Component({
   selector: "app-report-markers",
@@ -133,7 +134,6 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
       .getReportById(id)
       .subscribe((res: any) => {
         // enter room that views this marker
-        console.log(res.report);
         this.reportService.viewMarker(id, res.report.offset);
         this.commentService
           .countCommentsbyReport(id)
@@ -148,14 +148,14 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
               res.report.curUserVoted = res2 ? true : false;
               this.markerInfo = res.report;
               if (this.markerInfo.photoPath)
-                this.imagePath = `http://localhost:3000/map/reports/${this.markerInfo.id}/image`;
+                this.imagePath = `http://${environment.RMSAPIUrl.HOST}:${environment.RMSAPIUrl.PORT}/map/reports/${this.markerInfo.id}/image`;
               return true;
             });
         } else {
           res.report.curUserVoted = false;
           this.markerInfo = res.report;
           if (this.markerInfo.photoPath)
-            this.imagePath = `http://localhost:3000/map/reports/${this.markerInfo.id}/image`;
+            this.imagePath = `http:/${environment.RMSAPIUrl.HOST}:${environment.RMSAPIUrl.PORT}/map/reports/${this.markerInfo.id}/image`;
           return true;
         }
       });

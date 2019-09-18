@@ -9,7 +9,7 @@ import { User } from "../user";
 import { Subscription } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { EventService } from "../event.service";
-
+import { environment } from "../../environments/environment";
 @Component({
   selector: "app-user-detail",
   templateUrl: "./user-detail.component.html",
@@ -122,7 +122,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         // this.applicationService.sendApplicationSocket(res);
         this.toastr.success(
           "Your application is now being processed",
-          "Application submitted",
+          "Application Submitted!",
           {
             timeOut: 5000
           }
@@ -135,7 +135,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     const id = this.route.snapshot.paramMap.get("id");
     this.userService.getUser(id).subscribe(res => {
       this.user = res.user;
-      this.userImage = `http://localhost:3000/users/${this.user.id}/image`;
+      this.userImage = `http://${environment.UMSAPIUrl.HOST}:${environment.UMSAPIUrl.PORT}/users/${this.user.id}/image`;
       this.imageTimeStamp = new Date().getTime();
 
       // update current user if there are any changes

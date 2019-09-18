@@ -5,9 +5,21 @@
 export const environment = {
   production: false,
   environment: "development",
-  APIUrl: {
+  RMSAPIUrl: {
     HOST: "localhost",
-    PORT: 3000
+    PORT: 3001
+  },
+  UMSAPIUrl: {
+    HOST: "localhost",
+    PORT: 3002
+  },
+  AMSAPIUrl: {
+    HOST: "localhost",
+    PORT: 3003
+  },
+  PMSAPIUrl: {
+    HOST: "localhost",
+    PORT: 3004
   }
 };
 

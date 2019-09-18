@@ -26,7 +26,7 @@ interface VoterPair {
   providedIn: "root"
 })
 export class ReportService {
-  private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/reports`;
+  private url = `http://${environment.RMSAPIUrl.HOST}:${environment.RMSAPIUrl.PORT}/map/reports`;
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })

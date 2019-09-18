@@ -16,7 +16,7 @@ interface AdvertisementResponse {
   providedIn: "root"
 })
 export class AdvertisementService {
-  private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/ads`;
+  private url = `http://${environment.AMSAPIUrl.HOST}:${environment.AMSAPIUrl.PORT}/map/ads`;
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })

@@ -6,7 +6,7 @@ import { environment } from "./../environments/environment";
 export class EventsSocket extends Socket {
   constructor() {
     super({
-      url: `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/events`,
+      url: `http://${environment.PMSAPIUrl.HOST}:${environment.PMSAPIUrl.PORT}/events`,
       options: {}
     });
   }

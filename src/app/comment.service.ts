@@ -7,7 +7,7 @@ import { CONSTANTS } from "../../constants";
   providedIn: "root"
 })
 export class CommentService {
-  private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/map/comments`;
+  private url = `http://${environment.RMSAPIUrl.HOST}:${environment.RMSAPIUrl.PORT}/map/comments`;
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })

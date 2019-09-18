@@ -7,7 +7,7 @@ import { Observable } from "rxjs";
   providedIn: "root"
 })
 export class ApplicationService {
-  private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users/apply`;
+  private url = `http://${environment.UMSAPIUrl.HOST}:${environment.UMSAPIUrl.PORT}/users/apply`;
   constructor(private http: HttpClient) {}
 
   httpOptions = {

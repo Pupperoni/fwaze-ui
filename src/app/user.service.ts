@@ -23,7 +23,7 @@ interface UserResponse {
   providedIn: "root"
 })
 export class UserService {
-  private url = `http://${environment.APIUrl.HOST}:${environment.APIUrl.PORT}/users`;
+  private url = `http://${environment.UMSAPIUrl.HOST}:${environment.UMSAPIUrl.PORT}/users`;
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })

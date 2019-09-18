@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { User } from "../user";
-
 import { CookieService } from "ngx-cookie-service";
 import { AdvertisementService } from "../advertisement.service";
+import { environment } from "../../environments/environment";
 @Component({
   selector: "app-ad-markers",
   templateUrl: "./ad-markers.component.html",
@@ -37,7 +37,7 @@ export class AdMarkersComponent implements OnInit {
     this.advertisementService.getAdById(id).subscribe((res: any) => {
       this.markerInfo = res.ad;
       if (this.markerInfo.photoPath)
-        this.imagePath = `http://localhost:3000/map/ads/${this.marker.id}/image`;
+        this.imagePath = `http://${environment.AMSAPIUrl.HOST}:${environment.AMSAPIUrl.PORT}/map/ads/${this.marker.id}/image`;
     });
   }
 }
