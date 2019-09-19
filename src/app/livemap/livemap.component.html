@@ -1,17 +1,6 @@
 <div class="livemap-component">
   <!-- <img src="../../assets/GoogleMapTA.jpg" /> -->
 
-  <div class="row justify-content-center">
-    <button
-      type="button"
-      class="btn btn-info filter-button"
-      data-toggle="modal"
-      data-target="#filterModal"
-    >
-      Filter <fa-icon [icon]="['fa', 'filter']"></fa-icon>
-    </button>
-  </div>
-
   <div id="wrapper">
     <div id="floating-panel">
       <!-- Form for source and destination: Move to another component -->
@@ -89,6 +78,17 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <button
+          type="button"
+          class="btn btn-info filter-button"
+          data-toggle="modal"
+          data-target="#filterModal"
+        >
+          Filter <fa-icon [icon]="['fa', 'filter']"></fa-icon>
+        </button>
       </div>
     </div>
 

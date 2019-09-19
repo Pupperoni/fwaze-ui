@@ -1,5 +1,5 @@
 .livemap-component {
-  margin-top: 6em;
+  margin-top: 3em;
 }
 img {
   height: 100%;
@@ -7,7 +7,7 @@ img {
 }
 
 agm-map {
-  height: 700px;
+  height: 900px;
   z-index: -5;
 }
 
