@@ -160,8 +160,9 @@ export class LivemapComponent implements OnInit, OnDestroy {
     this.currentUserSubscription = this.eventService
       .getUserUpdatedEventSubject()
       .subscribe(data => {
-        if (this.currentUser && data.data.userId === this.currentUser.id) {
-          this.userService.getUser(data.data.userId).subscribe(res => {
+        console.log(data);
+        if (this.currentUser && data.id === this.currentUser.id) {
+          this.userService.getUser(data.id).subscribe(res => {
             this.cookieService.set(
               "currentUser",
               JSON.stringify(res.user),
