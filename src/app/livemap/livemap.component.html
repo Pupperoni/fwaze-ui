@@ -1,17 +1,6 @@
 <div class="livemap-component">
   <!-- <img src="../../assets/GoogleMapTA.jpg" /> -->
 
-  <div *ngIf="currentUser">
-    <app-fave-route-options
-      [sourceData]="sourceData"
-      [destData]="destData"
-      [sourceString]="sourceString"
-      [destString]="destString"
-      [routeUsedEvent]="routeUsedSubject"
-      (routeUsed)="onRouteUsed($event)"
-    ></app-fave-route-options>
-  </div>
-
   <div class="row justify-content-center">
     <button
       type="button"
@@ -39,7 +28,16 @@
         (onHomeClick)="addHome($event)"
         (onWorkClick)="addWork($event)"
       ></app-route-form>
-
+      <div *ngIf="currentUser">
+        <app-fave-route-options
+          [sourceData]="sourceData"
+          [destData]="destData"
+          [sourceString]="sourceString"
+          [destString]="destString"
+          [routeUsedEvent]="routeUsedSubject"
+          (routeUsed)="onRouteUsed($event)"
+        ></app-fave-route-options>
+      </div>
       <div
         class="directions shadow p-3 mb-5"
         *ngIf="sourceData.lat && destData.lat"

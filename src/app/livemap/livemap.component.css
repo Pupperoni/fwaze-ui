@@ -8,6 +8,7 @@ img {
 
 agm-map {
   height: 700px;
+  z-index: -5;
 }
 
 .map-form {
