@@ -85,7 +85,7 @@ export class NavbarComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   ngOnDestroy() {
     this.userService.loginUserSocket(this.currentUser);
-    this.cookieService.delete("currentUser");
+    this.cookieService.delete("currentUser", "/");
     this.currentUser = null;
     this.applicationAcceptedSub.unsubscribe();
     this.applicationRejectedSub.unsubscribe();

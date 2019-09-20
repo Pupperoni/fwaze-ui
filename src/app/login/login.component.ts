@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
         .subscribe(res => {
           this.userService.loginUserSocket(res.user);
           if (this.cookieService.check("currentUser")) {
-            this.cookieService.delete("currentUser");
+            this.cookieService.delete("currentUser", "/");
           }
           res.user.home.latitude = parseFloat(res.user.home.latitude);
           res.user.home.longitude = parseFloat(res.user.home.longitude);

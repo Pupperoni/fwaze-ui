@@ -146,7 +146,7 @@ export class EditProfileComponent implements OnInit {
           this.currentUser.work = this.workSubmit
             ? this.work
             : this.currentUser.work;
-          this.cookieService.delete("currentUser");
+          this.cookieService.delete("currentUser", "/");
           this.cookieService.set(
             "currentUser",
             JSON.stringify(this.currentUser),

@@ -150,7 +150,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
           this.user.work.latitude = parseFloat(this.user.work.latitude);
           this.user.work.longitude = parseFloat(this.user.work.longitude);
         }
-        this.cookieService.delete("currentUser");
+        this.cookieService.delete("currentUser", "/");
         this.cookieService.set(
           "currentUser",
           JSON.stringify(this.user),
