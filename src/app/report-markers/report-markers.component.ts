@@ -214,7 +214,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     }
   }
 
-  addVote(reportId: number, userId: number) {
+  addVote(reportId: string, userId: string) {
     const data = {
       reportId: reportId,
       userId: userId
@@ -225,7 +225,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteVote(reportId: number, userId: number) {
+  deleteVote(reportId: string, userId: string) {
     const data = {
       reportId: reportId,
       userId: userId
