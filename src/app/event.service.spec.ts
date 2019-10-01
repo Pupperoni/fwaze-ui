@@ -1,12 +1,12 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { EventService } from './event.service';
+import { EventService } from "./event.service";
 
-describe('EventService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+// describe('EventService', () => {
+//   beforeEach(() => TestBed.configureTestingModule({}));
 
-  it('should be created', () => {
-    const service: EventService = TestBed.get(EventService);
-    expect(service).toBeTruthy();
-  });
-});
+//   it('should be created', () => {
+//     const service: EventService = TestBed.get(EventService);
+//     expect(service).toBeTruthy();
+//   });
+// });

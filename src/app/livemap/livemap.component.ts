@@ -574,13 +574,15 @@ export class LivemapComponent implements OnInit, OnDestroy {
         this.reportService
           .getAllReportsByTypeBounds(type.apiName, this.tright, this.bleft)
           .subscribe(res => {
-            res.reports.forEach(report => {
-              wantedResults.push(report);
-            });
-            itemsProcessed++;
-            // Done adding the last reports
-            if (itemsProcessed === this.filterList.length) {
-              this.updateReportList(wantedResults);
+            if (res) {
+              res.reports.forEach(report => {
+                wantedResults.push(report);
+              });
+              itemsProcessed++;
+              // Done adding the last reports
+              if (itemsProcessed === this.filterList.length) {
+                this.updateReportList(wantedResults);
+              }
             }
           });
       } else {

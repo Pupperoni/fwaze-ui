@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { catchError } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { throwError, of } from "rxjs";
 import { Router } from "@angular/router";
 import { UserService } from "../user.service";
 import { CookieService } from "ngx-cookie-service";
@@ -56,6 +56,7 @@ export class LoginComponent implements OnInit {
             this.toastr.error(err.error.err, "Error", {
               timeOut: 5000
             });
+            // return of([]);
             return throwError(err);
           })
         )

@@ -4,8 +4,7 @@ import {
   OnInit,
   Input,
   Output,
-  OnDestroy,
-  ChangeDetectorRef
+  OnDestroy
 } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { User } from "../user";
@@ -46,7 +45,6 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     private reportService: ReportService,
     private commentService: CommentService,
     private cookieService: CookieService,
-    private cdr: ChangeDetectorRef,
     private toastr: ToastrService,
     private eventService: EventService
   ) {
@@ -183,7 +181,6 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
           this.commentList.push(comment);
         });
       });
-    this.cdr.detectChanges();
   }
 
   onSubmit(data) {
@@ -195,7 +192,7 @@ export class ReportMarkersComponent implements OnInit, OnDestroy {
     data.timestamp = `${dateNow.getFullYear()}-${dateNow.getMonth() +
       1}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}.${dateNow.getMilliseconds()}`;
 
-    if (data.body == "") {
+    if (data.body === "") {
       this.toastr.error("Please include a comment", "Error", {
         timeOut: 5000
       });
