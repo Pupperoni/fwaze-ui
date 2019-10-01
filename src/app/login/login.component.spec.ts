@@ -1,5 +1,5 @@
 import { LoginComponent } from "./login.component";
-import { throwError, Observable } from "rxjs";
+import { throwError, of } from "rxjs";
 
 describe("Login component", () => {
   let component: LoginComponent;
@@ -21,7 +21,25 @@ describe("Login component", () => {
       if (data.name === "wrong" || data.password === "information")
         return throwError({ error: { err: "Wrong information bro" } });
       else {
-        return new Observable<any>();
+        return of({
+          user: {
+            id: "someId",
+            name: "nice",
+            password: "name",
+            home: {
+              latitude: "120",
+              longitude: "120",
+              address: "no where"
+            },
+            work: {
+              latitude: "120",
+              longitude: "120",
+              address: "no where"
+            },
+            email: "email@mail",
+            role: 0
+          }
+        });
       }
     });
 
@@ -64,18 +82,18 @@ describe("Login component", () => {
     );
   });
 
-  //   it("should say incorrect details", () => {
-  //     let data = {
-  //       name: "wrong",
-  //       password: "information"
-  //     };
-  //     try {
-  //       component.onSubmit(data);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //     expect(mockToastr.error).toHaveBeenCalled();
-  //   });
+  xit("should say incorrect details", () => {
+    let data = {
+      name: "wrong",
+      password: "information"
+    };
+    try {
+      component.onSubmit(data);
+    } catch (e) {
+      console.log(e);
+    }
+    expect(mockToastr.error).toHaveBeenCalled();
+  });
 
   it("should navigate to home", () => {
     let data = {
@@ -85,6 +103,6 @@ describe("Login component", () => {
 
     component.onSubmit(data);
 
-    expect(mockRouter.navigate).toHaveBeenCalled();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(["/"]);
   });
 });

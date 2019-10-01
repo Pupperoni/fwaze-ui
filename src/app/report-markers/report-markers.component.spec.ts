@@ -5,7 +5,8 @@ import { CookieService } from "ngx-cookie-service";
 import { ToastrService } from "ngx-toastr";
 import { EventService } from "../event.service";
 
-import { Observable } from "rxjs";
+import { of } from "rxjs";
+import { exec } from "child_process";
 
 // class MockReportService extends ReportService {}
 // class MockCommentService extends CommentService {}
@@ -26,12 +27,17 @@ describe("Report markers component", () => {
      * Set up spy objects
      */
     mockReportService = jasmine.createSpyObj("mockReportService", [
-      "getReportById"
+      "getReportById",
+      "addVote",
+      "deleteVote",
+      "getUserVotePair",
+      "viewMarker"
     ]);
 
     mockCommentService = jasmine.createSpyObj("mockCommentService", [
       "getCommentsbyReport",
-      "createComment"
+      "createComment",
+      "countCommentsbyReport"
     ]);
 
     mockToastr = jasmine.createSpyObj("mockToastr", ["error"]);
@@ -79,8 +85,9 @@ describe("Report markers component", () => {
   it("should change page to 1", () => {
     // arrange
     mockCommentService.getCommentsbyReport.and.callFake((id, page) => {
-      let obs$ = new Observable<any>();
-      return obs$;
+      return of({
+        data: []
+      });
     });
 
     // act
@@ -93,8 +100,9 @@ describe("Report markers component", () => {
   it("should submit comment", () => {
     // arrange
     mockCommentService.createComment.and.callFake(data => {
-      let obs$ = new Observable<any>();
-      return obs$;
+      return of({
+        data: []
+      });
     });
 
     let data = {
@@ -129,8 +137,9 @@ describe("Report markers component", () => {
   it("should open comment list", () => {
     // arrange
     mockCommentService.getCommentsbyReport.and.callFake((id, page) => {
-      let obs$ = new Observable<any>();
-      return obs$;
+      return of({
+        data: []
+      });
     });
 
     // act
@@ -138,5 +147,114 @@ describe("Report markers component", () => {
 
     // assert
     expect(component.commentUp).toBeTruthy();
+    expect(component.pageNum).toEqual(0);
+  });
+
+  it("should add vote", () => {
+    // arrange
+    mockReportService.addVote.and.callFake((id, page) => {
+      return of({
+        data: []
+      });
+    });
+
+    let data = {
+      reportId: "someReport",
+      userId: "someUser"
+    };
+
+    // act
+    component.addVote(data.reportId, data.userId);
+
+    // assert
+    expect(mockReportService.addVote).toHaveBeenCalled();
+  });
+
+  it("should delete vote", () => {
+    // arrange
+    mockReportService.deleteVote.and.callFake((id, page) => {
+      return of({
+        data: []
+      });
+    });
+
+    let data = {
+      reportId: "someReport",
+      userId: "someUser"
+    };
+
+    // act
+    component.deleteVote(data.reportId, data.userId);
+
+    // assert
+    expect(mockReportService.deleteVote).toHaveBeenCalled();
+  });
+
+  it("should create marker info", () => {
+    // arrange
+    mockReportService.getReportById.and.callFake(id => {
+      return of({
+        report: {
+          id: "reportId",
+          autoOpen: false,
+          lat: 120,
+          lng: -120,
+          type: 2
+        }
+      });
+    });
+
+    mockCommentService.countCommentsbyReport.and.callFake(id => {
+      return of({ data: 0 });
+    });
+
+    mockReportService.getUserVotePair.and.callFake((reportId, userId) => {
+      return of("something");
+    });
+
+    // act
+    component.toggleInfoWindow("reportId");
+
+    // assert
+    expect(component.markerInfo).toEqual({
+      id: "reportId",
+      autoOpen: false,
+      lat: 120,
+      lng: -120,
+      type: 2,
+      curUserVoted: true
+    });
+  });
+
+  it("should get image", () => {
+    // arrange
+    mockReportService.getReportById.and.callFake(id => {
+      return of({
+        report: {
+          id: "reportId",
+          autoOpen: false,
+          lat: 120,
+          lng: -120,
+          type: 2,
+          photoPath: "cool_image.jpg"
+        }
+      });
+    });
+
+    mockCommentService.countCommentsbyReport.and.callFake(id => {
+      return of({ data: 0 });
+    });
+
+    mockReportService.getUserVotePair.and.callFake((reportId, userId) => {
+      return of("something");
+    });
+
+    // act
+    component.toggleInfoWindow("reportId");
+
+    // assert
+    expect(component.imagePath).toEqual(
+      "http://localhost:3001/map/reports/reportId/image"
+    );
   });
 });
