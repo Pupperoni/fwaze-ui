@@ -6,7 +6,6 @@ import { ToastrService } from "ngx-toastr";
 import { EventService } from "../event.service";
 
 import { of } from "rxjs";
-import { exec } from "child_process";
 
 // class MockReportService extends ReportService {}
 // class MockCommentService extends CommentService {}
