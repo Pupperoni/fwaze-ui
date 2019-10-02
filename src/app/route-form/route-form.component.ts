@@ -42,16 +42,15 @@ export class RouteFormComponent implements OnInit, OnDestroy {
   constructor(
     private cookieService: CookieService,
     private toastr: ToastrService
-  ) {
-    this.directionForm = new FormGroup({
-      source: new FormControl(""),
-      destination: new FormControl("")
-    });
-  }
+  ) {}
 
   ngOnInit() {
     if (this.cookieService.check("currentUser"))
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+    this.directionForm = new FormGroup({
+      source: new FormControl(""),
+      destination: new FormControl("")
+    });
     this.routeUsedSubscription = this.routeUsedEvent.subscribe(data => {
       // update data
       this.sourceData = data.source;

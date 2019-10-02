@@ -4,7 +4,7 @@ import { UserService } from "../user.service";
 import { ApplicationService } from "../application.service";
 import { CookieService } from "ngx-cookie-service";
 import { catchError } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { of } from "rxjs";
 import { User } from "../user";
 import { Subscription } from "rxjs";
 import { ToastrService } from "ngx-toastr";
@@ -33,18 +33,18 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastr: ToastrService,
     private eventService: EventService
-  ) {
-    this.subscription = this.router.events.subscribe(e => {
-      if (e instanceof NavigationEnd) this.getUser();
-    });
-  }
+  ) {}
 
   ngOnInit() {
     if (this.cookieService.check("currentUser")) {
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     }
 
+    this.subscription = this.router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) this.getUser();
+    });
     this.applicationRejectedSub = this.eventService
+
       .getUserApplicationRejectedEventSubject()
       .subscribe(data => {
         if (data.userId === this.user.id) {
@@ -115,7 +115,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
           this.toastr.error(err.error.err, "Error", {
             timeOut: 5000
           });
-          return throwError(err);
+          return of([]);
         })
       )
       .subscribe(res => {

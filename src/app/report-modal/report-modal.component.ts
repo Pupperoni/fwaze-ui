@@ -4,6 +4,7 @@ import { CookieService } from "ngx-cookie-service";
 import { CurrentMarkerService } from "../current-marker.service";
 import { ReportService } from "../report.service";
 import { ToastrService } from "ngx-toastr";
+import { FormDataService } from "../form-data.service";
 @Component({
   selector: "app-report-modal",
   templateUrl: "./report-modal.component.html",
@@ -22,7 +23,8 @@ export class ReportModalComponent implements OnInit {
     private reportService: ReportService,
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private formDataService: FormDataService
   ) {}
 
   ngOnInit() {
@@ -50,26 +52,27 @@ export class ReportModalComponent implements OnInit {
       this.toastr.error("Please upload a valid image file", "Error", {
         timeOut: 5000
       });
+    } else {
+      this.currentMarker = this.currentMarkerService.getMarker();
+      let location = this.currentMarkerService.getMarkerLocation();
+      let uploadData = this.formDataService.createForm();
+
+      uploadData.append("type", this.selectedOption.toString());
+      uploadData.append("userId", this.currentUser.id);
+      uploadData.append("userName", this.currentUser.name);
+      uploadData.append("latitude", this.currentMarker.lat.toString());
+      uploadData.append("longitude", this.currentMarker.lng.toString());
+      uploadData.append("location", location);
+
+      if (this.photoUpload)
+        uploadData.append("photo", this.photoUpload, this.photoUpload.name);
+
+      this.reportService.addReport(uploadData).subscribe((res: any) => {
+        this.selectedOption = 0;
+        this.onSubmit.emit(res.data);
+        this.photoUpload = null;
+      });
     }
-    this.currentMarker = this.currentMarkerService.getMarker();
-    let location = this.currentMarkerService.getMarkerLocation();
-    let uploadData = new FormData();
-
-    uploadData.append("type", this.selectedOption.toString());
-    uploadData.append("userId", this.currentUser.id);
-    uploadData.append("userName", this.currentUser.name);
-    uploadData.append("latitude", this.currentMarker.lat.toString());
-    uploadData.append("longitude", this.currentMarker.lng.toString());
-    uploadData.append("location", location);
-
-    if (this.photoUpload)
-      uploadData.append("photo", this.photoUpload, this.photoUpload.name);
-
-    this.reportService.addReport(uploadData).subscribe((res: any) => {
-      this.selectedOption = 0;
-      this.onSubmit.emit(res.data);
-      this.photoUpload = null;
-    });
   }
 }
 

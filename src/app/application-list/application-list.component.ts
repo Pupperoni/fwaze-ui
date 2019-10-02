@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ApplicationService } from "../application.service";
 import { CookieService } from "ngx-cookie-service";
 import { catchError } from "rxjs/operators";
-import { throwError, Subscription } from "rxjs";
+import { throwError, Subscription, of } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { EventService } from "../event.service";
 
@@ -23,7 +23,9 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private toastr: ToastrService,
     private eventService: EventService
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.applicationService.getPendingApplications().subscribe(res => {
       res.data.forEach(application => {
         this.pendingApplications.push({
@@ -46,9 +48,6 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
         });
       });
     });
-  }
-
-  ngOnInit() {
     this.applicationCreatedSub = this.eventService
       .getUserApplicationCreatedEventSubject()
       .subscribe(application => {
@@ -86,13 +85,12 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
       adminId: this.currentUser.id,
       userId: id
     };
-
     this.applicationService
       .approveApplication(data)
       .pipe(
         catchError(err => {
           this.toastr.error(err.error.err, "Error", { timeOut: 5000 });
-          return throwError(err);
+          return of([]);
         })
       )
       .subscribe(res => {
@@ -114,7 +112,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
       .pipe(
         catchError(err => {
           this.toastr.error(err.error.err, "Error", { timeOut: 5000 });
-          return throwError(err);
+          return of([]);
         })
       )
       .subscribe(res => {

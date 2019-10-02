@@ -1,25 +1,20 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-
 import { SaveRouteModalComponent } from "./save-route-modal.component";
 
-// describe('SaveRouteModalComponent', () => {
-//   let component: SaveRouteModalComponent;
-//   let fixture: ComponentFixture<SaveRouteModalComponent>;
+describe("Save route modal", () => {
+  let component: SaveRouteModalComponent;
 
-//   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
-//       declarations: [ SaveRouteModalComponent ]
-//     })
-//     .compileComponents();
-//   }));
+  beforeEach(() => {
+    component = new SaveRouteModalComponent();
+  });
 
-//   beforeEach(() => {
-//     fixture = TestBed.createComponent(SaveRouteModalComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
+  describe("on submit", () => {
+    it("should reset label", () => {
+      let data = { label: "boo" };
 
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
+      component.ngOnInit();
+      component.onSubmit(data);
+
+      expect(component.routeForm.get("label").value).toEqual("");
+    });
+  });
+});

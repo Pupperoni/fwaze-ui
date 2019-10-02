@@ -1,0 +1,12 @@
+import { Injectable } from "@angular/core";
+
+@Injectable({
+  providedIn: "root"
+})
+export class FormDataService {
+  constructor() {}
+
+  createForm() {
+    return new FormData();
+  }
+}

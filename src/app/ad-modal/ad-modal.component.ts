@@ -5,6 +5,7 @@ import { CookieService } from "ngx-cookie-service";
 import { CurrentMarkerService } from "../current-marker.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
+import { FormDataService } from "../form-data.service";
 
 @Component({
   selector: "app-ad-modal",
@@ -23,7 +24,8 @@ export class AdModalComponent implements OnInit {
     private advertisementService: AdvertisementService,
     private cookieService: CookieService,
     private currentMarkerService: CurrentMarkerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private formDataService: FormDataService
   ) {}
 
   ngOnInit() {
@@ -63,7 +65,7 @@ export class AdModalComponent implements OnInit {
       // All good!
       this.currentMarker = this.currentMarkerService.getMarker();
       let location = this.currentMarkerService.getMarkerLocation();
-      let uploadData = new FormData();
+      let uploadData = this.formDataService.createForm();
 
       uploadData.append("userId", this.currentUser.id);
       uploadData.append("userName", this.currentUser.name);

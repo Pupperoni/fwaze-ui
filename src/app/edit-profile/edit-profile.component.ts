@@ -5,8 +5,9 @@ import { UserService } from "../user.service";
 import { User } from "../user";
 import { catchError } from "rxjs/operators";
 import { CookieService } from "ngx-cookie-service";
-import { throwError } from "rxjs";
+import { of } from "rxjs";
 import { ToastrService } from "ngx-toastr";
+import { FormDataService } from "../form-data.service";
 
 @Component({
   selector: "app-edit-profile",
@@ -18,7 +19,7 @@ export class EditProfileComponent implements OnInit {
   profileForm: FormGroup;
   invalidImage = false;
 
-  avatarUpload = null;
+  avatarUpload = undefined;
 
   homeSubmit = false;
   workSubmit = false;
@@ -38,7 +39,8 @@ export class EditProfileComponent implements OnInit {
     private userService: UserService,
     private cookieService: CookieService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private formDataService: FormDataService
   ) {}
 
   ngOnInit() {
@@ -114,7 +116,7 @@ export class EditProfileComponent implements OnInit {
         timeOut: 5000
       });
     } else {
-      let uploadData = new FormData();
+      let uploadData = this.formDataService.createForm();
 
       uploadData.append("name", formData.name);
       uploadData.append("email", formData.email);
@@ -134,26 +136,28 @@ export class EditProfileComponent implements OnInit {
         .pipe(
           catchError(err => {
             this.toastr.error(err.error.err, "Error", { timeOut: 5000 });
-            return throwError(err);
+            return of("error");
           })
         )
         .subscribe(res => {
-          this.currentUser.name = formData.name;
-          this.currentUser.email = formData.email;
-          this.currentUser.home = this.homeSubmit
-            ? this.home
-            : this.currentUser.home;
-          this.currentUser.work = this.workSubmit
-            ? this.work
-            : this.currentUser.work;
-          this.cookieService.delete("currentUser", "/");
-          this.cookieService.set(
-            "currentUser",
-            JSON.stringify(this.currentUser),
-            null,
-            "/"
-          );
-          this.router.navigate([`/detail/${this.currentUser.id}`]);
+          if (res !== "error") {
+            this.currentUser.name = formData.name;
+            this.currentUser.email = formData.email;
+            this.currentUser.home = this.homeSubmit
+              ? this.home
+              : this.currentUser.home;
+            this.currentUser.work = this.workSubmit
+              ? this.work
+              : this.currentUser.work;
+            this.cookieService.delete("currentUser", "/");
+            this.cookieService.set(
+              "currentUser",
+              JSON.stringify(this.currentUser),
+              null,
+              "/"
+            );
+            this.router.navigate([`/detail/${this.currentUser.id}`]);
+          }
         });
     }
   }

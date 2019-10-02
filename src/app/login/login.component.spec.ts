@@ -82,16 +82,12 @@ describe("Login component", () => {
     );
   });
 
-  xit("should say incorrect details", () => {
+  it("should say incorrect details", () => {
     let data = {
       name: "wrong",
       password: "information"
     };
-    try {
-      component.onSubmit(data);
-    } catch (e) {
-      console.log(e);
-    }
+    component.onSubmit(data);
     expect(mockToastr.error).toHaveBeenCalled();
   });
 

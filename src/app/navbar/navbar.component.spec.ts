@@ -1,24 +1,47 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-
 import { NavbarComponent } from "./navbar.component";
 
-// describe("NavbarComponent", () => {
-//   let component: NavbarComponent;
-//   let fixture: ComponentFixture<NavbarComponent>;
+describe("Navbar component", () => {
+  let component: NavbarComponent;
+  let mockUserService;
+  let mockCookieService;
+  let mockRouter;
+  let mockCdr;
+  let mockToastr;
+  let mockEventService;
 
-//   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
-//       declarations: [NavbarComponent]
-//     }).compileComponents();
-//   }));
+  beforeEach(() => {
+    mockRouter = jasmine.createSpyObj("mockRouter", ["navigate"]);
+    mockUserService = jasmine.createSpyObj("mockUserService", [
+      "loginUserSocket"
+    ]);
+    mockCdr = jasmine.createSpyObj("mockCdr", ["detectChanges"]);
+    mockCookieService = jasmine.createSpyObj("mockCookieService", ["delete"]);
+    component = new NavbarComponent(
+      mockUserService,
+      mockCookieService,
+      mockRouter,
+      mockCdr,
+      mockToastr,
+      mockEventService
+    );
+  });
 
-//   beforeEach(() => {
-//     fixture = TestBed.createComponent(NavbarComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
+  describe("go to", () => {
+    it("should navigate to user detail", () => {
+      component.goTo("id");
+      expect(mockRouter.navigate).toHaveBeenCalledWith(["/detail/id"]);
+    });
+  });
 
-//   it("should create", () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
+  describe("on logout", () => {
+    it("should delete cookie", () => {
+      component.onLogout();
+      expect(mockCookieService.delete).toHaveBeenCalledWith("currentUser", "/");
+    });
+
+    it("should set current user to null", () => {
+      component.onLogout();
+      expect(component.currentUser).toBeNull();
+    });
+  });
+});

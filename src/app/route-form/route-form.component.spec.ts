@@ -1,25 +1,80 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-
 import { RouteFormComponent } from "./route-form.component";
 
-// describe('RouteFormComponent', () => {
-//   let component: RouteFormComponent;
-//   let fixture: ComponentFixture<RouteFormComponent>;
+xdescribe("Route form component", () => {
+  let component: RouteFormComponent;
+  let mockCookieService;
+  let mockToastr;
 
-//   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
-//       declarations: [ RouteFormComponent ]
-//     })
-//     .compileComponents();
-//   }));
+  beforeEach(() => {
+    mockToastr = jasmine.createSpyObj("mockToastr", ["error"]);
+    component = new RouteFormComponent(mockCookieService, mockToastr);
+  });
 
-//   beforeEach(() => {
-//     fixture = TestBed.createComponent(RouteFormComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
+  describe("source address change", () => {
+    it("should update source string", () => {
+      let event = {
+        geometry: {
+          location: {
+            lat: function() {
+              return 10;
+            },
+            lng: function() {
+              return 20;
+            }
+          }
+        },
+        address_components: [
+          { long_name: "this" },
+          { long_name: "is" },
+          { long_name: "a" },
+          { long_name: "place" },
+          { long_name: "lol" }
+        ]
+      };
+      component.sourceAddressChange(event);
 
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
+      expect(component.sourceString).toEqual("this, is, a, place, lol");
+    });
+  });
+
+  describe("destination address change", () => {
+    it("should update destination string", () => {
+      let event = {
+        geometry: {
+          location: {
+            lat: function() {
+              return 10;
+            },
+            lng: function() {
+              return 20;
+            }
+          }
+        },
+        address_components: [
+          { long_name: "this" },
+          { long_name: "is" },
+          { long_name: "a" },
+          { long_name: "place" },
+          { long_name: "lol" }
+        ]
+      };
+
+      component.destinationAddressChange(event);
+
+      expect(component.destString).toEqual("this, is, a, place, lol");
+    });
+  });
+
+  describe("current location button clicked", () => {
+    it("should show error", () => {
+      component.currentLocationButtonClicked();
+      expect(mockToastr.error).toHaveBeenCalledWith(
+        "Geolocation not supported by your browser. Considering updating your browser.",
+        "Error",
+        {
+          timeOut: 5000
+        }
+      );
+    });
+  });
+});
