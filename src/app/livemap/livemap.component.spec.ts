@@ -1,7 +1,7 @@
 import { LivemapComponent } from "./livemap.component";
 import { of } from "rxjs";
 
-xdescribe("Livemap component", () => {
+fdescribe("Livemap component", () => {
   let component: LivemapComponent;
   let mockCookieService;
   let mockCurrentMarkerService;
@@ -9,8 +9,22 @@ xdescribe("Livemap component", () => {
   let mockUserService;
   let mockAdvertisementService;
   let mockEventService;
+  let mockGMapsService;
 
   beforeEach(() => {
+    mockGMapsService = jasmine.createSpyObj("mockGMapsService", [
+      "getGeocoder",
+      "getLatLng"
+    ]);
+
+    mockGMapsService.getGeocoder.and.callFake(() => {
+      return {
+        geocode: function(request, callback) {
+          let res = [{ formatted_address: "some body" }];
+          callback(res);
+        }
+      };
+    });
     mockCurrentMarkerService = jasmine.createSpyObj(
       "mockCurrentMarkerService",
       ["getMarker", "setMarker"]
@@ -30,6 +44,9 @@ xdescribe("Livemap component", () => {
         return of({ reports: [] });
       }
     );
+    mockAdvertisementService.getAllAdsByBounds.and.callFake((tright, bleft) => {
+      return of({ ads: [] });
+    });
 
     component = new LivemapComponent(
       mockCookieService,
@@ -37,7 +54,8 @@ xdescribe("Livemap component", () => {
       mockReportService,
       mockUserService,
       mockAdvertisementService,
-      mockEventService
+      mockEventService,
+      mockGMapsService
     );
   });
 
@@ -145,11 +163,12 @@ xdescribe("Livemap component", () => {
       expect(mockReportService.getAllReportsByTypeBounds).toHaveBeenCalledTimes(
         2
       );
+
       expect(
-        mockReportService.getAllReportsByTypeBounds.calls.argsFor[0]
+        mockReportService.getAllReportsByTypeBounds.calls.argsFor(0)
       ).toEqual(["traffic_jam", "10,20", "20,10"]);
       expect(
-        mockReportService.getAllReportsByTypeBounds.calls.argsFor[0]
+        mockReportService.getAllReportsByTypeBounds.calls.argsFor(1)
       ).toEqual(["police", "10,20", "20,10"]);
     });
   });

@@ -1,7 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subject, Observable, Subscription } from "rxjs";
-declare let google: any;
-
 import { MouseEvent } from "@agm/core";
 import { User } from "../user";
 import { UserService } from "../user.service";
@@ -10,6 +8,8 @@ import { ReportService } from "../report.service";
 import { AdvertisementService } from "../advertisement.service";
 import { CurrentMarkerService } from "../current-marker.service";
 import { EventService } from "../event.service";
+import { GoogleMapsService } from "../google-maps.service";
+import { NavigatorService } from "../navigator.service";
 
 @Component({
   selector: "app-livemap",
@@ -23,7 +23,7 @@ export class LivemapComponent implements OnInit, OnDestroy {
   bleft = undefined;
   distance = undefined;
   eta = undefined;
-  geocoder = new google.maps.Geocoder();
+  geocoder;
   reportFilter = true;
   adFilter = true;
   location = "";
@@ -94,8 +94,11 @@ export class LivemapComponent implements OnInit, OnDestroy {
     private reportService: ReportService,
     private userService: UserService,
     private advertisementService: AdvertisementService,
-    private eventService: EventService
-  ) {}
+    private eventService: EventService,
+    private googleMapsService: GoogleMapsService
+  ) {
+    this.geocoder = this.googleMapsService.getGeocoder();
+  }
 
   ngOnDestroy() {
     // leave map room
@@ -202,7 +205,7 @@ export class LivemapComponent implements OnInit, OnDestroy {
       lng: $event.coords.lng
     });
     this.currentMarker = this.currentMarkerService.getMarker();
-    let latlng = new google.maps.LatLng(
+    let latlng = this.googleMapsService.getLatLng(
       this.currentMarker.lat,
       this.currentMarker.lng
     );

@@ -7,12 +7,13 @@ import {
   OnDestroy
 } from "@angular/core";
 import { Observable } from "rxjs";
-declare let google: any;
 
 import { User } from "../user";
 import { CookieService } from "ngx-cookie-service";
 import { ToastrService } from "ngx-toastr";
 import { FormGroup, FormControl } from "@angular/forms";
+import { GoogleMapsService } from "../google-maps.service";
+import { NavigatorService } from "../navigator.service";
 
 @Component({
   selector: "app-route-form",
@@ -37,12 +38,17 @@ export class RouteFormComponent implements OnInit, OnDestroy {
   @Output() onDestinationChange = new EventEmitter();
 
   currentUser: User = undefined;
-  geocoder = new google.maps.Geocoder();
+  geocoder;
   directionForm: FormGroup = undefined;
+
   constructor(
     private cookieService: CookieService,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private googleMapsService: GoogleMapsService,
+    private navigatorService: NavigatorService
+  ) {
+    this.geocoder = this.googleMapsService.getGeocoder();
+  }
 
   ngOnInit() {
     if (this.cookieService.check("currentUser"))
@@ -132,6 +138,7 @@ export class RouteFormComponent implements OnInit, OnDestroy {
   }
 
   currentLocationButtonClicked() {
+    let navigator = this.navigatorService.getNavigator();
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(location => {
         let sourceData = {
@@ -140,7 +147,7 @@ export class RouteFormComponent implements OnInit, OnDestroy {
           label: "S"
         };
 
-        let latlng = new google.maps.LatLng(
+        let latlng = this.googleMapsService.getLatLng(
           location.coords.latitude,
           location.coords.longitude
         );
