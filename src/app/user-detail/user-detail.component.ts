@@ -33,18 +33,18 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastr: ToastrService,
     private eventService: EventService
-  ) {}
+  ) {
+    this.subscription = this.router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) this.getUser();
+    });
+  }
 
   ngOnInit() {
     if (this.cookieService.check("currentUser")) {
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
     }
 
-    this.subscription = this.router.events.subscribe(e => {
-      if (e instanceof NavigationEnd) this.getUser();
-    });
     this.applicationRejectedSub = this.eventService
-
       .getUserApplicationRejectedEventSubject()
       .subscribe(data => {
         if (data.userId === this.user.id) {
@@ -139,7 +139,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       this.imageTimeStamp = new Date().getTime();
 
       // update current user if there are any changes
-      if (this.currentUser.id === this.user.id) {
+      if (this.currentUser && this.currentUser.id === this.user.id) {
         if (this.user.home.address !== "") {
           // convert latlng to float
           this.user.home.latitude = parseFloat(this.user.home.latitude);

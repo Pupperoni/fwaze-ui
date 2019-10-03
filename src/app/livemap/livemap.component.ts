@@ -9,7 +9,6 @@ import { AdvertisementService } from "../advertisement.service";
 import { CurrentMarkerService } from "../current-marker.service";
 import { EventService } from "../event.service";
 import { GoogleMapsService } from "../google-maps.service";
-import { NavigatorService } from "../navigator.service";
 
 @Component({
   selector: "app-livemap",
@@ -439,32 +438,34 @@ export class LivemapComponent implements OnInit, OnDestroy {
 
   onRouteUsed($event) {
     // use em
-    this.destination = {
-      lat: $event.destination.lat,
-      lng: $event.destination.lng,
-      label: "D"
-    };
-    this.destData = {
-      lat: $event.destination.lat,
-      lng: $event.destination.lng,
-      label: "D"
-    };
+    if ($event.source.lat && $event.destination.lng) {
+      this.destination = {
+        lat: $event.destination.lat,
+        lng: $event.destination.lng,
+        label: "D"
+      };
+      this.destData = {
+        lat: $event.destination.lat,
+        lng: $event.destination.lng,
+        label: "D"
+      };
 
-    this.source = {
-      lat: $event.source.lat,
-      lng: $event.source.lng,
-      label: "S"
-    };
-    this.sourceData = {
-      lat: $event.source.lat,
-      lng: $event.source.lng,
-      label: "S"
-    };
+      this.source = {
+        lat: $event.source.lat,
+        lng: $event.source.lng,
+        label: "S"
+      };
+      this.sourceData = {
+        lat: $event.source.lat,
+        lng: $event.source.lng,
+        label: "S"
+      };
 
-    this.destString = $event.destString;
-    this.sourceString = $event.sourceString;
+      this.destString = $event.destString;
+      this.sourceString = $event.sourceString;
 
-    this.updateChildren();
+      this.updateChildren();
+    }
   }
 
   sourceAddressChange($event) {

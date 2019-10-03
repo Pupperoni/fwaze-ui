@@ -79,9 +79,21 @@ describe("User detail", () => {
   });
 
   describe("get image path", () => {
+    beforeEach(() => {
+      component.currentUser = {
+        id: "userid",
+        name: "my_name",
+        email: "email",
+        home: null,
+        work: null,
+        role: 0
+      };
+    });
+
     it("should return image", () => {
+      let re = /this is an image(\?\d*)+/;
       component.userImage = "this is an image";
-      expect(component.getImagePath()).toEqual("this is an image");
+      expect(component.getImagePath()).toMatch(re);
     });
 
     it("should append timestamp", () => {

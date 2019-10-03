@@ -41,6 +41,7 @@
       </ul>
       <!-- If user is logged in, show username -->
       <button
+        id="app-list"
         *ngIf="currentUser && currentUser.role == 2"
         class="nav-link user-button"
         routerLink="applications"
@@ -49,6 +50,7 @@
       </button>
 
       <button
+        id="user-detail"
         *ngIf="currentUser"
         class="nav-link user-button"
         (click)="goTo(currentUser.id)"
@@ -57,6 +59,7 @@
       </button>
 
       <a
+        id="logout"
         *ngIf="currentUser; else notLoggedIn"
         class="nav-link user-button"
         (click)="onLogout()"
