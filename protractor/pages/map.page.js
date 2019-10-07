@@ -1,9 +1,20 @@
 module.exports = function() {
   return {
-    sourceInput: element(by.id("src")),
-    destInput: element(by.id("dest")),
-    directions: element(by.className("direction-data-container")),
-    sourceResult: element(by.xpath("/html/body/div[1]/div[1]")),
-    destResult: element(by.xpath("/html/body/div[2]/div[1]"))
+    map: element(by.className("livemap-component")),
+    reportBtn: element(
+      by.xpath(
+        "/html/body/app-root/div/app-livemap/div/div/agm-map/div[1]/div/div/div[1]/div[3]/div/div[4]/div/div/div/div/div/div/div[2]/button"
+      )
+    ),
+    reportSubmit: element(
+      by.xpath(
+        "/html/body/app-root/div/app-livemap/div/app-report-modal/div/div/div/div/div[3]/button[2]"
+      )
+    ),
+    reportObj: element(
+      by.xpath(
+        '//*[@id="wrapper"]/agm-map/div[1]/div/div/div[1]/div[3]/div/div[4]/div/div/div/div/div/div/div/div[1]/div[2]'
+      )
+    )
   };
 };

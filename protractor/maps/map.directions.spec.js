@@ -1,6 +1,6 @@
-const MapPage = require("../pages/map.page");
+const MapPage = require("../pages/route.page");
 const DEFAULT_SLEEP = 1000;
-fdescribe("Map directions", () => {
+describe("Map directions", () => {
   let mapPage = MapPage();
   beforeEach(() => {
     browser.get("http://localhost:4200");
@@ -8,13 +8,13 @@ fdescribe("Map directions", () => {
 
   describe("route input form", () => {
     it("should show direction info", () => {
-      mapPage.sourceInput.sendKeys("2 Mango Road Potrero Malabon");
+      mapPage.sourceInput.sendKeys("UP Diliman");
       browser.sleep(DEFAULT_SLEEP);
       mapPage.sourceResult.click();
 
       browser.sleep(DEFAULT_SLEEP);
 
-      mapPage.destInput.sendKeys("Saperium Incorporated");
+      mapPage.destInput.sendKeys("Ateneo de Manila");
       browser.sleep(DEFAULT_SLEEP);
       mapPage.destResult.click();
 

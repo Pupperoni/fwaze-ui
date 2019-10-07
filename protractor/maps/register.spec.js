@@ -1,4 +1,6 @@
-let RegisterPage = require("../pages/register.page");
+const RegisterPage = require("../pages/register.page");
+
+const DEFAULT_SLEEP = 1000;
 
 describe("Register page", () => {
   let registerPage = RegisterPage();
@@ -11,7 +13,7 @@ describe("Register page", () => {
       registerPage.name.sendKeys("test");
 
       registerPage.submit.click();
-      browser.sleep(1000);
+      browser.sleep(DEFAULT_SLEEP);
 
       // this should not redirect me to login
       expect(browser.getCurrentUrl()).toMatch("http://localhost:4200/register");
@@ -26,7 +28,7 @@ describe("Register page", () => {
       registerPage.password.sendKeys("test");
 
       registerPage.submit.click();
-      browser.sleep(1000);
+      browser.sleep(DEFAULT_SLEEP);
 
       // this should not redirect me to login
       expect(browser.getCurrentUrl()).toMatch("http://localhost:4200/register");
@@ -41,7 +43,7 @@ describe("Register page", () => {
       registerPage.confirmPassword.sendKeys("wrong");
 
       registerPage.submit.click();
-      browser.sleep(1000);
+      browser.sleep(DEFAULT_SLEEP);
 
       // this should not redirect me to login
       expect(browser.getCurrentUrl()).toMatch("http://localhost:4200/register");
@@ -56,7 +58,7 @@ describe("Register page", () => {
       registerPage.confirmPassword.sendKeys("test");
 
       registerPage.submit.click();
-      browser.sleep(1000);
+      browser.sleep(DEFAULT_SLEEP);
 
       expect(browser.getCurrentUrl()).toMatch("http://localhost:4200/login");
     });

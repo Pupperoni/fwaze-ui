@@ -1,5 +1,7 @@
-let LoginPage = require("../pages/login.page");
-let RegisterPage = require("../pages/register.page");
+const LoginPage = require("../pages/login.page");
+const RegisterPage = require("../pages/register.page");
+
+const DEFAULT_SLEEP = 1000;
 
 describe("Login page", () => {
   let loginPage = LoginPage(),
@@ -13,7 +15,7 @@ describe("Login page", () => {
     registerPage.password.sendKeys("root");
     registerPage.confirmPassword.sendKeys("root");
     registerPage.submit.click();
-    browser.sleep(2000);
+    browser.sleep(2 * DEFAULT_SLEEP);
   });
 
   beforeEach(() => {
@@ -25,7 +27,7 @@ describe("Login page", () => {
       loginPage.name.sendKeys("root");
 
       loginPage.submit.click();
-      browser.sleep(1000);
+      browser.sleep(DEFAULT_SLEEP);
 
       // this should not redirect me to map
       expect(browser.getCurrentUrl()).toMatch("http://localhost:4200/login");
@@ -38,7 +40,7 @@ describe("Login page", () => {
       loginPage.password.sendKeys("wrong");
 
       loginPage.submit.click();
-      browser.sleep(1000);
+      browser.sleep(DEFAULT_SLEEP);
 
       // this should not redirect me to map
       expect(browser.getCurrentUrl()).toMatch("http://localhost:4200/login");
@@ -51,7 +53,7 @@ describe("Login page", () => {
       loginPage.password.sendKeys("root");
 
       loginPage.submit.click();
-      browser.sleep(1000);
+      browser.sleep(DEFAULT_SLEEP);
 
       expect(browser.getCurrentUrl()).toMatch("http://localhost:4200");
       element(by.linkText("Logout")).click();

@@ -1,6 +1,6 @@
-let NavbarPage = require("../pages/navbar.page"),
+const NavbarPage = require("../pages/navbar.page"),
   LoginPage = require("../pages/login.page");
-let DEFAULT_SLEEP_TIME = 1000;
+const DEFAULT_SLEEP = 1000;
 
 describe("Navbar page", () => {
   let navbarPage;
@@ -29,12 +29,12 @@ describe("Navbar page", () => {
       loginPage.password.sendKeys("root");
 
       loginPage.submit.click();
-      browser.sleep(DEFAULT_SLEEP_TIME);
+      browser.sleep(DEFAULT_SLEEP);
     });
 
     afterEach(() => {
       navbarPage.logout.click();
-      browser.sleep(DEFAULT_SLEEP_TIME);
+      browser.sleep(DEFAULT_SLEEP);
     });
 
     it("should have logout button", () => {
