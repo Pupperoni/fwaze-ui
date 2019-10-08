@@ -1,9 +1,10 @@
 .application-list-component {
-  margin-top: 6em;
+  margin-top: 7em;
 }
 
 .application-main-header {
   margin-bottom: 1em;
+  margin-left: 1em;
 }
 
 .application-info {
@@ -22,4 +23,25 @@
 
 .my-pagination {
   margin-bottom: 4em;
+}
+
+.badge-warning {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.badge-success {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.badge-danger {
+  color: #fff;
+  background-color: #dc3545;
+}
+
+.active {
+  border-style: solid;
+  border-radius: 0.25cm 0.25cm 0 0;
+  background-color: #ededed;
 }

@@ -1,88 +1,90 @@
-<div class="edit-profile-component row justify-content-center">
-  <div
-    *ngIf="currentUser"
-    class="col col-md-6 col-sm-9 col-9 col-lg-6 col-xl-6"
-  >
-    <div class="edit-profile-header shadow">
-      <h2>Edit Profile</h2>
-    </div>
-    <div class="edit-profile-form shadow bg-white">
-      <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
-        <div class="form-group">
-          <label>Username: </label>
-          <input type="text" class="form-control" formControlName="name" />
-        </div>
-
-        <div
-          *ngIf="name.invalid && (name.dirty || name.touched)"
-          class="alert alert-danger"
+<div class="edit-profile-component">
+  <div class="row justify-content-center">
+    <div *ngIf="currentUser" class="edit-profile-container">
+      <div class="edit-profile-header shadow">
+        <h2>Edit Profile</h2>
+      </div>
+      <div class="edit-profile-form shadow bg-white">
+        <form
+          [formGroup]="profileForm"
+          (ngSubmit)="onSubmit(profileForm.value)"
         >
-          <div *ngIf="name.errors.required">
-            Name is required.
+          <div class="form-group">
+            <label>Username: </label>
+            <input type="text" class="form-control" formControlName="name" />
           </div>
-        </div>
 
-        <div class="form-group">
-          <label>Email address: </label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            aria-describedby="emailHelp"
-            formControlName="email"
-          />
-        </div>
-
-        <div
-          *ngIf="email.invalid && (email.dirty || email.touched)"
-          class="alert alert-danger"
-        >
-          <div *ngIf="email.errors.required">
-            Email is required.
+          <div
+            *ngIf="name.invalid && (name.dirty || name.touched)"
+            class="alert alert-danger"
+          >
+            <div *ngIf="name.errors.required">
+              Name is required.
+            </div>
           </div>
-          <div *ngIf="email.errors.email">
-            Format is not a valid email address.
+
+          <div class="form-group">
+            <label>Email address: </label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              aria-describedby="emailHelp"
+              formControlName="email"
+            />
           </div>
-        </div>
 
-        <div class="form-group">
-          <label>Enter home address:</label>
-          <input
-            ngx-google-places-autocomplete
-            class="form-control"
-            type="text"
-            [value]="currentUser.home.address"
-            (onAddressChange)="setHomeAddress($event)"
-          />
-        </div>
+          <div
+            *ngIf="email.invalid && (email.dirty || email.touched)"
+            class="alert alert-danger"
+          >
+            <div *ngIf="email.errors.required">
+              Email is required.
+            </div>
+            <div *ngIf="email.errors.email">
+              Format is not a valid email address.
+            </div>
+          </div>
 
-        <div class="form-group">
-          <label>Enter work address:</label>
-          <input
-            ngx-google-places-autocomplete
-            class="form-control"
-            type="text"
-            [value]="currentUser.work.address"
-            (onAddressChange)="setWorkAddress($event)"
-          />
-        </div>
+          <div class="form-group">
+            <label>Enter home address:</label>
+            <input
+              ngx-google-places-autocomplete
+              class="form-control"
+              type="text"
+              [value]="currentUser.home.address"
+              (onAddressChange)="setHomeAddress($event)"
+            />
+          </div>
 
-        <div class="form-group">
-          <label>Upload display picture:</label>
-          <input
-            type="file"
-            class="form-control-file"
-            id="avatar"
-            (change)="handleFileInput($event)"
-          />
-        </div>
-        <div *ngIf="invalidImage" class="alert alert-danger" role="alert">
-          File uploaded is not an image
-        </div>
-        <button type="submit" class="btn btn-success btn-block">
-          Save
-        </button>
-      </form>
+          <div class="form-group">
+            <label>Enter work address:</label>
+            <input
+              ngx-google-places-autocomplete
+              class="form-control"
+              type="text"
+              [value]="currentUser.work.address"
+              (onAddressChange)="setWorkAddress($event)"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Upload display picture:</label>
+            <input
+              type="file"
+              class="form-control-file"
+              id="avatar"
+              (change)="handleFileInput($event)"
+            />
+          </div>
+          <div *ngIf="invalidImage" class="alert alert-danger" role="alert">
+            File uploaded is not an image
+          </div>
+          <button type="submit" class="btn btn-success btn-block">
+            Save
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

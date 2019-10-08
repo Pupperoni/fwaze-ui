@@ -6,7 +6,7 @@ agm-map {
   position: fixed;
 }
 
-strong {
+#id {
   margin: 1em;
   line-height: 5%;
   font-size: 150%;

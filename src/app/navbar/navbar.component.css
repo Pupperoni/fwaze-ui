@@ -33,6 +33,11 @@
   margin-top: 0.745em;
 }
 
+#app-list {
+  margin-left: 0.5em;
+  margin-top: 0.745em;
+}
+
 #logout {
   color: #007bff;
   border: none;

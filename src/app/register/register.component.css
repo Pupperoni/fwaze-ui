@@ -11,6 +11,10 @@
   text-align: center;
   min-width: 18em;
 }
+
+.alert {
+  text-align: left;
+}
 .register-form {
   padding: 1em 1em 3em 1em;
   min-width: 18em;

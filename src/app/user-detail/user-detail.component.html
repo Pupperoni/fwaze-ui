@@ -1,10 +1,10 @@
-<div class="user-detail-component row justify-content-center">
-  <div *ngIf="user">
+<div class="user-detail-component" *ngIf="user">
+  <div class="user-detail-container row">
     <div
       *ngIf="user.avatarPath; else noImage"
-      class="user-image-container col col-md-9 col-sm-9 col-9 col-lg-3 col-xl-3"
+      class="user-image-container col-5"
     >
-      <img class="user-image" [src]="getImagePath()" [alt]="user.name" />
+      <img class="user-image " [src]="getImagePath()" [alt]="user.name" />
     </div>
     <ng-template #noImage>
       <img
@@ -12,86 +12,90 @@
         src="../../assets/default-user-profile-image.png"
       />
     </ng-template>
-  </div>
-  <div class="user-info col col-md-9 col-sm-12 col-12 col-lg-3 col-xl-3">
-    <div *ngIf="user">
-      <div class="user-name-large">
-        <h2>
-          {{ user.name }}
-          <span *ngIf="user.role === 1">
-            <img class="adstar" src="../../assets/goldstar.png" />
-          </span>
-          <span *ngIf="user.role === 2">
-            <img class="adstar" src="../../assets/redstar.png" />
-          </span>
-        </h2>
+
+    <div class="user-info-container col-5">
+      <div class="user-info">
+        <div class="user-name-large">
+          <h2>
+            {{ user.name }}
+            <span *ngIf="user.role === 1">
+              <img class="adstar" src="../../assets/goldstar.png" />
+            </span>
+            <span *ngIf="user.role === 2">
+              <img class="adstar" src="../../assets/redstar.png" />
+            </span>
+          </h2>
+        </div>
+
+        <table class="table">
+          <tbody>
+            <tr>
+              <td class="user-info-field-name">
+                Email <fa-icon [icon]="['fa', 'envelope']"></fa-icon>
+              </td>
+              <td class="user-info-field-value">{{ user.email }}</td>
+            </tr>
+            <tr>
+              <td class="user-info-field-name">
+                Role <fa-icon [icon]="['fa', 'user-tag']"></fa-icon>
+              </td>
+              <td *ngIf="user.role === 0" class="user-info-field-value">
+                Regular
+              </td>
+              <td *ngIf="user.role == 1" class="user-info-field-value">
+                Advertiser
+              </td>
+              <td *ngIf="user.role == 2" class="user-info-field-value">
+                Admin
+              </td>
+            </tr>
+            <tr>
+              <td class="user-info-field-name">
+                Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
+              </td>
+              <td class="user-info-field-value">
+                {{ user.home.address }}
+              </td>
+            </tr>
+            <tr>
+              <td class="user-info-field-name">
+                Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
+              </td>
+              <td class="user-info-field-value">
+                {{ user.work.address }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <table class="table">
-        <tr>
-          <td class="user-info-field-name">
-            Email <fa-icon [icon]="['fa', 'envelope']"></fa-icon>
-          </td>
-          <td class="user-info-field-value">{{ user.email }}</td>
-        </tr>
-        <tr>
-          <td class="user-info-field-name">
-            Role <fa-icon [icon]="['fa', 'user-tag']"></fa-icon>
-          </td>
-          <td *ngIf="user.role === 0" class="user-info-field-value">
-            Regular
-          </td>
-          <td *ngIf="user.role == 1" class="user-info-field-value">
-            Advertiser
-          </td>
-          <td *ngIf="user.role == 2" class="user-info-field-value">
-            Admin
-          </td>
-        </tr>
-        <tr>
-          <td class="user-info-field-name">
-            Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
-          </td>
-          <td class="user-info-field-value">
-            {{ user.home.address }}
-          </td>
-        </tr>
-        <tr>
-          <td class="user-info-field-name">
-            Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
-          </td>
-          <td class="user-info-field-value">
-            {{ user.work.address }}
-          </td>
-        </tr>
-      </table>
 
       <!-- <div>
-        <p class="text-danger">
-          <strong>Disclaimer:</strong> In a real app, the home and work
-          addresses of users should not be accessible by the public.
-        </p>
-      </div> -->
+          <p class="text-danger">
+            <strong>Disclaimer:</strong> In a real app, the home and work
+            addresses of users should not be accessible by the public.
+          </p>
+        </div> -->
 
-      <span *ngIf="currentUser">
-        <div *ngIf="user.id == currentUser.id" class="edit-profile">
+      <span class="user-buttons" *ngIf="currentUser">
+        <span *ngIf="user.id == currentUser.id" class="edit-profile">
           <a routerLink="/edit">
-            <button class="btn btn-secondary">
+            <button class="btn btn-primary">
               Edit Profile
             </button>
           </a>
-          <span *ngIf="currentUser.role == 0">
-            <button
-              *ngIf="canApply"
-              class="btn btn-primary"
-              (click)="applyAdvertiser()"
-            >
-              Apply as Advertiser
-            </button>
-            <button *ngIf="!canApply" class="btn btn-primary disabled">
-              Pending
-            </button>
-          </span>
-        </div>
+        </span>
+        <span *ngIf="currentUser.role == 0">
+          <button
+            *ngIf="canApply"
+            class="btn btn-primary"
+            (click)="applyAdvertiser()"
+          >
+            Apply as Advertiser
+          </button>
+          <button *ngIf="!canApply" class="btn btn-primary disabled">
+            Pending
+          </button>
+        </span>
       </span>
     </div>
   </div>
