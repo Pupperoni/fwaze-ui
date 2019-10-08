@@ -9,22 +9,22 @@
     <div *ngIf="markerInfo">
       <div class="container-fluid report-info">
         <div class="report-type-info row">
-          <h6 *ngIf="markerInfo.type == 0">Traffic Jam</h6>
-          <h6 *ngIf="markerInfo.type == 1">Heavy Traffic Jam</h6>
-          <h6 *ngIf="markerInfo.type == 2">Police</h6>
-          <h6 *ngIf="markerInfo.type == 3">Road Closed</h6>
-          <h6 *ngIf="markerInfo.type == 4">Stopped Car</h6>
-          <h6 *ngIf="markerInfo.type == 5">Construction</h6>
-          <h6 *ngIf="markerInfo.type == 6">Minor Accident</h6>
-          <h6 *ngIf="markerInfo.type == 7">Major Accident</h6>
-          <h6 *ngIf="markerInfo.type == 8">Others</h6>
+          <h4 *ngIf="markerInfo.type == 0">Traffic Jam</h4>
+          <h4 *ngIf="markerInfo.type == 1">Heavy Traffic Jam</h4>
+          <h4 *ngIf="markerInfo.type == 2">Police</h4>
+          <h4 *ngIf="markerInfo.type == 3">Road Closed</h4>
+          <h4 *ngIf="markerInfo.type == 4">Stopped Car</h4>
+          <h4 *ngIf="markerInfo.type == 5">Construction</h4>
+          <h4 *ngIf="markerInfo.type == 4">Minor Accident</h4>
+          <h4 *ngIf="markerInfo.type == 7">Major Accident</h4>
+          <h4 *ngIf="markerInfo.type == 8">Others</h4>
         </div>
 
-        <div *ngIf="imagePath" class="image-block row justify-content-center">
+        <div *ngIf="imagePath" class="image-block">
           <img [src]="imagePath" />
         </div>
 
-        <div class="report-user-info row align-self-left">
+        <div class="report-user-info row ">
           Reported by &nbsp;
           <strong>
             <a routerLink="/detail/{{ markerInfo.userId }}">
@@ -32,49 +32,45 @@
             </a>
           </strong>
         </div>
-        <div class="report-position-info row align-self-left">
+        <div class="report-position-info row ">
           Located at &nbsp; <strong>{{ markerInfo.location }}</strong>
         </div>
       </div>
-      <div class="button-group row">
-        <div class="comment-button-div col-2">
-          <button class="btn" (click)="toggleComments()">
-            <fa-icon [icon]="['fa', 'comment']"></fa-icon>
+      <div class="button-group">
+        <button class="btn comment-button" (click)="toggleComments()">
+          <fa-icon [icon]="['fa', 'comment']"></fa-icon>
+        </button>
+
+        <span *ngIf="currentUser; else elseBlock" class="upvote-button">
+          <!-- current user hasnt upvoted - give him a chance to do so -->
+          <button
+            *ngIf="!markerInfo.curUserVoted"
+            class="btn"
+            (click)="addVote(markerInfo.id, currentUser.id)"
+          >
+            <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
           </button>
-        </div>
 
-        <div class="upvote-button-div col">
-          <div *ngIf="currentUser; else elseBlock" class="upvote-button">
-            <!-- current user hasnt upvoted - give him a chance to do so -->
-            <button
-              *ngIf="!markerInfo.curUserVoted"
-              class="btn"
-              (click)="addVote(markerInfo.id, currentUser.id)"
-            >
-              <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
-            </button>
+          <!-- current user has upvoted - clicking this will revoke his upvote -->
+          <button
+            *ngIf="markerInfo.curUserVoted"
+            class="btn"
+            (click)="deleteVote(markerInfo.id, currentUser.id)"
+          >
+            <fa-icon
+              [icon]="['fa', 'thumbs-up']"
+              [styles]="{ color: 'blue' }"
+            ></fa-icon>
+          </button>
+          <label>{{ markerInfo.votes }}</label>
+        </span>
 
-            <!-- current user has upvoted - clicking this will revoke his upvote -->
-            <button
-              *ngIf="markerInfo.curUserVoted"
-              class="btn"
-              (click)="deleteVote(markerInfo.id, currentUser.id)"
-            >
-              <fa-icon
-                [icon]="['fa', 'thumbs-up']"
-                [styles]="{ color: 'blue' }"
-              ></fa-icon>
-            </button>
-            <label>{{ markerInfo.votes }}</label>
-          </div>
-
-          <ng-template #elseBlock>
-            <button class="upvote-button btn disabled">
-              <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
-            </button>
-            <label>{{ markerInfo.votes }}</label>
-          </ng-template>
-        </div>
+        <ng-template #elseBlock>
+          <button class="upvote-button btn disabled">
+            <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
+          </button>
+          <label>{{ markerInfo.votes }}</label>
+        </ng-template>
       </div>
 
       <div *ngIf="commentUp" class="comments">
@@ -95,11 +91,11 @@
           />
           <button type="submit" class="btn btn-primary">Send</button>
         </form>
-        <div class="page-buttons row">
+        <div class="page-buttons">
           <div class="col-6">
             <button
               *ngIf="pageNum > 0"
-              class="btn btn-block btn-secondary"
+              class="btn btn-block btn-default"
               (click)="changePage(pageNum - 1)"
             >
               &lt;
@@ -108,7 +104,7 @@
           <div class="col-6">
             <button
               *ngIf="maxPages > pageNum + 1"
-              class="btn btn-block btn-secondary"
+              class="btn btn-block btn-default"
               (click)="changePage(pageNum + 1)"
             >
               &gt;

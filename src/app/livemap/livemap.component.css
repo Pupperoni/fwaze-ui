@@ -6,8 +6,8 @@ agm-map {
   position: fixed;
 }
 
-#id {
-  margin: 1em;
+#eta {
+  padding: 1em;
   line-height: 5%;
   font-size: 150%;
 }
