@@ -1,10 +1,126 @@
+[class*="col-"] {
+  width: 100%;
+}
+
+input {
+  margin-left: 0.5em;
+  width: 80%;
+  display: inline-block;
+}
+
+.src {
+  padding: 1em 0em 0em 0em;
+  background-color: #cccccc;
+}
+
+.src-icon {
+  color: #0f77ff;
+}
+
+.dest {
+  padding: 0em 0em 1em 0em;
+  background-color: #cccccc;
+}
+
+.dest-icon {
+  color: #e80000;
+}
+
+.map-form {
+  pointer-events: auto;
+  padding-top: 1em;
+}
+
 .form-group {
-  margin: 1em;
-  margin-right: 0em;
+  padding: 0;
+  margin-bottom: 0;
+  text-align: center;
 }
 
 .fxn-button {
-  border-radius: 2cm 2cm 2cm 2cm;
-  margin: 1em;
-  margin-top: 1em;
+  background-color: transparent;
+}
+
+.long-home-work {
+  display: none;
+}
+
+.short-home-work {
+  display: none;
+}
+
+@media only screen and (min-width: 768px) {
+  .src {
+    /* display: block; */
+    background-color: transparent;
+  }
+  .dest {
+    /* display: block; */
+    background-color: transparent;
+  }
+  .map-form {
+    margin: 1em;
+  }
+  .form-group {
+    margin-top: 2em;
+    margin-bottom: 10px;
+  }
+  .form-inline .form-control {
+    width: 80%;
+  }
+  .long-home-work {
+    display: inherit;
+  }
+  .short-home-work {
+    display: none;
+  }
+
+  .fxn-button {
+    background-color: #eeeeee;
+  }
+  input {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .route-endpoint-style-icon {
+    display: none;
+  }
+
+  .col-1 {
+    width: 8.33%;
+  }
+  .col-2 {
+    width: 16.66%;
+  }
+  .col-3 {
+    width: 25%;
+  }
+  .col-4 {
+    width: 33.33%;
+  }
+  .col-5 {
+    width: 41.66%;
+  }
+  .col-6 {
+    width: 50%;
+  }
+  .col-7 {
+    width: 58.33%;
+  }
+  .col-8 {
+    width: 66.66%;
+  }
+  .col-9 {
+    width: 75%;
+  }
+  .col-10 {
+    width: 83.33%;
+  }
+  .col-11 {
+    width: 91.66%;
+  }
+  .col-12 {
+    width: 100%;
+  }
 }

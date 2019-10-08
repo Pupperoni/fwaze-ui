@@ -51,7 +51,7 @@ export class LivemapComponent implements OnInit, OnDestroy {
   // center of BGC
   lat: number = 14.5349;
   lng: number = 121.0403;
-  zoom: number = 18;
+  zoom: number = 15.5;
 
   sourceData = {
     lat: undefined,

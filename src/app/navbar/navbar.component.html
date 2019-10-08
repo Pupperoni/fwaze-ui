@@ -1,77 +1,67 @@
 <div class="navbar-component">
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-    <a class="navbar-main" routerLink="/">FWaze</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <!-- <li class="nav-item active">
-              <a class="nav-link" href="#"
-                >Home <span class="sr-only">(current)</span></a
-              >
-            </li> -->
-        <!-- <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Dropdown
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li> -->
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-header">
+      <button
+        type="button"
+        class="navbar-toggle collapsed btn-outline-primary"
+        data-toggle="collapse"
+        data-target="#collapse-options"
+        aria-expanded="false"
+      >
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" routerLink="/">FWaze</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="collapse-options">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <button
+            id="app-list"
+            *ngIf="currentUser && currentUser.role == 2"
+            class="navbar-link user-button"
+            routerLink="applications"
+          >
+            View Applications
+          </button>
+        </li>
+        <li>
+          <button
+            id="user-detail"
+            *ngIf="currentUser"
+            class="navbar-link user-button"
+            (click)="goTo(currentUser.id)"
+          >
+            {{ currentUser.name }}
+          </button>
+        </li>
+        <li>
+          <a
+            id="logout"
+            *ngIf="currentUser; else notLoggedIn"
+            class="navbar-link user-button"
+            (click)="onLogout()"
+            href="/"
+          >
+            Logout
+          </a>
+        </li>
       </ul>
-      <!-- If user is logged in, show username -->
-      <button
-        id="app-list"
-        *ngIf="currentUser && currentUser.role == 2"
-        class="nav-link user-button"
-        routerLink="applications"
-      >
-        View Applications
-      </button>
 
-      <button
-        id="user-detail"
-        *ngIf="currentUser"
-        class="nav-link user-button"
-        (click)="goTo(currentUser.id)"
-      >
-        {{ currentUser.name }}
-      </button>
-
-      <a
-        id="logout"
-        *ngIf="currentUser; else notLoggedIn"
-        class="nav-link user-button"
-        (click)="onLogout()"
-        href="/"
-      >
-        Logout
-      </a>
-
-      <!-- Else show login and register buttons -->
       <ng-template #notLoggedIn>
-        <a class="nav-link user-button" routerLink="login">Login</a>
-        <a class="nav-link user-button" routerLink="register">Sign up</a>
+        <li>
+          <button class="navbar-link user-button" routerLink="login">
+            Login
+          </button>
+        </li>
+        <li>
+          <button class="navbar-link user-button" routerLink="register">
+            Sign up
+          </button>
+        </li>
       </ng-template>
     </div>
   </nav>

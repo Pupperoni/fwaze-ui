@@ -1,7 +1,8 @@
 .register-component {
-  margin: 12em 0em 0em 0em;
+  margin-top: 12em;
   padding: 2em 2em 2em 2em;
   min-width: 25em;
+  text-align: center;
 }
 .register-header {
   background-color: #b3ffcf;
@@ -9,18 +10,29 @@
   padding: 2em 4em 1em 4em;
   text-align: center;
   min-width: 18em;
-  max-width: 100%;
 }
 .register-form {
   padding: 1em 1em 3em 1em;
   min-width: 18em;
   border-radius: 0 0 1cm 1cm;
+  border-color: transparent #dddddd #dddddd #dddddd;
+  border-style: solid;
+  border-width: 1px;
 }
 
 .form-group {
   width: auto;
+  text-align: left;
 }
 
 .login-redirect {
   margin-bottom: 1em;
+  text-align: left;
+}
+
+@media only screen and (min-width: 768px) {
+  .register-container {
+    width: 60%;
+    display: inline-block;
+  }
 }

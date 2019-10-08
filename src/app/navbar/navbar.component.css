@@ -1,26 +1,22 @@
 .navbar {
   background-color: #b3ffcf;
-  padding: 1em 4em 1em 4em;
-  border-radius: 0 0 0.75cm 0.75cm;
-  z-index: 10;
+  padding: 1em;
+  min-height: 8%;
 }
 
 .navbar-component {
   padding-left: 5em;
   padding-right: 5em;
 }
-.navbar-main {
+
+.navbar-brand {
   color: #000;
   text-decoration: none;
   font-size: 1.8em;
 }
 
-.navbar-main:hover {
+.navbar-brand:hover {
   color: #28e;
-}
-
-a:hover {
-  color: #ff7bff;
 }
 
 .user-button {
@@ -28,12 +24,38 @@ a:hover {
   color: #007bff;
   border: none;
   cursor: pointer;
+  font-size: 120%;
+  /* margin-top: 0.745em; */
+}
+
+#user-detail {
+  margin-left: 0.5em;
+  margin-top: 0.745em;
+}
+
+#logout {
+  color: #007bff;
+  border: none;
 }
 
 .user-button:hover {
   color: #ff7bff;
 }
 
-/* .user-button {
-  font-weight: bold;
-} */
+@media only screen and (min-width: 768px) {
+  .navbar {
+    background-color: #b3ffcf;
+    padding: 1em 4em 1em 4em;
+    border-radius: 0 0 0.75cm 0.75cm;
+    z-index: 10;
+    min-height: 5%;
+  }
+
+  li {
+    margin-top: 0.5em;
+    padding-right: 1em;
+    float: left;
+    display: block;
+    text-align: center;
+  }
+}

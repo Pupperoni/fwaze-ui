@@ -3,21 +3,23 @@
 
   <div id="wrapper">
     <div id="floating-panel">
-      <!-- Form for source and destination: Move to another component -->
-      <app-route-form
-        [sourceData]="sourceData"
-        [destData]="destData"
-        [sourceString]="sourceString"
-        [destString]="destString"
-        [routeUsedEvent]="routeUsedSubject"
-        (onSourceChange)="sourceAddressChange($event)"
-        (onDestinationChange)="destinationAddressChange($event)"
-        (onSwapClick)="swap($event)"
-        (onCurrentLocationClick)="setLocationNow($event)"
-        (onHomeClick)="addHome($event)"
-        (onWorkClick)="addWork($event)"
-      ></app-route-form>
-      <div *ngIf="currentUser">
+      <div class="route-form">
+        <app-route-form
+          [sourceData]="sourceData"
+          [destData]="destData"
+          [sourceString]="sourceString"
+          [destString]="destString"
+          [routeUsedEvent]="routeUsedSubject"
+          (onSourceChange)="sourceAddressChange($event)"
+          (onDestinationChange)="destinationAddressChange($event)"
+          (onSwapClick)="swap($event)"
+          (onCurrentLocationClick)="setLocationNow($event)"
+          (onHomeClick)="addHome($event)"
+          (onWorkClick)="addWork($event)"
+        ></app-route-form>
+      </div>
+
+      <div class="fave-route" *ngIf="currentUser">
         <app-fave-route-options
           [sourceData]="sourceData"
           [destData]="destData"
@@ -27,60 +29,63 @@
           (routeUsed)="onRouteUsed($event)"
         ></app-fave-route-options>
       </div>
+
       <div
         class="directions shadow p-3 mb-5"
         *ngIf="sourceData.lat && destData.lat"
       >
-        <div class="row justify-content-center">
-          <div>
-            <h3>Travel Modes</h3>
+        <div class="directions-container">
+          <div class="row justify-content-center">
+            <div>
+              <h3>Travel Modes</h3>
+            </div>
           </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="direction-buttons btn-group">
-            <button
-              [class.activated]="isActive('DRIVING')"
-              class="btn btn-primary"
-              (click)="changeTravel('DRIVING')"
-            >
-              <fa-icon [icon]="['fa', 'car']"></fa-icon>
-            </button>
-            <button
-              [class.activated]="isActive('WALKING')"
-              class="btn btn-primary"
-              (click)="changeTravel('WALKING')"
-            >
-              <fa-icon [icon]="['fa', 'walking']"></fa-icon>
-            </button>
-            <button
-              [class.activated]="isActive('TRANSIT')"
-              class="btn btn-primary"
-              (click)="changeTravel('TRANSIT')"
-            >
-              <fa-icon [icon]="['fa', 'train']"></fa-icon>
-            </button>
+          <div class="row justify-content-center">
+            <div class="direction-buttons btn-group">
+              <button
+                [class.activated]="isActive('DRIVING')"
+                class="btn btn-primary"
+                (click)="changeTravel('DRIVING')"
+              >
+                <fa-icon [icon]="['fa', 'car']"></fa-icon>
+              </button>
+              <button
+                [class.activated]="isActive('WALKING')"
+                class="btn btn-primary"
+                (click)="changeTravel('WALKING')"
+              >
+                <fa-icon [icon]="['fa', 'walking']"></fa-icon>
+              </button>
+              <button
+                [class.activated]="isActive('TRANSIT')"
+                class="btn btn-primary"
+                (click)="changeTravel('TRANSIT')"
+              >
+                <fa-icon [icon]="['fa', 'train']"></fa-icon>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div class="direction-data-container row justify-content-center">
-          <div class="direction-data" *ngIf="distance && eta">
-            <div class="col-12 align-self-center">
-              Distance
-            </div>
-            <div class="col-12 align-self-center">
-              <strong>{{ distance }}</strong>
-            </div>
-            <div class="col-12 align-self-center">
-              ETA
-            </div>
-            <div class="col-12 align-self-center">
-              <strong>{{ eta }}</strong>
+          <div class="direction-data-container row justify-content-center">
+            <div class="direction-data" *ngIf="distance && eta">
+              <div class="col-12 align-self-center">
+                Distance
+              </div>
+              <div class="col-12 align-self-center">
+                <strong>{{ distance }}</strong>
+              </div>
+              <div class="col-12 align-self-center">
+                ETA
+              </div>
+              <div class="col-12 align-self-center">
+                <strong>{{ eta }}</strong>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="row justify-content-center">
+      <div class="row filter-button-div justify-content-center">
         <button
           type="button"
           class="btn btn-info filter-button"
@@ -192,3 +197,10 @@
 
   <app-filter-modal (setFilters)="onFilterSubmit($event)"></app-filter-modal>
 </div>
+
+<footer class="footer " *ngIf="distance && eta">
+  <div class="direction-data-footer">
+    <strong id="eta">{{ eta }}</strong>
+    <span id="distance">{{ distance }}</span>
+  </div>
+</footer>

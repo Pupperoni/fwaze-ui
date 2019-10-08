@@ -1,53 +1,59 @@
-<div class="login-component row justify-content-center">
-  <div class="col col-md-6 col-sm-9 col-9 col-lg-6 col-xl-6">
-    <div class="login-header shadow ">
-      <h2>Login</h2>
-    </div>
-    <div class="login-form shadow bg-white">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
-        <div class="form-group">
-          <label>Username: </label>
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            formControlName="name"
-          />
-        </div>
-
-        <div
-          *ngIf="name.invalid && (name.dirty || name.touched)"
-          class="alert alert-danger"
-        >
-          <div *ngIf="name.errors.required">
-            Name is required.
+<div class="login-component">
+  <div class="row">
+    <div class="login-container">
+      <div class="login-header ">
+        <h2>Login</h2>
+      </div>
+      <div class="login-form">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
+          <div class="form-group">
+            <label>Username: </label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              formControlName="name"
+            />
           </div>
-        </div>
 
-        <div class="form-group ">
-          <label>Password: </label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            formControlName="password"
-          />
-        </div>
-        <div
-          *ngIf="password.invalid && (password.dirty || password.touched)"
-          class="alert alert-danger"
-        >
-          <div *ngIf="password.errors.required">
-            Password is required.
+          <div
+            *ngIf="name.invalid && (name.dirty || name.touched)"
+            class="alert alert-danger"
+          >
+            <div *ngIf="name.errors.required">
+              Name is required.
+            </div>
           </div>
-        </div>
-        <div class="register-redirect">
-          <a routerLink="/register">Register here!</a>
-        </div>
-        <button id="login-btn" type="submit" class="btn btn-primary btn-block">
-          Log in
-        </button>
-      </form>
+
+          <div class="form-group ">
+            <label>Password: </label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              formControlName="password"
+            />
+          </div>
+          <div
+            *ngIf="password.invalid && (password.dirty || password.touched)"
+            class="alert alert-danger"
+          >
+            <div *ngIf="password.errors.required">
+              Password is required.
+            </div>
+          </div>
+          <div class="register-redirect">
+            <a routerLink="/register">Register here!</a>
+          </div>
+          <button
+            id="login-btn"
+            type="submit"
+            class="btn btn-primary btn-block"
+          >
+            Log in
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

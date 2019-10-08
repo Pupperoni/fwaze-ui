@@ -137,7 +137,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       this.user = res.user;
       this.userImage = `http://${environment.UMSAPIUrl.HOST}:${environment.UMSAPIUrl.PORT}/users/${this.user.id}/image`;
       this.imageTimeStamp = new Date().getTime();
-
       // update current user if there are any changes
       if (this.currentUser && this.currentUser.id === this.user.id) {
         if (this.user.home.address !== "") {
