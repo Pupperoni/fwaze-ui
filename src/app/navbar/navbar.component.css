@@ -9,6 +9,16 @@
   padding-right: 5em;
 }
 
+nav {
+  margin-bottom: 0;
+  border: none;
+}
+
+.navbar-collapse {
+  margin-bottom: 0;
+  border-top: none;
+}
+
 .navbar-brand {
   color: #000;
   text-decoration: none;
@@ -25,25 +35,23 @@
   border: none;
   cursor: pointer;
   font-size: 120%;
-  /* margin-top: 0.745em; */
-}
-
-#user-detail {
-  margin-left: 0.5em;
-  margin-top: 0.745em;
-}
-
-#app-list {
-  margin-left: 0.5em;
-  margin-top: 0.745em;
-}
-
-#logout {
-  color: #007bff;
-  border: none;
 }
 
 .user-button:hover {
+  color: #ff7bff;
+}
+
+.navbar-link {
+  padding: 0 0 2px 0;
+  margin: 10px 5px 0 5px;
+}
+
+li a {
+  padding: 1px 0 0 0;
+  color: #007bff;
+}
+
+li a:hover {
   color: #ff7bff;
 }
 

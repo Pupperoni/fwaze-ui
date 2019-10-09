@@ -1,6 +1,6 @@
 module.exports = function() {
   return {
-    map: element(by.className("livemap-component")),
+    map: element(by.tagName("agm-map")),
     reportBtn: element(
       by.xpath(
         "/html/body/app-root/div/app-livemap/div/div/agm-map/div[1]/div/div/div[1]/div[3]/div/div[4]/div/div/div/div/div/div/div[2]/button"

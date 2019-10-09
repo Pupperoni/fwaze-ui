@@ -4,6 +4,7 @@
 
 .route-button {
   margin: 1em;
+  min-width: 25px;
 }
 
 .fave-route-component {
@@ -11,10 +12,9 @@
   pointer-events: auto;
 }
 
-select {
-  text-align-last: center;
+#selectedRoute {
   display: inline-block;
-  width: 70%;
+  min-width: 20em;
 }
 
 .route-options-selector {
@@ -23,8 +23,8 @@ select {
 }
 
 @media only screen and (min-width: 768px) {
-  select {
-    width: 90%;
+  #selectedRoute {
+    width: 20em;
   }
 
   .col-1 {

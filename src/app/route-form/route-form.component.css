@@ -10,7 +10,8 @@ input {
 
 .src {
   padding: 1em 0em 0em 0em;
-  background-color: #cccccc;
+  background-color: #b3ffcf;
+  border: none;
 }
 
 .src-icon {
@@ -19,26 +20,24 @@ input {
 
 .dest {
   padding: 0em 0em 1em 0em;
-  background-color: #cccccc;
+  background-color: #b3ffcf;
 }
 
 .dest-icon {
   color: #e80000;
 }
 
-.map-form {
-  pointer-events: auto;
-  padding-top: 1em;
-}
-
 .form-group {
   padding: 0;
   margin-bottom: 0;
   text-align: center;
+  pointer-events: auto;
 }
 
 .fxn-button {
   background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .long-home-work {
@@ -76,7 +75,7 @@ input {
   }
 
   .fxn-button {
-    background-color: #eeeeee;
+    background-color: #ededed;
   }
   input {
     margin-left: 0;

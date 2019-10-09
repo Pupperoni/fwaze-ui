@@ -24,45 +24,95 @@
         </div>
 
         <div class="modal-body">
-          <div class="row">
-            <h3>Report Type</h3>
-          </div>
-          <div class="row">
-            <div
-              *ngFor="let choice of btnClicked; let i = index"
-              class="text-center col-lg-3 col-md-6 col-sm-6 align-self-center"
-            >
-              <button
-                class="btn btn-secondary choice-button-type"
-                [class.activated]="isActive(i)"
-                [class.disabled]="isDisabled()"
-                (click)="onBtnClicked(i)"
+          <div id="filter-buttons">
+            <div class="row">
+              <h3>Report Type</h3>
+            </div>
+            <div class="row">
+              <div
+                *ngFor="let choice of btnClicked; let i = index"
+                class="text-center col-lg-3 col-md-6 col-sm-6 align-self-center"
               >
-                {{ choice.name }}
-              </button>
+                <button
+                  class="btn btn-default choice-button-type"
+                  [class.activated]="isActive(i)"
+                  [class.disabled]="isDisabled()"
+                  (click)="onBtnClicked(i)"
+                >
+                  {{ choice.name }}
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <h3>Group</h3>
+            </div>
+            <div class="row">
+              <div class="text-center col-lg-6 col-md-6 col-sm-6">
+                <button
+                  class="btn btn-secondary choice-button-group"
+                  [class.activated]="isGroupActive(0)"
+                  (click)="onGroupBtnClicked(0)"
+                >
+                  Reports
+                </button>
+              </div>
+              <div class="text-center col-lg-6 col-md-6 col-sm-6">
+                <button
+                  class="btn btn-secondary choice-button-group"
+                  [class.activated]="isGroupActive(1)"
+                  (click)="onGroupBtnClicked(1)"
+                >
+                  Advertisements
+                </button>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <h3>Group</h3>
-          </div>
-          <div class="row">
-            <div class="text-center col-lg-6 col-md-6 col-sm-6">
-              <button
-                class="btn btn-secondary choice-button-group"
-                [class.activated]="isGroupActive(0)"
-                (click)="onGroupBtnClicked(0)"
-              >
-                Reports
-              </button>
+
+          <div id="filter-checkbox">
+            <div class="row">
+              <h3>Report Type</h3>
             </div>
-            <div class="text-center col-lg-6 col-md-6 col-sm-6">
-              <button
-                class="btn btn-secondary choice-button-group"
-                [class.activated]="isGroupActive(1)"
-                (click)="onGroupBtnClicked(1)"
+            <div class="row">
+              <div
+                *ngFor="let choice of btnClicked; let i = index"
+                class="col-lg-3 col-md-6 col-sm-6 align-self-center"
               >
-                Advertisements
-              </button>
+                <label>
+                  <input
+                    type="checkbox"
+                    [checked]="isActive(i)"
+                    [disabled]="isDisabled() ? 'disabled' : false"
+                    (click)="onBtnClicked(i)"
+                  />
+                  {{ choice.name }}
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <h3>Group</h3>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <label>
+                  <input
+                    type="checkbox"
+                    [checked]="isGroupActive(0)"
+                    (click)="onGroupBtnClicked(0)"
+                  />
+                  Reports
+                </label>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <label>
+                  <input
+                    type="checkbox"
+                    [checked]="isGroupActive(1)"
+                    (click)="onGroupBtnClicked(1)"
+                    checked
+                  />
+                  Advertisements
+                </label>
+              </div>
             </div>
           </div>
         </div>

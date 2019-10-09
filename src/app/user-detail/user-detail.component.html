@@ -4,7 +4,11 @@
       *ngIf="user.avatarPath; else noImage"
       class="user-image-container col-5"
     >
-      <img class="user-image " [src]="getImagePath()" [alt]="user.name" />
+      <img
+        class="user-image img-circle"
+        [src]="getImagePath()"
+        [alt]="user.name"
+      />
     </div>
     <ng-template #noImage>
       <img

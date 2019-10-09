@@ -1,116 +1,112 @@
 <div class="register-component">
-  <div class="row">
-    <div class="register-container">
-      <div class="register-header ">
-        <h2>Register</h2>
-      </div>
-      <div class="register-form  bg-white">
-        <form
-          [formGroup]="registerForm"
-          (ngSubmit)="onSubmit(registerForm.value)"
+  <div class="register-container">
+    <div class="register-header ">
+      <h2>Register</h2>
+    </div>
+    <div class="register-form  bg-white">
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit(registerForm.value)"
+      >
+        <div class="form-group">
+          <label>Username: </label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            formControlName="name"
+          />
+        </div>
+        <div
+          *ngIf="name.invalid && (name.dirty || name.touched)"
+          class="alert alert-danger"
         >
-          <div class="form-group">
-            <label>Username: </label>
-            <input
-              type="text"
-              class="form-control"
-              id="name"
-              formControlName="name"
-            />
+          <div *ngIf="name.errors.required">
+            Name is required.
           </div>
-          <div
-            *ngIf="name.invalid && (name.dirty || name.touched)"
-            class="alert alert-danger"
-          >
-            <div *ngIf="name.errors.required">
-              Name is required.
-            </div>
+        </div>
+        <div class="form-group">
+          <label>Email address: </label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            formControlName="email"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div
+          *ngIf="email.invalid && (email.dirty || email.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="email.errors.required">
+            Email is required.
           </div>
-          <div class="form-group">
-            <label>Email address: </label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              formControlName="email"
-              aria-describedby="emailHelp"
-            />
+          <div *ngIf="email.errors.email">
+            Format is not a valid email address.
           </div>
-          <div
-            *ngIf="email.invalid && (email.dirty || email.touched)"
-            class="alert alert-danger"
-          >
-            <div *ngIf="email.errors.required">
-              Email is required.
-            </div>
-            <div *ngIf="email.errors.email">
-              Format is not a valid email address.
-            </div>
+        </div>
+        <div class="form-group">
+          <label>Password: </label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            formControlName="password"
+          />
+        </div>
+        <div
+          *ngIf="password.invalid && (password.dirty || password.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="password.errors.required">
+            Password is required.
           </div>
-          <div class="form-group">
-            <label>Password: </label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              formControlName="password"
-            />
+        </div>
+        <div class="form-group">
+          <label>Confirm password: </label>
+          <input
+            type="password"
+            class="form-control"
+            id="confirm-password"
+            formControlName="confirmPassword"
+          />
+        </div>
+        <div
+          *ngIf="
+            confirmPassword.invalid &&
+            (confirmPassword.dirty || confirmPassword.touched)
+          "
+          class="alert alert-danger"
+        >
+          <div *ngIf="confirmPassword.errors.required">
+            Password confirmation is required.
           </div>
-          <div
-            *ngIf="password.invalid && (password.dirty || password.touched)"
-            class="alert alert-danger"
-          >
-            <div *ngIf="password.errors.required">
-              Password is required.
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Confirm password: </label>
-            <input
-              type="password"
-              class="form-control"
-              id="confirm-password"
-              formControlName="confirmPassword"
-            />
-          </div>
-          <div
-            *ngIf="
-              confirmPassword.invalid &&
-              (confirmPassword.dirty || confirmPassword.touched)
-            "
-            class="alert alert-danger"
-          >
-            <div *ngIf="confirmPassword.errors.required">
-              Password confirmation is required.
-            </div>
-          </div>
+        </div>
 
-          <div
-            *ngIf="
-              (confirmPassword.dirty || confirmPassword.touched) &&
-              (password.dirty || password.touched) &&
-              password.value != confirmPassword.value
-            "
-            class="alert alert-danger"
-            role="alert"
-          >
-            Passwords don't match
-          </div>
-          <div class="login-redirect">
-            <a routerLink="/login">Already a member? Login here!</a>
-          </div>
+        <div
+          *ngIf="
+            (confirmPassword.dirty || confirmPassword.touched) &&
+            (password.dirty || password.touched) &&
+            password.value != confirmPassword.value
+          "
+          class="alert alert-danger"
+          role="alert"
+        >
+          Passwords don't match
+        </div>
+        <div class="login-redirect">
+          <a routerLink="/login">Already a member? Login here!</a>
+        </div>
 
-          <button
-            id="register-btn"
-            type="submit"
-            class="btn btn-primary btn-block"
-          >
-            Sign up
-          </button>
-        </form>
-      </div>
+        <button
+          id="register-btn"
+          type="submit"
+          class="btn btn-primary btn-block"
+        >
+          Sign up
+        </button>
+      </form>
     </div>
   </div>
-
-  <!-- <button (click)="getAll()" class="btn btn-primary">Get users</button> -->
 </div>

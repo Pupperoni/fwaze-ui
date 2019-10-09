@@ -8,6 +8,10 @@
   border-color: #555555;
 }
 
+.filter-modal-component {
+  width: 100%;
+}
+
 .choice-name-type {
   text-align: center;
 }
@@ -28,6 +32,15 @@
   border: none;
 }
 
+#filter-buttons {
+  display: none;
+}
+
+#filter-checkbox {
+  display: inline-block;
+  text-align: left;
+}
+
 .modal-body {
   text-align: center;
 }
@@ -38,5 +51,14 @@
   }
   .choice-button-group {
     width: 140px;
+  }
+  #filter-buttons {
+    display: block;
+  }
+  #filter-checkbox {
+    display: none;
+  }
+  .filter-modal-component {
+    width: 80%;
   }
 }

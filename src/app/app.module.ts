@@ -35,7 +35,8 @@ import {
   faTimes,
   faFilter,
   faMapMarkerAlt,
-  faThumbtack
+  faThumbtack,
+  faCaretDown
 } from "@fortawesome/free-solid-svg-icons";
 import { AgmCoreModule } from "@agm/core";
 import { AgmDirectionModule } from "agm-direction";
@@ -120,5 +121,6 @@ export class AppModule {
     library.add(faFilter);
     library.add(faMapMarkerAlt);
     library.add(faThumbtack);
+    library.add(faCaretDown);
   }
 }

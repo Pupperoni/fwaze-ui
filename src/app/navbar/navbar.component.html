@@ -18,51 +18,48 @@
 
     <div class="collapse navbar-collapse" id="collapse-options">
       <ul class="nav navbar-nav navbar-right">
-        <li>
+        <li *ngIf="currentUser && currentUser.role == 2">
           <button
             id="app-list"
-            *ngIf="currentUser && currentUser.role == 2"
             class="navbar-link user-button"
             routerLink="applications"
           >
             View Applications
           </button>
         </li>
-        <li>
+        <li *ngIf="currentUser">
           <button
             id="user-detail"
-            *ngIf="currentUser"
             class="navbar-link user-button"
             (click)="goTo(currentUser.id)"
           >
             {{ currentUser.name }}
           </button>
         </li>
-        <li>
+        <li *ngIf="currentUser; else notLoggedIn">
           <a
-            id="logout"
-            *ngIf="currentUser; else notLoggedIn"
-            class="navbar-link user-button"
-            (click)="onLogout()"
             href="/"
+            id="logout"
+            class="btn-link navbar-link user-button"
+            (click)="onLogout()"
           >
             Logout
           </a>
         </li>
-      </ul>
 
-      <ng-template #notLoggedIn>
-        <li>
-          <button class="navbar-link user-button" routerLink="login">
-            Login
-          </button>
-        </li>
-        <li>
-          <button class="navbar-link user-button" routerLink="register">
-            Sign up
-          </button>
-        </li>
-      </ng-template>
+        <ng-template #notLoggedIn>
+          <li>
+            <button class="navbar-link user-button" routerLink="login">
+              Login
+            </button>
+          </li>
+          <li>
+            <button class="navbar-link user-button" routerLink="register">
+              Sign up
+            </button>
+          </li>
+        </ng-template>
+      </ul>
     </div>
   </nav>
 </div>

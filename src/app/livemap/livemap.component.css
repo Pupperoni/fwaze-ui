@@ -25,10 +25,6 @@ img {
   width: 100%;
 }
 
-.filter-button {
-  margin-top: 1em;
-}
-
 .footer {
   position: absolute;
   bottom: 0;
@@ -58,6 +54,12 @@ img {
   box-shadow: 3px 3px 2px #dddddd;
 }
 
+.direction-buttons-footer {
+  float: right;
+  margin-top: 1em;
+  margin-right: 2em;
+}
+
 .direction-data-container {
   text-align: center;
   margin: 1em;
@@ -71,7 +73,6 @@ img {
 
 .directions {
   text-align: center;
-  pointer-events: auto;
   display: none;
 }
 
@@ -80,6 +81,27 @@ img {
   width: 300px;
   display: inline-block;
   border-radius: 4px;
+}
+
+.collapsible {
+  margin: 0;
+  background-color: #aaa;
+  color: #444;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  outline: none;
+  pointer-events: auto;
+  border-radius: 4px 4px 0 0;
+}
+
+#content-collapsible {
+  border-style: solid;
+  border-width: 1px;
+  background-color: #ccc;
+  border-color: transparent #aaa #aaa #aaa;
+  pointer-events: auto;
+  border-radius: 0 0 4px 4px;
 }
 
 #wrapper {
@@ -94,8 +116,17 @@ img {
   width: 100%;
 }
 
-.filter-button-div {
+.filter-button {
   pointer-events: auto;
+}
+
+.filter-button-div {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#map-functions {
+  display: none;
 }
 
 #floating-panel {
@@ -123,6 +154,7 @@ img {
   }
 
   .filter-button-div {
+    margin-top: 0;
     width: 30%;
   }
 
@@ -136,6 +168,14 @@ img {
   }
 
   .footer {
+    display: none;
+  }
+
+  #map-functions {
+    display: block;
+  }
+
+  #collapsible-container {
     display: none;
   }
 }

@@ -39,8 +39,11 @@ img {
 
 input {
   margin-left: 0.5em;
-  width: 10%;
   display: inline-block;
+}
+
+.toggle-button {
+  background-color: #ffffff;
 }
 
 .upvote-button {
@@ -51,4 +54,19 @@ input {
 .comment-button {
   padding-left: 1em;
   padding-right: 1em;
+}
+
+@media only screen and (min-width: 768px) {
+  .form-group {
+    margin-top: 2em;
+    margin-bottom: 10px;
+  }
+  .form-inline .form-control {
+    width: 80%;
+  }
+
+  input {
+    margin-left: 0;
+    width: 100%;
+  }
 }

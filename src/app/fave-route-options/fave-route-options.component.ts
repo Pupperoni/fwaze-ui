@@ -30,6 +30,7 @@ export class FaveRouteOptionsComponent implements OnInit, OnDestroy {
 
   faveRoutes = [];
   selectedRoute: number = -1;
+  routeName = "Select Routes";
   currentUser;
   constructor(
     private cookieService: CookieService,
@@ -63,18 +64,20 @@ export class FaveRouteOptionsComponent implements OnInit, OnDestroy {
     this.routeUsedSubscription.unsubscribe();
   }
 
-  useRoute() {
-    if (this.selectedRoute != -1) {
+  useRoute(index) {
+    this.selectedRoute = index;
+    this.routeName = this.faveRoutes[index].name;
+    if (index != -1) {
       const destination = {
-        lat: this.faveRoutes[this.selectedRoute].destination_coords.y,
-        lng: this.faveRoutes[this.selectedRoute].destination_coords.x
+        lat: this.faveRoutes[index].destination_coords.y,
+        lng: this.faveRoutes[index].destination_coords.x
       };
       const source = {
-        lat: this.faveRoutes[this.selectedRoute].source_coords.y,
-        lng: this.faveRoutes[this.selectedRoute].source_coords.x
+        lat: this.faveRoutes[index].source_coords.y,
+        lng: this.faveRoutes[index].source_coords.x
       };
-      this.sourceString = this.faveRoutes[this.selectedRoute].source_string;
-      this.destString = this.faveRoutes[this.selectedRoute].destination_string;
+      this.sourceString = this.faveRoutes[index].source_string;
+      this.destString = this.faveRoutes[index].destination_string;
 
       this.routeUsed.emit({
         source: source,
@@ -137,6 +140,7 @@ export class FaveRouteOptionsComponent implements OnInit, OnDestroy {
         });
         this.faveRoutes.splice(this.selectedRoute, 1);
         this.selectedRoute = -1;
+        this.routeName = "Select Routes";
       });
     } else if (!this.currentUser) {
       this.toastr.error("Please login", "Error", { timeOut: 5000 });

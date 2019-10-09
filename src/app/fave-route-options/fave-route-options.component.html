@@ -1,7 +1,7 @@
 <div class="fave-route-component">
   <div class="row route-options-selector justify-content-center">
     <div class="col align-self-center">
-      <select
+      <!-- <select
         class="form-control"
         id="selectedRoute"
         [(ngModel)]="selectedRoute"
@@ -11,26 +11,55 @@
         <option *ngFor="let route of faveRoutes; let i = index" [value]="i">
           {{ route.name }}
         </option>
-      </select>
+      </select> -->
+      <div class="btn-group">
+        <button
+          id="selectedRoute"
+          type="button"
+          class="form-control dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {{ routeName }} <fa-icon [icon]="['fa', 'caret-down']"></fa-icon>
+        </button>
+
+        <ul *ngIf="faveRoutes.length > 0" class="dropdown-menu">
+          <li
+            id="selectedRoute"
+            *ngFor="let route of faveRoutes; let i = index"
+            [value]="i"
+            (click)="useRoute(i)"
+          >
+            <a href="#">{{ route.name }}</a>
+          </li>
+        </ul>
+
+        <ul *ngIf="faveRoutes.length == 0" class="dropdown-menu">
+          <li id="selectedRoute" [value]="-1">
+            <a href="#">No routes found</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
+
   <div class="row justify-content-center">
     <button
       type="button"
-      class="btn btn-success route-button col"
+      class="btn btn-success route-button"
       data-toggle="modal"
       data-target="#saveRouteModal"
     >
-      Save Route <fa-icon [icon]="['fa', 'heart']"></fa-icon>
+      Save <fa-icon [icon]="['fa', 'heart']"></fa-icon>
     </button>
-
     <button
       [class.disabled]="selectedRoute == -1"
       type="button"
-      class="btn btn-danger route-button col"
+      class="btn btn-danger route-button "
       (click)="deleteRoute()"
     >
-      Delete Route <fa-icon [icon]="['fa', 'times']"></fa-icon>
+      Delete <fa-icon [icon]="['fa', 'times']"></fa-icon>
     </button>
   </div>
 

@@ -19,15 +19,63 @@
         ></app-route-form>
       </div>
 
-      <div class="fave-route" *ngIf="currentUser">
-        <app-fave-route-options
-          [sourceData]="sourceData"
-          [destData]="destData"
-          [sourceString]="sourceString"
-          [destString]="destString"
-          [routeUsedEvent]="routeUsedSubject"
-          (routeUsed)="onRouteUsed($event)"
-        ></app-fave-route-options>
+      <div id="collapsible-container">
+        <button
+          type="button"
+          class="btn collapsible"
+          data-toggle="collapse"
+          data-target="#content-collapsible"
+        >
+          <fa-icon [icon]="['fa', 'caret-down']"></fa-icon>
+        </button>
+
+        <div id="content-collapsible" class="collapse">
+          <div class="row filter-button-div justify-content-center">
+            <button
+              type="button"
+              class="btn btn-info filter-button"
+              data-toggle="modal"
+              data-target="#filterModal"
+            >
+              Filter <fa-icon [icon]="['fa', 'filter']"></fa-icon>
+            </button>
+          </div>
+
+          <div class="fave-route" *ngIf="currentUser">
+            <app-fave-route-options
+              [sourceData]="sourceData"
+              [destData]="destData"
+              [sourceString]="sourceString"
+              [destString]="destString"
+              [routeUsedEvent]="routeUsedSubject"
+              (routeUsed)="onRouteUsed($event)"
+            ></app-fave-route-options>
+          </div>
+        </div>
+      </div>
+
+      <div id="map-functions">
+        <div class="row filter-button-div justify-content-center">
+          <button
+            type="button"
+            class="btn btn-info filter-button"
+            data-toggle="modal"
+            data-target="#filterModal"
+          >
+            Filter <fa-icon [icon]="['fa', 'filter']"></fa-icon>
+          </button>
+        </div>
+
+        <div class="fave-route" *ngIf="currentUser">
+          <app-fave-route-options
+            [sourceData]="sourceData"
+            [destData]="destData"
+            [sourceString]="sourceString"
+            [destString]="destString"
+            [routeUsedEvent]="routeUsedSubject"
+            (routeUsed)="onRouteUsed($event)"
+          ></app-fave-route-options>
+        </div>
       </div>
 
       <div
@@ -84,17 +132,6 @@
           </div>
         </div>
       </div>
-
-      <div class="row filter-button-div justify-content-center">
-        <button
-          type="button"
-          class="btn btn-info filter-button"
-          data-toggle="modal"
-          data-target="#filterModal"
-        >
-          Filter <fa-icon [icon]="['fa', 'filter']"></fa-icon>
-        </button>
-      </div>
     </div>
 
     <!-- Main map component -->
@@ -102,6 +139,8 @@
       [latitude]="lat"
       [longitude]="lng"
       [zoom]="zoom"
+      [minZoom]="3"
+      [streetViewControl]="false"
       (mapClick)="onMapClick($event)"
       (boundsChange)="mapPositionChange($event)"
       (zoomChange)="mapZoomChange($event)"
@@ -202,5 +241,28 @@
   <div class="direction-data-footer">
     <strong id="eta">{{ eta }}</strong>
     <span id="distance">{{ distance }}</span>
+    <div class="direction-buttons-footer btn-group">
+      <button
+        [class.activated]="isActive('DRIVING')"
+        class="btn btn-primary"
+        (click)="changeTravel('DRIVING')"
+      >
+        <fa-icon [icon]="['fa', 'car']"></fa-icon>
+      </button>
+      <button
+        [class.activated]="isActive('WALKING')"
+        class="btn btn-primary"
+        (click)="changeTravel('WALKING')"
+      >
+        <fa-icon [icon]="['fa', 'walking']"></fa-icon>
+      </button>
+      <button
+        [class.activated]="isActive('TRANSIT')"
+        class="btn btn-primary"
+        (click)="changeTravel('TRANSIT')"
+      >
+        <fa-icon [icon]="['fa', 'train']"></fa-icon>
+      </button>
+    </div>
   </div>
 </footer>

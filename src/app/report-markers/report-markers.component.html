@@ -15,7 +15,7 @@
           <h4 *ngIf="markerInfo.type == 3">Road Closed</h4>
           <h4 *ngIf="markerInfo.type == 4">Stopped Car</h4>
           <h4 *ngIf="markerInfo.type == 5">Construction</h4>
-          <h4 *ngIf="markerInfo.type == 4">Minor Accident</h4>
+          <h4 *ngIf="markerInfo.type == 6">Minor Accident</h4>
           <h4 *ngIf="markerInfo.type == 7">Major Accident</h4>
           <h4 *ngIf="markerInfo.type == 8">Others</h4>
         </div>
@@ -37,7 +37,10 @@
         </div>
       </div>
       <div class="button-group">
-        <button class="btn comment-button" (click)="toggleComments()">
+        <button
+          class="btn toggle-button comment-button"
+          (click)="toggleComments()"
+        >
           <fa-icon [icon]="['fa', 'comment']"></fa-icon>
         </button>
 
@@ -45,7 +48,7 @@
           <!-- current user hasnt upvoted - give him a chance to do so -->
           <button
             *ngIf="!markerInfo.curUserVoted"
-            class="btn"
+            class="btn toggle-button"
             (click)="addVote(markerInfo.id, currentUser.id)"
           >
             <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
@@ -54,7 +57,7 @@
           <!-- current user has upvoted - clicking this will revoke his upvote -->
           <button
             *ngIf="markerInfo.curUserVoted"
-            class="btn"
+            class="btn toggle-button"
             (click)="deleteVote(markerInfo.id, currentUser.id)"
           >
             <fa-icon
@@ -89,10 +92,12 @@
             placeholder="Type something..."
             formControlName="body"
           />
-          <button type="submit" class="btn btn-primary">Send</button>
+          <button type="submit" class="btn btn-primary submit-button">
+            Send
+          </button>
         </form>
-        <div class="page-buttons">
-          <div class="col-6">
+        <div class="page-buttons row">
+          <div class="col-xs-6">
             <button
               *ngIf="pageNum > 0"
               class="btn btn-block btn-default"
@@ -101,7 +106,7 @@
               &lt;
             </button>
           </div>
-          <div class="col-6">
+          <div class="col-xs-6">
             <button
               *ngIf="maxPages > pageNum + 1"
               class="btn btn-block btn-default"
