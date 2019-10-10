@@ -32,10 +32,6 @@
   border: none;
 }
 
-#filter-buttons {
-  display: none;
-}
-
 #filter-checkbox {
   display: inline-block;
   text-align: left;
@@ -51,12 +47,6 @@
   }
   .choice-button-group {
     width: 140px;
-  }
-  #filter-buttons {
-    display: block;
-  }
-  #filter-checkbox {
-    display: none;
   }
   .filter-modal-component {
     width: 80%;

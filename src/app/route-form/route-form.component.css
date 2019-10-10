@@ -40,14 +40,6 @@ input {
   cursor: pointer;
 }
 
-.long-home-work {
-  display: none;
-}
-
-.short-home-work {
-  display: none;
-}
-
 @media only screen and (min-width: 768px) {
   .src {
     /* display: block; */
@@ -67,15 +59,12 @@ input {
   .form-inline .form-control {
     width: 80%;
   }
-  .long-home-work {
-    display: inherit;
-  }
-  .short-home-work {
-    display: none;
-  }
 
   .fxn-button {
-    background-color: #ededed;
+    background-color: #b3ffcf;
+    border-style: solid;
+    border-color: #000;
+    border-width: 0.1em;
   }
   input {
     margin-left: 0;

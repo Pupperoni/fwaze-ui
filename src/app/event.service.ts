@@ -24,8 +24,6 @@ export class EventService {
 
   constructor(private socket: EventsSocket) {
     this.eventReceived.subscribe(event => {
-      console.log(event);
-
       /* TO DO: Use Switch-Case */
 
       // reports aggregate

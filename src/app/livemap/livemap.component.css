@@ -73,7 +73,6 @@ img {
 
 .directions {
   text-align: center;
-  display: none;
 }
 
 .directions-container {
@@ -83,22 +82,31 @@ img {
   border-radius: 4px;
 }
 
+#collapsible-container {
+  margin-top: 0.5em;
+}
+
 .collapsible {
   margin: 0;
-  background-color: #aaa;
+  background-color: #a0e2fc;
   color: #444;
   cursor: pointer;
   width: 100%;
-  border: none;
+  border-style: solid;
+  border-color: #222;
   outline: none;
   pointer-events: auto;
   border-radius: 4px 4px 0 0;
 }
 
+.collapsible.collapsed {
+  border-radius: 4px 4px 4px 4px;
+}
+
 #content-collapsible {
   border-style: solid;
   border-width: 1px;
-  background-color: #ccc;
+  background-color: #ceffe0;
   border-color: transparent #aaa #aaa #aaa;
   pointer-events: auto;
   border-radius: 0 0 4px 4px;
@@ -123,10 +131,6 @@ img {
 .filter-button-div {
   margin-top: 1em;
   margin-bottom: 1em;
-}
-
-#map-functions {
-  display: none;
 }
 
 #floating-panel {
@@ -160,22 +164,9 @@ img {
 
   .directions {
     width: 30%;
-    display: block;
   }
 
   #floating-panel {
     padding: 2em;
-  }
-
-  .footer {
-    display: none;
-  }
-
-  #map-functions {
-    display: block;
-  }
-
-  #collapsible-container {
-    display: none;
   }
 }

@@ -24,7 +24,7 @@
         </div>
 
         <div class="modal-body">
-          <div id="filter-buttons">
+          <div id="filter-buttons" class="hidden-xs">
             <div class="row">
               <h3>Report Type</h3>
             </div>
@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <div id="filter-checkbox">
+          <div id="filter-checkbox" class="visible-xs-inline-block">
             <div class="row">
               <h3>Report Type</h3>
             </div>
@@ -80,6 +80,7 @@
                 <label>
                   <input
                     type="checkbox"
+                    class="custom-control-input"
                     [checked]="isActive(i)"
                     [disabled]="isDisabled() ? 'disabled' : false"
                     (click)="onBtnClicked(i)"
@@ -96,6 +97,7 @@
                 <label>
                   <input
                     type="checkbox"
+                    class="custom-control-input"
                     [checked]="isGroupActive(0)"
                     (click)="onGroupBtnClicked(0)"
                   />
@@ -106,6 +108,7 @@
                 <label>
                   <input
                     type="checkbox"
+                    class="custom-control-input"
                     [checked]="isGroupActive(1)"
                     (click)="onGroupBtnClicked(1)"
                     checked

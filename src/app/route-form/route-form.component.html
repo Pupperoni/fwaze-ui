@@ -16,12 +16,12 @@
           (onAddressChange)="sourceAddressChange($event)"
         />
         <button
-          class="btn btn-default fxn-button text-center"
+          class="btn fxn-button text-center"
           (click)="swapButtonClicked()"
         >
           <fa-icon [icon]="['fa', 'exchange-alt']" rotate="90"> </fa-icon>
         </button>
-        <div class="long-home-work">
+        <div class="long-home-work hidden-xs">
           <button
             *ngIf="currentUser && currentUser.home.address != ''"
             class="btn btn-primary"
@@ -37,7 +37,7 @@
             Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
           </button>
         </div>
-        <div class="short-home-work">
+        <div class="short-home-work visible-xs-block">
           <button
             *ngIf="currentUser && currentUser.home.address != ''"
             class="btn btn-primary"
@@ -61,6 +61,7 @@
         <span class="route-endpoint-style-icon">
           <fa-icon class="dest-icon" [icon]="['fa', 'thumbtack']"></fa-icon>
         </span>
+
         <input
           ngx-google-places-autocomplete
           class="form-control"
@@ -72,12 +73,12 @@
           (onAddressChange)="destinationAddressChange($event)"
         />
         <button
-          class="btn btn-default fxn-button text-center"
+          class="btn fxn-button text-center"
           (click)="currentLocationButtonClicked()"
         >
           <fa-icon [icon]="['fa', 'location-arrow']"> </fa-icon>
         </button>
-        <div class="long-home-work">
+        <div class="long-home-work hidden-xs">
           <button
             *ngIf="currentUser && currentUser.home.address != ''"
             class="btn btn-primary"
@@ -93,7 +94,7 @@
             Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
           </button>
         </div>
-        <div class="short-home-work">
+        <div class="short-home-work visible-xs-block">
           <button
             *ngIf="currentUser && currentUser.home.address != ''"
             class="btn btn-primary"

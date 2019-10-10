@@ -19,10 +19,10 @@
         ></app-route-form>
       </div>
 
-      <div id="collapsible-container">
+      <div id="collapsible-container" class="visible-xs-block">
         <button
           type="button"
-          class="btn collapsible"
+          class="btn collapsible collapsed"
           data-toggle="collapse"
           data-target="#content-collapsible"
         >
@@ -54,7 +54,7 @@
         </div>
       </div>
 
-      <div id="map-functions">
+      <div id="map-functions" class="hidden-xs">
         <div class="row filter-button-div justify-content-center">
           <button
             type="button"
@@ -79,7 +79,7 @@
       </div>
 
       <div
-        class="directions shadow p-3 mb-5"
+        class="directions hidden-xs shadow p-3 mb-5"
         *ngIf="sourceData.lat && destData.lat"
       >
         <div class="directions-container">
@@ -237,7 +237,7 @@
   <app-filter-modal (setFilters)="onFilterSubmit($event)"></app-filter-modal>
 </div>
 
-<footer class="footer " *ngIf="distance && eta">
+<footer class="footer visible-xs-block" *ngIf="distance && eta">
   <div class="direction-data-footer">
     <strong id="eta">{{ eta }}</strong>
     <span id="distance">{{ distance }}</span>
