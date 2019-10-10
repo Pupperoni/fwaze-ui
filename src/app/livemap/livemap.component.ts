@@ -9,6 +9,7 @@ import { AdvertisementService } from "../advertisement.service";
 import { CurrentMarkerService } from "../current-marker.service";
 import { EventService } from "../event.service";
 import { GoogleMapsService } from "../google-maps.service";
+import { RouteHistoryService } from "../route-history.service";
 
 @Component({
   selector: "app-livemap",
@@ -94,7 +95,8 @@ export class LivemapComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private advertisementService: AdvertisementService,
     private eventService: EventService,
-    private googleMapsService: GoogleMapsService
+    private googleMapsService: GoogleMapsService,
+    private routeHistoryService: RouteHistoryService
   ) {
     this.geocoder = this.googleMapsService.getGeocoder();
   }
@@ -504,9 +506,30 @@ export class LivemapComponent implements OnInit, OnDestroy {
     this.updateChildren();
   }
 
-  deleteMarkers($event) {
+  onDirectionChange($event) {
     this.distance = $event.routes[0].legs[0].distance.text;
     this.eta = $event.routes[0].legs[0].duration.text;
+    if (this.currentUser) {
+      let dateNow = new Date();
+      let routeData = {
+        userId: this.currentUser.id,
+        source: {
+          address: this.sourceString,
+          latitude: this.sourceData.lat,
+          longitude: this.sourceData.lng
+        },
+        destination: {
+          address: this.destString,
+          latitude: this.destData.lat,
+          longitude: this.destData.lng
+        },
+        timestamp: `${dateNow.getFullYear()}-${dateNow.getMonth() +
+          1}-${dateNow.getDate()} ${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}.${dateNow.getMilliseconds()}`
+      };
+
+      this.addRouteHistory(routeData);
+    }
+
     this.source = {
       lat: undefined,
       lng: undefined,
@@ -517,6 +540,12 @@ export class LivemapComponent implements OnInit, OnDestroy {
       lng: undefined,
       label: "D"
     };
+  }
+
+  addRouteHistory(data) {
+    this.routeHistoryService.addRouteHistory(data).subscribe(res => {
+      console.log(res);
+    });
   }
 
   // source: https://davidwalsh.name/javascript-debounce-function

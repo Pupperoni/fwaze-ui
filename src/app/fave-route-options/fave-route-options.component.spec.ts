@@ -85,20 +85,17 @@ describe("Fave route options", () => {
     });
 
     it("should set source and destination to route selected", () => {
-      component.selectedRoute = 0;
-      component.useRoute();
+      component.useRoute(0);
 
       expect(component.sourceString).toEqual("route 1 src");
       expect(component.destString).toEqual("route 1 dest");
 
-      component.selectedRoute = 1;
-      component.useRoute();
+      component.useRoute(1);
 
       expect(component.sourceString).toEqual("route 2 src");
       expect(component.destString).toEqual("route 2 dest");
 
-      component.selectedRoute = 2;
-      component.useRoute();
+      component.useRoute(2);
 
       expect(component.sourceString).toEqual("route 3 src");
       expect(component.destString).toEqual("route 3 dest");

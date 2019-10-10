@@ -1,0 +1,39 @@
+.route-history-component {
+  margin-top: 7em;
+}
+
+#route-history-list {
+  margin: 1em 0em 1em 0em;
+  padding: 0.5em;
+  border-style: solid;
+  border-color: #ababab transparent #ababab transparent;
+}
+
+.ellipsis-icon {
+  margin: 0em 5em 0em 0em;
+  text-align: left;
+}
+
+.route-info {
+  padding: 0.5em 0 0.5em 0;
+  text-align: left;
+}
+
+#route-timestamp {
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent transparent #ababab transparent;
+  text-align: center;
+}
+
+.pull-right {
+  display: inline-block;
+}
+
+.source-icon {
+  color: #0f77ff;
+}
+
+.destination-icon {
+  color: #e80000;
+}

@@ -10,6 +10,7 @@ describe("Livemap component", () => {
   let mockAdvertisementService;
   let mockEventService;
   let mockGMapsService;
+  let mockRouteHistoryService;
 
   beforeEach(() => {
     mockGMapsService = jasmine.createSpyObj("mockGMapsService", [
@@ -49,6 +50,26 @@ describe("Livemap component", () => {
       return of({ ads: [] });
     });
 
+    mockRouteHistoryService = jasmine.createSpyObj("mockRouteHistoryService", [
+      "addRouteHistory"
+    ]);
+
+    mockRouteHistoryService.addRouteHistory.and.callFake(data => {
+      let result = {
+        id: "route1",
+        userId: data.userId,
+        sourceAddress: data.source.address,
+        sourceLatitude: data.source.latitude,
+        sourceLongitude: data.source.longitude,
+        destinationAddress: data.destination.address,
+        destinationLatitude: data.destination.latitude,
+        destinationLongitude: data.destination.longitude,
+        timestamp: data.timestamp,
+        aggregateID: data.userId
+      };
+      return of(result);
+    });
+
     component = new LivemapComponent(
       mockCookieService,
       mockCurrentMarkerService,
@@ -56,7 +77,8 @@ describe("Livemap component", () => {
       mockUserService,
       mockAdvertisementService,
       mockEventService,
-      mockGMapsService
+      mockGMapsService,
+      mockRouteHistoryService
     );
   });
 
@@ -446,9 +468,17 @@ describe("Livemap component", () => {
     });
   });
 
-  describe("delete markers", () => {
+  describe("direction change", () => {
     let event;
     beforeEach(() => {
+      component.currentUser = {
+        id: "someUser",
+        name: "someName",
+        role: 0,
+        email: "some@email.com",
+        work: null,
+        home: null
+      };
       event = {
         routes: [
           {
@@ -464,7 +494,7 @@ describe("Livemap component", () => {
     });
 
     it("should delete source and destination", () => {
-      component.deleteMarkers(event);
+      component.onDirectionChange(event);
 
       expect(component.source.lat).toBeUndefined();
       expect(component.source.lng).toBeUndefined();
@@ -473,7 +503,7 @@ describe("Livemap component", () => {
     });
 
     it("should update distance and eta", () => {
-      component.deleteMarkers(event);
+      component.onDirectionChange(event);
 
       expect(component.distance).toEqual("5km");
       expect(component.eta).toEqual("23 mins");
@@ -551,6 +581,29 @@ describe("Livemap component", () => {
         autoOpen: false,
         label: "R"
       });
+    });
+  });
+
+  describe("add route history", () => {
+    it("should add route history", () => {
+      let routeData = {
+        userId: "someUser",
+        source: {
+          address: "source",
+          latitude: 10,
+          longitude: 5
+        },
+        destination: {
+          address: "destination",
+          latitude: 20,
+          longitude: 5
+        },
+        timestamp: "2019-10-10 13:20:00"
+      };
+      component.addRouteHistory(routeData);
+      expect(mockRouteHistoryService.addRouteHistory).toHaveBeenCalledWith(
+        routeData
+      );
     });
   });
 });

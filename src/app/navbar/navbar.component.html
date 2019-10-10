@@ -36,6 +36,15 @@
             {{ currentUser.name }}
           </button>
         </li>
+        <li *ngIf="currentUser">
+          <button
+            id="user-detail"
+            class="navbar-link user-button"
+            routerLink="history"
+          >
+            Activity
+          </button>
+        </li>
         <li *ngIf="currentUser; else notLoggedIn">
           <a
             href="/"

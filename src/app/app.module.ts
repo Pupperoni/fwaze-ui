@@ -36,7 +36,8 @@ import {
   faFilter,
   faMapMarkerAlt,
   faThumbtack,
-  faCaretDown
+  faCaretDown,
+  faEllipsisV
 } from "@fortawesome/free-solid-svg-icons";
 import { AgmCoreModule } from "@agm/core";
 import { AgmDirectionModule } from "agm-direction";
@@ -54,6 +55,7 @@ import { SaveRouteModalComponent } from "./save-route-modal/save-route-modal.com
 import { RouteFormComponent } from "./route-form/route-form.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastrModule } from "ngx-toastr";
+import { RouteHistoryComponent } from "./route-history/route-history.component";
 
 registerLocaleData(localeFil);
 
@@ -80,7 +82,8 @@ registerLocaleData(localeFil);
     ApplicationListComponent,
     FaveRouteOptionsComponent,
     SaveRouteModalComponent,
-    RouteFormComponent
+    RouteFormComponent,
+    RouteHistoryComponent
   ],
   imports: [
     GooglePlaceModule,
@@ -122,5 +125,6 @@ export class AppModule {
     library.add(faMapMarkerAlt);
     library.add(faThumbtack);
     library.add(faCaretDown);
+    library.add(faEllipsisV);
   }
 }

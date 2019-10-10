@@ -7,13 +7,15 @@ import { LivemapComponent } from "./livemap/livemap.component";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { ApplicationListComponent } from "./application-list/application-list.component";
+import { RouteHistoryComponent } from "./route-history/route-history.component";
 const routes: Routes = [
   { path: "", component: LivemapComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
   { path: "edit", component: EditProfileComponent },
   { path: "detail/:id", component: UserDetailComponent },
-  { path: "applications", component: ApplicationListComponent }
+  { path: "applications", component: ApplicationListComponent },
+  { path: "history", component: RouteHistoryComponent }
 ];
 
 @NgModule({
