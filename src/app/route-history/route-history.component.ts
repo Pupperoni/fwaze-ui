@@ -1,18 +1,24 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
 import { RouteHistoryService } from "../route-history.service";
+import { ToastrService } from "ngx-toastr";
+import { EventService } from "../event.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-route-history",
   templateUrl: "./route-history.component.html",
   styleUrls: ["./route-history.component.css"]
 })
-export class RouteHistoryComponent implements OnInit {
+export class RouteHistoryComponent implements OnInit, OnDestroy {
   currentUser;
   routeHistory;
+  userRouteHistoryCreatedSubscription: Subscription;
   constructor(
     private routeHistoryService: RouteHistoryService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private eventService: EventService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -21,6 +27,25 @@ export class RouteHistoryComponent implements OnInit {
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
       this.getRouteHistory(this.currentUser.id);
     }
+
+    this.userRouteHistoryCreatedSubscription = this.eventService
+      .getUserRouteHistoryCreatedEventSubject()
+      .subscribe(route => {
+        this.toastr
+          .success(
+            "You just searched for a new route! Click here to refresh.",
+            "New route used"
+          )
+          .onTap.subscribe(() => this.toastrClickedHandler());
+      });
+  }
+
+  ngOnDestroy() {
+    this.userRouteHistoryCreatedSubscription.unsubscribe();
+  }
+
+  toastrClickedHandler() {
+    window.location.reload();
   }
 
   getRouteHistory(id) {

@@ -5,6 +5,8 @@ describe("Route history component", () => {
   let component: RouteHistoryComponent;
   let mockRouteHistoryService;
   let mockCookieService;
+  let mockEventService;
+  let mockToastr;
 
   beforeEach(() => {
     mockCookieService = jasmine.createSpyObj("mockCookieService", [
@@ -48,9 +50,14 @@ describe("Route history component", () => {
     mockRouteHistoryService.deleteRouteHistory.and.callFake(id => {
       return of(true);
     });
+
+    mockToastr = jasmine.createSpyObj("mockToastr", ["success"]);
+
     component = new RouteHistoryComponent(
       mockRouteHistoryService,
-      mockCookieService
+      mockCookieService,
+      mockEventService,
+      mockToastr
     );
   });
 
