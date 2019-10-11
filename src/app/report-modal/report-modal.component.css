@@ -1,3 +1,11 @@
 .form-group {
   margin-top: 1em;
 }
+.btn-group {
+  margin-left: 1em;
+}
+
+#selectedRoute {
+  display: inline-block;
+  min-width: 20em;
+}

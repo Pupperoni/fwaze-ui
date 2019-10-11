@@ -37,12 +37,8 @@
           </button>
         </li>
         <li *ngIf="currentUser">
-          <button
-            id="user-detail"
-            class="navbar-link user-button"
-            routerLink="history"
-          >
-            Activity
+          <button class="navbar-link user-button" routerLink="history">
+            History
           </button>
         </li>
         <li *ngIf="currentUser; else notLoggedIn">

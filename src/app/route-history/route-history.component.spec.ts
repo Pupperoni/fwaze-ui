@@ -5,10 +5,8 @@ describe("Route history component", () => {
   let component: RouteHistoryComponent;
   let mockRouteHistoryService;
   let mockCookieService;
-  let mockToastr;
 
   beforeEach(() => {
-    // mockToastr = jasmine.createSpyObj("mockToastr", ["error"]);
     mockCookieService = jasmine.createSpyObj("mockCookieService", [
       "get",
       "check"
@@ -31,18 +29,20 @@ describe("Route history component", () => {
       "deleteRouteHistory"
     ]);
 
-    mockRouteHistoryService.getRouteHistoryByUserId.and.callFake(id => {
-      return of([
-        {
-          id: "route1",
-          userId: id,
-          sourceAddress: "source",
-          sourcePosition: { x: 5, y: 10 },
-          destinationAddress: "destination",
-          destinationPosition: { x: 10, y: 20 },
-          timestamp: "2019-10-10T13:20:00.000Z"
-        }
-      ]);
+    mockRouteHistoryService.getRouteHistoryByUserId.and.callFake(data => {
+      return of({
+        history: [
+          {
+            id: "route1",
+            userId: data.userId,
+            sourceAddress: "source",
+            sourcePosition: { x: 5, y: 10 },
+            destinationAddress: "destination",
+            destinationPosition: { x: 10, y: 20 },
+            timestamp: "2019-10-10T13:20:00.000Z"
+          }
+        ]
+      });
     });
 
     mockRouteHistoryService.deleteRouteHistory.and.callFake(id => {
@@ -72,9 +72,24 @@ describe("Route history component", () => {
   });
 
   describe("delete route history", () => {
-    it("should remove route history", () => {
+    it("should trigger removed", () => {
       component.ngOnInit();
       component.deleteRouteHistory("route1");
+      expect(component.routeHistory[0]).toEqual({
+        id: "route1",
+        userId: "someUser",
+        sourceAddress: "source",
+        sourcePosition: { x: 5, y: 10 },
+        destinationAddress: "destination",
+        destinationPosition: { x: 10, y: 20 },
+        timestamp: "2019-10-10T13:20:00.000Z",
+        removed: true
+      });
+    });
+
+    it("should delete route", () => {
+      component.ngOnInit();
+      component.transitionEnd(null, 0);
       expect(component.routeHistory).toEqual([]);
     });
   });

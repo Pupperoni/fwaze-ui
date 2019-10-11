@@ -358,13 +358,13 @@ export class LivemapComponent implements OnInit, OnDestroy {
     if ($event.pos == "source") {
       this.sourceString = $event.home.address;
       this.source = {
-        lat: $event.home.latitude,
-        lng: $event.home.longitude,
+        lat: parseFloat($event.home.latitude),
+        lng: parseFloat($event.home.longitude),
         label: "S"
       };
       this.sourceData = {
-        lat: $event.home.latitude,
-        lng: $event.home.longitude,
+        lat: parseFloat($event.home.latitude),
+        lng: parseFloat($event.home.longitude),
         label: "S"
       };
       this.lat = this.source.lat;
@@ -372,13 +372,13 @@ export class LivemapComponent implements OnInit, OnDestroy {
     } else if ($event.pos == "destination") {
       this.destString = $event.home.address;
       this.destination = {
-        lat: $event.home.latitude,
-        lng: $event.home.longitude,
+        lat: parseFloat($event.home.latitude),
+        lng: parseFloat($event.home.longitude),
         label: "D"
       };
       this.destData = {
-        lat: $event.home.latitude,
-        lng: $event.home.longitude,
+        lat: parseFloat($event.home.latitude),
+        lng: parseFloat($event.home.longitude),
         label: "D"
       };
       this.lat = this.destination.lat;
@@ -391,13 +391,13 @@ export class LivemapComponent implements OnInit, OnDestroy {
     if ($event.pos == "source") {
       this.sourceString = $event.work.address;
       this.source = {
-        lat: $event.work.latitude,
-        lng: $event.work.longitude,
+        lat: parseFloat($event.work.latitude),
+        lng: parseFloat($event.work.longitude),
         label: "S"
       };
       this.sourceData = {
-        lat: $event.work.latitude,
-        lng: $event.work.longitude,
+        lat: parseFloat($event.work.latitude),
+        lng: parseFloat($event.work.longitude),
         label: "S"
       };
       this.lat = this.source.lat;
@@ -405,13 +405,13 @@ export class LivemapComponent implements OnInit, OnDestroy {
     } else if ($event.pos == "destination") {
       this.destString = $event.work.address;
       this.destination = {
-        lat: $event.work.latitude,
-        lng: $event.work.longitude,
+        lat: parseFloat($event.work.latitude),
+        lng: parseFloat($event.work.longitude),
         label: "D"
       };
       this.destData = {
-        lat: $event.work.latitude,
-        lng: $event.work.longitude,
+        lat: parseFloat($event.work.latitude),
+        lng: parseFloat($event.work.longitude),
         label: "D"
       };
       this.lat = this.destination.lat;
@@ -543,8 +543,9 @@ export class LivemapComponent implements OnInit, OnDestroy {
   }
 
   addRouteHistory(data) {
+    // console.log("request");
     this.routeHistoryService.addRouteHistory(data).subscribe(res => {
-      console.log(res);
+      // console.log(res);
     });
   }
 

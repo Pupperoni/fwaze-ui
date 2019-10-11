@@ -150,23 +150,35 @@ img {
 
 @media only screen and (min-width: 768px) {
   .route-form {
-    width: 30%;
+    /* padding-left: 3em;
+    padding-right: 3em; */
   }
 
   .fave-route {
+    /* padding-left: 3em;
+    padding-right: 3em; */
+  }
+
+  .directions {
+    margin-top: 1em;
     width: 30%;
   }
 
   .filter-button-div {
     margin-top: 0;
-    width: 30%;
-  }
-
-  .directions {
-    width: 30%;
+    /* width: 30%; */
   }
 
   #floating-panel {
     padding: 2em;
+  }
+
+  .floating-menu {
+    width: 30%;
+    pointer-events: auto;
+    opacity: 40%;
+    background-color: rgba(237, 237, 237, 0.7);
+    padding: 0 1em 1em 1em;
+    border-radius: 10%;
   }
 }

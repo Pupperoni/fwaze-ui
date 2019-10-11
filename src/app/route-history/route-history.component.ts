@@ -35,14 +35,22 @@ export class RouteHistoryComponent implements OnInit {
   }
 
   deleteRouteHistory(id) {
-    this.routeHistoryService.deleteRouteHistory(id).subscribe(res => {
+    let data = {
+      id: id,
+      userId: this.currentUser.id
+    };
+    this.routeHistoryService.deleteRouteHistory(data).subscribe(res => {
       // find element w/ id and remove it
       for (let i = 0; i < this.routeHistory.length; i++) {
         if (this.routeHistory[i].id === id) {
-          this.routeHistory.splice(i, 1);
+          this.routeHistory[i].removed = true;
           break;
         }
       }
     });
+  }
+
+  transitionEnd($event, index) {
+    this.routeHistory.splice(index, 1);
   }
 }

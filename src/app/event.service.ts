@@ -20,42 +20,53 @@ export class EventService {
   userApplicationAcceptedEventSubject = new Subject<any>();
   userApplicationCreatedEventSubject = new Subject<any>();
 
+  userRouteHistoryCreatedEventSubject = new Subject<any>();
+  userRouteHistoryDeletedEventSubject = new Subject<any>();
+
   eventReceived = this.socket.fromEvent<any>("event_received");
 
   constructor(private socket: EventsSocket) {
     this.eventReceived.subscribe(event => {
-      /* TO DO: Use Switch-Case */
-
-      // reports aggregate
-      if (event.eventName === CONSTANTS.EVENTS.REPORT_CREATED) {
-        this.reportCreatedSubject.next(event.payload);
-      } else if (event.eventName === CONSTANTS.EVENTS.REPORT_COMMENT_CREATED) {
-        this.reportCommentCreatedSubject.next(event.payload);
-      } else if (event.eventName === CONSTANTS.EVENTS.REPORT_VOTE_CREATED) {
-        this.reportVoteCreatedSubject.next(event.payload);
-      } else if (event.eventName === CONSTANTS.EVENTS.REPORT_VOTE_DELETED) {
-        this.reportVoteDeletedSubject.next(event.payload);
+      console.log(event);
+      switch (event.eventName) {
+        // reports aggregate
+        case CONSTANTS.EVENTS.REPORT_CREATED:
+          this.reportCreatedSubject.next(event.payload);
+          break;
+        case CONSTANTS.EVENTS.REPORT_COMMENT_CREATED:
+          this.reportCommentCreatedSubject.next(event.payload);
+          break;
+        case CONSTANTS.EVENTS.REPORT_VOTE_CREATED:
+          this.reportVoteCreatedSubject.next(event.payload);
+          break;
+        case CONSTANTS.EVENTS.REPORT_VOTE_DELETED:
+          this.reportVoteDeletedSubject.next(event.payload);
+          break;
 
         // ad aggregate
-      } else if (event.eventName === CONSTANTS.EVENTS.AD_CREATED) {
-        this.adCreatedSubject.next(event.payload);
-      }
+        case CONSTANTS.EVENTS.AD_CREATED:
+          this.adCreatedSubject.next(event.payload);
+          break;
 
-      // user aggregate
-      else if (event.eventName === CONSTANTS.EVENTS.USER_UPDATED) {
-        this.userUpdatedEventSubject.next(event.payload);
-      } else if (
-        event.eventName === CONSTANTS.EVENTS.USER_APPLICATION_REJECTED
-      ) {
-        this.userApplicationRejectedEventSubject.next(event.payload);
-      } else if (
-        event.eventName === CONSTANTS.EVENTS.USER_APPLICATION_APPROVED
-      ) {
-        this.userApplicationAcceptedEventSubject.next(event.payload);
-      } else if (
-        event.eventName === CONSTANTS.EVENTS.USER_APPLICATION_CREATED
-      ) {
-        this.userApplicationCreatedEventSubject.next(event.payload);
+        // user aggregate
+        case CONSTANTS.EVENTS.USER_UPDATED:
+          this.userUpdatedEventSubject.next(event.payload);
+          break;
+        case CONSTANTS.EVENTS.USER_APPLICATION_REJECTED:
+          this.userApplicationRejectedEventSubject.next(event.payload);
+          break;
+        case CONSTANTS.EVENTS.USER_APPLICATION_APPROVED:
+          this.userApplicationAcceptedEventSubject.next(event.payload);
+          break;
+        case CONSTANTS.EVENTS.USER_APPLICATION_CREATED:
+          this.userApplicationCreatedEventSubject.next(event.payload);
+          break;
+        case CONSTANTS.EVENTS.USER_ROUTE_HISTORY_CREATED:
+          this.userRouteHistoryCreatedEventSubject.next(event.payload);
+          break;
+        case CONSTANTS.EVENTS.USER_ROUTE_HISTORY_DELETED:
+          this.userRouteHistoryDeletedEventSubject.next(event.payload);
+          break;
       }
     });
   }
@@ -94,5 +105,13 @@ export class EventService {
 
   getUserApplicationCreatedEventSubject(): Observable<any> {
     return this.userApplicationCreatedEventSubject.asObservable();
+  }
+
+  getUserRouteHistoryCreatedEventSubject(): Observable<any> {
+    return this.userRouteHistoryCreatedEventSubject.asObservable();
+  }
+
+  getUserRouteHistoryDeletedEventSubject(): Observable<any> {
+    return this.userRouteHistoryDeletedEventSubject.asObservable();
   }
 }

@@ -3,13 +3,14 @@
     <div
       *ngFor="let route of routeHistory; let i = index"
       class="route-container"
+      [class.removed]="route.removed"
+      (transitionend)="transitionEnd($event, i)"
     >
       <div id="route-timestamp" class="row">
         <div class="pull-right">
-          <strong>{{ route.timestamp | date: "medium":"+0800" }}</strong>
+          <strong>{{ route.timestamp | date: "medium":"+0000" }}</strong>
         </div>
       </div>
-
       <div class="row">
         <div id="route-source" class="route-info">
           <span class="source-icon">
@@ -28,6 +29,12 @@
           </span>
           {{ route.destinationAddress }}
         </div>
+
+        <div id="delete-route">
+          <button class="btn btn-danger" (click)="deleteRouteHistory(route.id)">
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -35,7 +42,7 @@
   <ng-template #noHistory>
     <div id="route-history-list">
       <div class="route-info">
-        <p>No routes to show...</p>
+        <p>No routes to show</p>
       </div>
     </div>
   </ng-template>

@@ -24,14 +24,14 @@
         <div class="long-home-work hidden-xs">
           <button
             *ngIf="currentUser && currentUser.home.address != ''"
-            class="btn btn-primary"
+            class="btn btn-primary btn-hw"
             (click)="homeButtonClicked('source')"
           >
             Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
           </button>
           <button
             *ngIf="currentUser && currentUser.work.address != ''"
-            class="btn btn-primary"
+            class="btn btn-primary btn-hw"
             (click)="workButtonClicked('source')"
           >
             Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
@@ -40,14 +40,14 @@
         <div class="short-home-work visible-xs-block">
           <button
             *ngIf="currentUser && currentUser.home.address != ''"
-            class="btn btn-primary"
+            class="btn btn-primary btn-hw"
             (click)="homeButtonClicked('source')"
           >
             <fa-icon [icon]="['fa', 'home']"></fa-icon>
           </button>
           <button
             *ngIf="currentUser && currentUser.work.address != ''"
-            class="btn btn-primary"
+            class="btn btn-primary btn-hw"
             (click)="workButtonClicked('source')"
           >
             <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
@@ -81,14 +81,14 @@
         <div class="long-home-work hidden-xs">
           <button
             *ngIf="currentUser && currentUser.home.address != ''"
-            class="btn btn-primary"
+            class="btn btn-primary btn-hw"
             (click)="homeButtonClicked('destination')"
           >
             Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
           </button>
           <button
             *ngIf="currentUser && currentUser.work.address != ''"
-            class="btn btn-primary"
+            class="btn btn-primary btn-hw"
             (click)="workButtonClicked('destination')"
           >
             Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
@@ -97,14 +97,14 @@
         <div class="short-home-work visible-xs-block">
           <button
             *ngIf="currentUser && currentUser.home.address != ''"
-            class="btn btn-primary"
+            class="btn btn-primary btn-hw"
             (click)="homeButtonClicked('destination')"
           >
             <fa-icon [icon]="['fa', 'home']"></fa-icon>
           </button>
           <button
             *ngIf="currentUser && currentUser.work.address != ''"
-            class="btn btn-primary"
+            class="btn btn-primary btn-hw"
             (click)="workButtonClicked('destination')"
           >
             <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>

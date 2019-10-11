@@ -25,7 +25,7 @@
         </div>
         <div class="modal-body">
           <label>Type of report:</label>
-          <select
+          <!-- <select
             class="form-control"
             id="reportType"
             [(ngModel)]="selectedOption"
@@ -39,10 +39,54 @@
             <option value="6">Minor Accident</option>
             <option value="7">Major Accident</option>
             <option value="8">Others</option>
-          </select>
+          </select> -->
+
+          <div class="btn-group">
+            <button
+              id="selectedRoute"
+              type="button"
+              class="form-control dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              {{ selectedString }}
+              <fa-icon [icon]="['fa', 'caret-down']"></fa-icon>
+            </button>
+
+            <ul class="dropdown-menu">
+              <li id="selectedRoute" (click)="updateSelect(0)">
+                <a href="#">Traffic Jam</a>
+              </li>
+              <li id="selectedRoute" (click)="updateSelect(1)">
+                <a href="#">Heavy Traffic Jam</a>
+              </li>
+              <li id="selectedRoute" (click)="updateSelect(2)">
+                <a href="#">Police</a>
+              </li>
+              <li id="selectedRoute" (click)="updateSelect(3)">
+                <a href="#">Road Closed</a>
+              </li>
+              <li id="selectedRoute" (click)="updateSelect(4)">
+                <a href="#">Stopped Car</a>
+              </li>
+              <li id="selectedRoute" (click)="updateSelect(5)">
+                <a href="#">Construction</a>
+              </li>
+              <li id="selectedRoute" (click)="updateSelect(6)">
+                <a href="#">Minor Accident</a>
+              </li>
+              <li id="selectedRoute" (click)="updateSelect(7)">
+                <a href="#">Major Accident</a>
+              </li>
+              <li id="selectedRoute" (click)="updateSelect(8)">
+                <a href="#">Others</a>
+              </li>
+            </ul>
+          </div>
 
           <div class="form-group">
-            <label>Upload photo:</label>
+            <label>Upload photo (Optional):</label>
             <input
               type="file"
               class="form-control-file"
@@ -50,23 +94,23 @@
               (change)="handleFileInput($event)"
             />
           </div>
-        </div>
-        <div *ngIf="invalidImage" class="alert alert-danger" role="alert">
-          File uploaded is not an image
-        </div>
+          <div *ngIf="invalidImage" class="alert alert-danger" role="alert">
+            File uploaded is not an image
+          </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            Close
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-dismiss="modal"
-            (click)="reportSubmit(window)"
-          >
-            Confirm
-          </button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              (click)="reportSubmit(window)"
+            >
+              Confirm
+            </button>
+          </div>
         </div>
       </div>
     </div>

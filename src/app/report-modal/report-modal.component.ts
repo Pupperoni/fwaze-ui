@@ -19,6 +19,8 @@ export class ReportModalComponent implements OnInit {
 
   // selected option for reports
   selectedOption: number = 0;
+  selectedString: string = "Route type";
+
   constructor(
     private reportService: ReportService,
     private cookieService: CookieService,
@@ -44,6 +46,39 @@ export class ReportModalComponent implements OnInit {
       } else {
         this.invalidImage = true;
       }
+    }
+  }
+
+  updateSelect(index: number) {
+    this.selectedOption = index;
+    switch (index) {
+      case 0:
+        this.selectedString = "Traffic Jam";
+        break;
+      case 1:
+        this.selectedString = "Heavy Traffic Jam";
+        break;
+      case 2:
+        this.selectedString = "Police";
+        break;
+      case 3:
+        this.selectedString = "Road Closed";
+        break;
+      case 4:
+        this.selectedString = "Construction";
+        break;
+      case 5:
+        this.selectedString = "Stopped Car";
+        break;
+      case 6:
+        this.selectedString = "Minor Accident";
+        break;
+      case 7:
+        this.selectedString = "Major Accident";
+        break;
+      case 8:
+        this.selectedString = "Others";
+        break;
     }
   }
 
