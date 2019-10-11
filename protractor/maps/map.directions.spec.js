@@ -1,26 +1,26 @@
-const MapPage = require("../pages/route.page");
+const RoutePage = require("../pages/route.page");
 const DEFAULT_SLEEP = 1000;
 describe("Map directions", () => {
-  let mapPage = MapPage();
+  let routePage = RoutePage();
   beforeEach(() => {
     browser.get("http://localhost:4200");
   });
 
   describe("route input form", () => {
     it("should show direction info", () => {
-      mapPage.sourceInput.sendKeys("UP Diliman");
+      routePage.sourceInput.sendKeys("UP Diliman");
       browser.sleep(DEFAULT_SLEEP);
-      mapPage.sourceResult.click();
+      routePage.sourceResult.click();
 
       browser.sleep(DEFAULT_SLEEP);
 
-      mapPage.destInput.sendKeys("Ateneo de Manila");
+      routePage.destInput.sendKeys("Ateneo de Manila");
       browser.sleep(DEFAULT_SLEEP);
-      mapPage.destResult.click();
+      routePage.destResult.click();
 
       browser.sleep(3 * DEFAULT_SLEEP);
 
-      expect(mapPage.directions).toBeTruthy();
+      expect(routePage.directions).toBeTruthy();
     });
   });
 });
