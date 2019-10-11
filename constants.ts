@@ -10,6 +10,8 @@ export const CONSTANTS = {
     CREATE_USER_APPLICATION: "create_user_application",
     APPROVE_USER_APPLICATION: "approve_user_application",
     REJECT_USER_APPLICATION: "reject_user_application",
+    CREATE_USER_ROUTE_HISTORY: "create_user_route_history",
+    DELETE_USER_ROUTE_HISTORY: "delete_user_route_history",
 
     // Report aggregate constants
     CREATE_REPORT: "create_report",
@@ -24,8 +26,14 @@ export const CONSTANTS = {
   },
 
   TOPICS: {
-    COMMAND: "fwaze_commands",
-    EVENT: "fwaze_events"
+    USER_COMMAND: "users_ms_commands",
+    USER_EVENT: "users_ms_events",
+    USER_AGGREGATE: "users_ms_aggregate",
+    REPORT_COMMAND: "reports_ms_commands",
+    REPORT_EVENT: "reports_ms_events",
+    AD_COMMAND: "ads_ms_commands",
+    AD_EVENT: "ads_ms_events",
+    PUSH_EVENT: "push_ms_events"
   },
 
   EVENTS: {
@@ -36,11 +44,11 @@ export const CONSTANTS = {
     USER_WORK_UPDATED: "user_work_updated",
     USER_ROUTE_CREATED: "user_route_created",
     USER_ROUTE_DELETED: "user_route_deleted",
-
-    // Application aggregate constants
     USER_APPLICATION_CREATED: "user_application_created",
     USER_APPLICATION_APPROVED: "user_application_approved",
     USER_APPLICATION_REJECTED: "user_application_rejected",
+    USER_ROUTE_HISTORY_CREATED: "user_route_history_created",
+    USER_ROUTE_HISTORY_DELETED: "user_route_history_deleted",
 
     // Report aggregate constants
     REPORT_CREATED: "report_created",
@@ -84,7 +92,8 @@ export const CONSTANTS = {
     APPLICATION_NOT_EXISTS: "Application does not exist",
     DUPLICATE_APPLICATION: "Application already being processed",
     FILE_NOT_FOUND: "File not found",
-    COMMAND_NOT_EXISTS: "Command does not exist"
+    COMMAND_NOT_EXISTS: "Command does not exist",
+    EVENT_NOT_EXISTS: "Event does not exist"
   },
 
   SUCCESS: {

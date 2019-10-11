@@ -8,7 +8,7 @@ module.exports = function() {
     ),
     reportSubmit: element(
       by.xpath(
-        "/html/body/app-root/div/app-livemap/div/app-report-modal/div/div/div/div/div[3]/button[2]"
+        "/html/body/app-root/div/app-livemap/div/app-report-modal/div/div/div/div/div[2]/div[3]/button[2]"
       )
     ),
     reportObj: element(

@@ -4,6 +4,7 @@ module.exports = function() {
   let logoutBtn = element(by.linkText("Logout"));
   let userDetailBtn = element(by.id("user-detail"));
   let viewAppsBtn = element(by.linkText("View Applications"));
+  let routeHistoryButton = element(by.linkText("History"));
   let homeBtn = element(by.linkText("FWaze"));
   return {
     login: loginBtn,
@@ -11,6 +12,7 @@ module.exports = function() {
     user: userDetailBtn,
     logout: logoutBtn,
     applications: viewAppsBtn,
+    history: routeHistoryButton,
     home: homeBtn
   };
 };
