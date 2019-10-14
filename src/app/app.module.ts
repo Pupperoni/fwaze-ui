@@ -16,9 +16,12 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { EventsSocket } from "./sockets";
 import { Secret } from "./config";
 import { CookieService } from "ngx-cookie-service";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
 import {
+  FontAwesomeModule,
+  FaIconLibrary
+} from "@fortawesome/angular-fontawesome";
+import {
+  fas,
   faThumbsUp,
   faExchangeAlt,
   faComment,
@@ -106,25 +109,26 @@ registerLocaleData(localeFil);
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() {
-    library.add(faThumbsUp);
-    library.add(faExchangeAlt);
-    library.add(faComment);
-    library.add(faLocationArrow);
-    library.add(faHeart);
-    library.add(faArrowRight);
-    library.add(faHome);
-    library.add(faBriefcase);
-    library.add(faWalking);
-    library.add(faCar);
-    library.add(faTrain);
-    library.add(faEnvelope);
-    library.add(faUserTag);
-    library.add(faTimes);
-    library.add(faFilter);
-    library.add(faMapMarkerAlt);
-    library.add(faThumbtack);
-    library.add(faCaretDown);
-    library.add(faEllipsisV);
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas);
+    library.addIcons(faThumbsUp);
+    library.addIcons(faExchangeAlt);
+    library.addIcons(faComment);
+    library.addIcons(faLocationArrow);
+    library.addIcons(faHeart);
+    library.addIcons(faArrowRight);
+    library.addIcons(faHome);
+    library.addIcons(faBriefcase);
+    library.addIcons(faWalking);
+    library.addIcons(faCar);
+    library.addIcons(faTrain);
+    library.addIcons(faEnvelope);
+    library.addIcons(faUserTag);
+    library.addIcons(faTimes);
+    library.addIcons(faFilter);
+    library.addIcons(faMapMarkerAlt);
+    library.addIcons(faThumbtack);
+    library.addIcons(faCaretDown);
+    library.addIcons(faEllipsisV);
   }
 }
