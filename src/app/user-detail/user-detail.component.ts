@@ -10,6 +10,8 @@ import { Subscription } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { EventService } from "../event.service";
 import { environment } from "../../environments/environment";
+
+const delay = 3000;
 @Component({
   selector: "app-user-detail",
   templateUrl: "./user-detail.component.html",
@@ -132,6 +134,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   getUser() {
+    // setTimeout(() => {
     const id = this.route.snapshot.paramMap.get("id");
     this.userService.getUser(id).subscribe(res => {
       this.user = res.user;
@@ -159,5 +162,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
       }
     });
+    // }, delay);
   }
 }

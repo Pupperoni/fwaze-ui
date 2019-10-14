@@ -10,7 +10,7 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          {{ routeName }} <fa-icon [icon]="['fa', 'caret-down']"></fa-icon>
+          {{ routeName }} <fa-icon [icon]="['fas', 'caret-down']"></fa-icon>
         </button>
 
         <ul *ngIf="faveRoutes.length > 0" class="dropdown-menu">
@@ -40,7 +40,7 @@
       data-toggle="modal"
       data-target="#saveRouteModal"
     >
-      Save <fa-icon [icon]="['fa', 'heart']"></fa-icon>
+      Save <fa-icon [icon]="['fas', 'heart']"></fa-icon>
     </button>
     <button
       [class.disabled]="selectedRoute == -1"
@@ -48,7 +48,7 @@
       class="btn btn-danger route-button "
       (click)="deleteRoute()"
     >
-      Delete <fa-icon [icon]="['fa', 'times']"></fa-icon>
+      Delete <fa-icon [icon]="['fas', 'times']"></fa-icon>
     </button>
   </div>
 

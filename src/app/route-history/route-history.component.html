@@ -1,5 +1,10 @@
 <div class="route-history-component">
-  <div *ngIf="routeHistory.length > 0; else noHistory" id="route-history-list">
+  <div *ngIf="routeHistory; else ghostTemplate" id="route-history-list">
+    <div *ngIf="routeHistory.length === 0">
+      <div class="route-info-empty">
+        <p>No routes to show</p>
+      </div>
+    </div>
     <div
       *ngFor="let route of routeHistory; let i = index"
       class="route-container"
@@ -14,18 +19,18 @@
       <div class="row">
         <div id="route-source" class="route-info">
           <span class="source-icon">
-            <fa-icon [icon]="['fa', 'map-marker-alt']"></fa-icon>
+            <fa-icon [icon]="['fas', 'map-marker-alt']"></fa-icon>
           </span>
           {{ route.sourceAddress }}
         </div>
 
         <div class="ellipsis-icon">
-          <fa-icon [icon]="['fa', 'ellipsis-v']"></fa-icon>
+          <fa-icon [icon]="['fas', 'ellipsis-v']"></fa-icon>
         </div>
 
         <div id="route-destination" class="route-info">
           <span class="destination-icon">
-            <fa-icon [icon]="['fa', 'thumbtack']"></fa-icon>
+            <fa-icon [icon]="['fas', 'thumbtack']"></fa-icon>
           </span>
           {{ route.destinationAddress }}
         </div>
@@ -39,11 +44,7 @@
     </div>
   </div>
 
-  <ng-template #noHistory>
-    <div id="route-history-list">
-      <div class="route-info-empty">
-        <p>No routes to show</p>
-      </div>
-    </div>
+  <ng-template #ghostTemplate>
+    <div class="skeleton-list"></div>
   </ng-template>
 </div>

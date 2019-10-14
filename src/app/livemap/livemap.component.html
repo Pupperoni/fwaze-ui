@@ -27,7 +27,7 @@
             data-toggle="collapse"
             data-target="#content-collapsible"
           >
-            <fa-icon [icon]="['fa', 'caret-down']"></fa-icon>
+            <fa-icon [icon]="['fas', 'caret-down']"></fa-icon>
           </button>
 
           <div id="content-collapsible" class="collapse">
@@ -38,7 +38,7 @@
                 data-toggle="modal"
                 data-target="#filterModal"
               >
-                Filter <fa-icon [icon]="['fa', 'filter']"></fa-icon>
+                Filter <fa-icon [icon]="['fas', 'filter']"></fa-icon>
               </button>
             </div>
 
@@ -62,7 +62,7 @@
               data-toggle="modal"
               data-target="#filterModal"
             >
-              Filter <fa-icon [icon]="['fa', 'filter']"></fa-icon>
+              Filter <fa-icon [icon]="['fas', 'filter']"></fa-icon>
             </button>
           </div>
 
@@ -96,21 +96,21 @@
                 class="btn btn-primary"
                 (click)="changeTravel('DRIVING')"
               >
-                <fa-icon [icon]="['fa', 'car']"></fa-icon>
+                <fa-icon [icon]="['fas', 'car']"></fa-icon>
               </button>
               <button
                 [class.activated]="isActive('WALKING')"
                 class="btn btn-primary"
                 (click)="changeTravel('WALKING')"
               >
-                <fa-icon [icon]="['fa', 'walking']"></fa-icon>
+                <fa-icon [icon]="['fas', 'walking']"></fa-icon>
               </button>
               <button
                 [class.activated]="isActive('TRANSIT')"
                 class="btn btn-primary"
                 (click)="changeTravel('TRANSIT')"
               >
-                <fa-icon [icon]="['fa', 'train']"></fa-icon>
+                <fa-icon [icon]="['fas', 'train']"></fa-icon>
               </button>
             </div>
           </div>
@@ -248,21 +248,21 @@
         class="btn btn-primary"
         (click)="changeTravel('DRIVING')"
       >
-        <fa-icon [icon]="['fa', 'car']"></fa-icon>
+        <fa-icon [icon]="['fas', 'car']"></fa-icon>
       </button>
       <button
         [class.activated]="isActive('WALKING')"
         class="btn btn-primary"
         (click)="changeTravel('WALKING')"
       >
-        <fa-icon [icon]="['fa', 'walking']"></fa-icon>
+        <fa-icon [icon]="['fas', 'walking']"></fa-icon>
       </button>
       <button
         [class.activated]="isActive('TRANSIT')"
         class="btn btn-primary"
         (click)="changeTravel('TRANSIT')"
       >
-        <fa-icon [icon]="['fa', 'train']"></fa-icon>
+        <fa-icon [icon]="['fas', 'train']"></fa-icon>
       </button>
     </div>
   </div>

@@ -4,7 +4,9 @@ import { RouteHistoryService } from "../route-history.service";
 import { ToastrService } from "ngx-toastr";
 import { EventService } from "../event.service";
 import { Subscription } from "rxjs";
+import { WindowService } from "../window.service";
 
+const delay = 2500;
 @Component({
   selector: "app-route-history",
   templateUrl: "./route-history.component.html",
@@ -18,14 +20,16 @@ export class RouteHistoryComponent implements OnInit, OnDestroy {
     private routeHistoryService: RouteHistoryService,
     private cookieService: CookieService,
     private eventService: EventService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private windowService: WindowService
   ) {}
 
   ngOnInit() {
-    this.routeHistory = [];
     if (this.cookieService.check("currentUser")) {
       this.currentUser = JSON.parse(this.cookieService.get("currentUser"));
+      // setTimeout(() => {
       this.getRouteHistory(this.currentUser.id);
+      // }, delay);
     }
 
     this.userRouteHistoryCreatedSubscription = this.eventService
@@ -45,7 +49,7 @@ export class RouteHistoryComponent implements OnInit, OnDestroy {
   }
 
   toastrClickedHandler() {
-    window.location.reload();
+    this.windowService.reload();
   }
 
   getRouteHistory(id) {
@@ -53,9 +57,7 @@ export class RouteHistoryComponent implements OnInit, OnDestroy {
       userId: id
     };
     this.routeHistoryService.getRouteHistoryByUserId(data).subscribe(res => {
-      res.history.forEach(route => {
-        this.routeHistory.push(route);
-      });
+      this.routeHistory = res.history;
     });
   }
 

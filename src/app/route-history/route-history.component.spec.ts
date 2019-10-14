@@ -1,14 +1,30 @@
 import { RouteHistoryComponent } from "./route-history.component";
 import { of } from "rxjs";
 
+let mockToastr: any = {
+  success: (msg, title, options) => {
+    return {
+      onTap: of([])
+    };
+  }
+};
+
 describe("Route history component", () => {
   let component: RouteHistoryComponent;
   let mockRouteHistoryService;
   let mockCookieService;
   let mockEventService;
-  let mockToastr;
+  let mockWindowService;
 
   beforeEach(() => {
+    mockEventService = jasmine.createSpyObj("mockEventService", [
+      "getUserRouteHistoryCreatedEventSubject"
+    ]);
+
+    mockEventService.getUserRouteHistoryCreatedEventSubject.and.callFake(() => {
+      return of([]);
+    });
+
     mockCookieService = jasmine.createSpyObj("mockCookieService", [
       "get",
       "check"
@@ -51,13 +67,14 @@ describe("Route history component", () => {
       return of(true);
     });
 
-    mockToastr = jasmine.createSpyObj("mockToastr", ["success"]);
+    mockWindowService = jasmine.createSpyObj("mockWindowService", ["reload"]);
 
     component = new RouteHistoryComponent(
       mockRouteHistoryService,
       mockCookieService,
       mockEventService,
-      mockToastr
+      mockToastr,
+      mockWindowService
     );
   });
 

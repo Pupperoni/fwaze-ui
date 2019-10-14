@@ -41,7 +41,7 @@
           class="btn toggle-button comment-button"
           (click)="toggleComments()"
         >
-          <fa-icon [icon]="['fa', 'comment']"></fa-icon>
+          <fa-icon [icon]="['fas', 'comment']"></fa-icon>
         </button>
 
         <span *ngIf="currentUser; else elseBlock" class="upvote-button">
@@ -51,7 +51,7 @@
             class="btn toggle-button"
             (click)="addVote(markerInfo.id, currentUser.id)"
           >
-            <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
+            <fa-icon [icon]="['fas', 'thumbs-up']"></fa-icon>
           </button>
 
           <!-- current user has upvoted - clicking this will revoke his upvote -->
@@ -61,7 +61,7 @@
             (click)="deleteVote(markerInfo.id, currentUser.id)"
           >
             <fa-icon
-              [icon]="['fa', 'thumbs-up']"
+              [icon]="['fas', 'thumbs-up']"
               [styles]="{ color: 'blue' }"
             ></fa-icon>
           </button>
@@ -70,7 +70,7 @@
 
         <ng-template #elseBlock>
           <button class="upvote-button btn disabled">
-            <fa-icon [icon]="['fa', 'thumbs-up']"></fa-icon>
+            <fa-icon [icon]="['fas', 'thumbs-up']"></fa-icon>
           </button>
           <label>{{ markerInfo.votes }}</label>
         </ng-template>

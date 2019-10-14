@@ -1,4 +1,8 @@
-<div class="user-detail-component" *ngIf="user">
+<div class="user-detail-component" *ngIf="user; else ghostUser">
+  <div class="row">
+    <div class="col-xs-6 skeleton-circle"></div>
+    <div class="col-xs-3 skeleton-lines"></div>
+  </div>
   <div class="user-detail-container row">
     <div
       *ngIf="user.avatarPath; else noImage"
@@ -35,13 +39,13 @@
           <tbody>
             <tr>
               <td class="user-info-field-name">
-                Email <fa-icon [icon]="['fa', 'envelope']"></fa-icon>
+                Email <fa-icon [icon]="['fas', 'envelope']"></fa-icon>
               </td>
               <td class="user-info-field-value">{{ user.email }}</td>
             </tr>
             <tr>
               <td class="user-info-field-name">
-                Role <fa-icon [icon]="['fa', 'user-tag']"></fa-icon>
+                Role <fa-icon [icon]="['fas', 'user-tag']"></fa-icon>
               </td>
               <td *ngIf="user.role === 0" class="user-info-field-value">
                 Regular
@@ -55,7 +59,7 @@
             </tr>
             <tr>
               <td class="user-info-field-name">
-                Home <fa-icon [icon]="['fa', 'home']"></fa-icon>
+                Home <fa-icon [icon]="['fas', 'home']"></fa-icon>
               </td>
               <td class="user-info-field-value">
                 {{ user.home.address }}
@@ -63,7 +67,7 @@
             </tr>
             <tr>
               <td class="user-info-field-name">
-                Work <fa-icon [icon]="['fa', 'briefcase']"></fa-icon>
+                Work <fa-icon [icon]="['fas', 'briefcase']"></fa-icon>
               </td>
               <td class="user-info-field-value">
                 {{ user.work.address }}
@@ -104,3 +108,7 @@
     </div>
   </div>
 </div>
+
+<ng-template #ghostUser>
+  <div class="user-detail-component skeleton-user"></div>
+</ng-template>
