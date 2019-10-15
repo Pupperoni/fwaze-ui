@@ -1,8 +1,4 @@
 <div class="user-detail-component" *ngIf="user; else ghostUser">
-  <div class="row">
-    <div class="col-xs-6 skeleton-circle"></div>
-    <div class="col-xs-3 skeleton-lines"></div>
-  </div>
   <div class="user-detail-container row">
     <div
       *ngIf="user.avatarPath; else noImage"
@@ -110,5 +106,10 @@
 </div>
 
 <ng-template #ghostUser>
-  <div class="user-detail-component skeleton-user"></div>
+  <div class="user-detail-component row">
+    <div class="col-xs-3 col-xs-offset-3">
+      <div class="user-image skeleton-circle"></div>
+    </div>
+    <div class="skeleton-lines"></div>
+  </div>
 </ng-template>

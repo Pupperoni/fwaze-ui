@@ -45,6 +45,12 @@
   </div>
 
   <ng-template #ghostTemplate>
-    <div class="skeleton-list"></div>
+    <div *ngFor="let num of [1, 2, 3]" class="row">
+      <div class="col-xs-7 col-xs-offset-2">
+        <div class="route-container">
+          <div class="skeleton-lines"></div>
+        </div>
+      </div>
+    </div>
   </ng-template>
 </div>
